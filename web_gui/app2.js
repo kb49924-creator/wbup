@@ -1206,6 +1206,7 @@ const app = {
   },
 
   switchTab(tabName) {
+    this.haptic('light');
     this.state.currentTab = tabName;
     this.saveState();
 
