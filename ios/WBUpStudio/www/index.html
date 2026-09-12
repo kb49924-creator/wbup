@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+  <meta name="description" content="WB Up Studio — профессиональная система управления публикациями Wildberries в Telegram">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="WB Up Studio">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
+  <title>WB Up Studio</title>
+
+  <!-- Google Fonts & Apple SF Pro Fallbacks & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css?v=apple_hig_v6">
+</head>
+<body>
+  <div class="apple-aurora-bg"></div>
+  <div class="toast-container" id="toast-container"></div>
+
+  <div class="app-container">
+
+    <!-- ====== Desktop Sidebar (macOS Sequoia Style) ====== -->
+    <aside class="sidebar">
+      <div class="sidebar__brand">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="macos-traffic-lights">
+            <span class="traffic-light traffic-light--red" title="Закрыть"></span>
+            <span class="traffic-light traffic-light--yellow" title="Свернуть"></span>
+            <span class="traffic-light traffic-light--green" title="Развернуть"></span>
+          </div>
+          <a href="#" class="brand-logo" onclick="app.switchTab('dashboard'); return false;">
+            <div class="brand-icon"></div>
+            <div>
+              WB Up <span style="color:var(--apple-blue); font-weight:700;">Studio</span>
+            </div>
+          </a>
+        </div>
+        <span class="badge badge--purple">v2.3</span>
+      </div>
+
+      <nav class="sidebar__nav">
+        <div class="nav-section-title">Обзор</div>
+        <a class="nav-link nav-link--active" data-tab="dashboard" onclick="app.switchTab('dashboard')">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Дашборд</span>
+        </a>
+        <a class="nav-link" data-tab="catalog" onclick="app.switchTab('catalog')">
+          <span class="material-symbols-outlined">inventory_2</span>
+          <span>Каталог</span>
+          <span class="nav-link__badge" id="badge-catalog-count">0</span>
+        </a>
+        <a class="nav-link" data-tab="queue" onclick="app.switchTab('queue')">
+          <span class="material-symbols-outlined">schedule_send</span>
+          <span>Очередь постов</span>
+          <span class="nav-link__badge" id="badge-queue-count" style="background:var(--tg-primary); color:#fff; display:none;">0</span>
+        </a>
+        <a class="nav-link" data-tab="sellers" onclick="app.switchTab('sellers')">
+          <span class="material-symbols-outlined">storefront</span>
+          <span>Продавцы</span>
+          <span class="nav-link__badge" id="badge-sellers-count">0</span>
+        </a>
+
+        <div class="nav-section-title">Публикация</div>
+        <a class="nav-link" data-tab="preview" onclick="app.switchTab('preview')">
+          <span class="material-symbols-outlined">auto_awesome</span>
+          <span>Студия постов</span>
+        </a>
+
+        <div class="nav-section-title">Инструменты</div>
+        <a class="nav-link" data-tab="photo" onclick="app.switchTab('photo')">
+          <span class="material-symbols-outlined">model_training</span>
+          <span>Локальный ИИ</span>
+        </a>
+        <a class="nav-link" data-tab="scheduler" onclick="app.switchTab('scheduler')">
+          <span class="material-symbols-outlined">timer</span>
+          <span>Планировщик</span>
+        </a>
+        <a class="nav-link" data-tab="logs" onclick="app.switchTab('logs')">
+          <span class="material-symbols-outlined">terminal</span>
+          <span>Журнал событий</span>
+        </a>
+
+        <div class="nav-section-title">Система</div>
+        <a class="nav-link" data-tab="settings" onclick="app.switchTab('settings')">
+          <span class="material-symbols-outlined">tune</span>
+          <span>Настройки</span>
+        </a>
+      </nav>
+
+      <div class="sidebar__footer">
+        <div class="status-card-mini">
+          <div class="status-card-mini__info">
+            <span class="status-dot" id="sidebar-status-dot"></span>
+            <span style="font-size:12px; font-weight:600;" id="sidebar-status-text">Онлайн</span>
+          </div>
+          <button class="btn btn--ghost btn--icon btn--sm" onclick="app.toggleTheme()" title="Переключить тему">
+            <span class="material-symbols-outlined" id="theme-icon" style="font-size:18px;">light_mode</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====== Main Content ====== -->
+    <main class="main-content">
+
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="top-header__title">
+          <span id="page-title">Дашборд</span>
+        </div>
+        <div class="top-header__actions">
+          <button class="btn btn--secondary btn--sm top-header__diag-btn" onclick="app.runDiagnostics()" title="Проверить состояние системы">
+            <span class="material-symbols-outlined" style="font-size:16px;">health_and_safety</span>
+            <span class="btn-text">Диагностика</span>
+          </button>
+          <button class="btn btn--primary btn--sm top-header__check-btn" id="top-check-btn" onclick="app.runCheck()" title="Проверить новинки Wildberries">
+            <span class="material-symbols-outlined" style="font-size:16px;">sync</span>
+            <span class="btn-text">Проверить новинки</span>
+          </button>
+          <button class="btn btn--ghost btn--icon" onclick="app.refreshAll()" title="Обновить данные">
+            <span class="material-symbols-outlined" style="font-size:20px;">refresh</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Workspace Canvas -->
+      <div class="canvas">
+
+        <!-- ==================== TAB: DASHBOARD ==================== -->
+        <section id="tab-dashboard" class="tab-panel tab-panel--active">
+          <!-- KPI Metrics Grid -->
+          <div class="stats-grid">
+            <div class="metric-card">
+              <div class="metric-card__header">
+                <span class="metric-card__label">Продавцов</span>
+                <div class="metric-card__icon"><span class="material-symbols-outlined">storefront</span></div>
+              </div>
+              <div class="metric-card__value" id="stat-sellers">0</div>
+              <div style="font-size:12px; color:var(--fg-muted);">Подключено к мониторингу</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card__header">
+                <span class="metric-card__label">Товаров в каталоге</span>
+                <div class="metric-card__icon"><span class="material-symbols-outlined">inventory_2</span></div>
+              </div>
+              <div class="metric-card__value" id="stat-products">0</div>
+              <div style="font-size:12px; color:var(--fg-muted);">Отобрано алгоритмом</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card__header">
+                <span class="metric-card__label">Очередь постов</span>
+                <div class="metric-card__icon" style="color:var(--tg-primary);"><span class="material-symbols-outlined">schedule_send</span></div>
+              </div>
+              <div class="metric-card__value" id="stat-queue" style="color:var(--tg-primary);">0</div>
+              <div style="font-size:12px; color:var(--fg-muted);">Ожидают отправки</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card__header">
+                <span class="metric-card__label">Опубликовано</span>
+                <div class="metric-card__icon" style="color:var(--success);"><span class="material-symbols-outlined">check_circle</span></div>
+              </div>
+              <div class="metric-card__value" id="stat-publications">0</div>
+              <div style="font-size:12px; color:var(--fg-muted);">Постов в Telegram-канале</div>
+            </div>
+
+            <div class="metric-card metric-card--scheduler">
+              <div class="metric-card__header">
+                <span class="metric-card__label">Планировщик</span>
+                <div class="metric-card__icon" style="color:var(--warning);"><span class="material-symbols-outlined">timer</span></div>
+              </div>
+              <div class="metric-card__value" style="font-size:18px; margin-top:6px;" id="stat-scheduler">
+                <span class="badge badge--yellow">Остановлен</span>
+              </div>
+              <div style="font-size:12px; color:var(--fg-muted);">Автопроверка по времени</div>
+            </div>
+          </div>
+
+          <!-- Quick Actions Grid -->
+          <div class="quick-actions">
+            <div class="action-tile" onclick="app.runCheck()">
+              <div class="action-tile__icon"><span class="material-symbols-outlined">search</span></div>
+              <div>
+                <div style="font-weight:700;">Проверить WB</div>
+                <div style="font-size:12px; color:var(--fg-muted);">Поиск новых товаров</div>
+              </div>
+            </div>
+
+            <div class="action-tile" onclick="app.switchTab('catalog')">
+              <div class="action-tile__icon" style="color:var(--accent);"><span class="material-symbols-outlined">grid_view</span></div>
+              <div>
+                <div style="font-weight:700;">Открыть каталог</div>
+                <div style="font-size:12px; color:var(--fg-muted);">Выбор для публикации</div>
+              </div>
+            </div>
+
+            <div class="action-tile" onclick="app.switchTab('queue')">
+              <div class="action-tile__icon" style="color:var(--tg-primary);"><span class="material-symbols-outlined">queue</span></div>
+              <div>
+                <div style="font-weight:700;">Очередь постов</div>
+                <div style="font-size:12px; color:var(--fg-muted);">Отложенные публикации</div>
+              </div>
+            </div>
+
+            <div class="action-tile" onclick="app.switchTab('sellers')">
+              <div class="action-tile__icon" style="color:var(--success);"><span class="material-symbols-outlined">person_add</span></div>
+              <div>
+                <div style="font-weight:700;">Добавить продавца</div>
+                <div style="font-size:12px; color:var(--fg-muted);">По ссылке или ID</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Diagnostics Card -->
+          <div class="card mb-4" style="margin-bottom: 24px;">
+            <div class="card__header">
+              <div class="card__title">
+                <span class="material-symbols-outlined" style="color:var(--accent);">health_and_safety</span>
+                Сетевая диагностика и статус сервисов
+              </div>
+              <button class="btn btn--secondary btn--sm" id="btn-run-diag" onclick="app.runDiagnostics()">
+                <span class="material-symbols-outlined" style="font-size:16px;">refresh</span> Запустить тест
+              </button>
+            </div>
+            <div class="card__body">
+              <div class="diag-grid" id="diag-container">
+                <div class="diag-item">
+                  <div class="diag-item__top">
+                    <span class="diag-item__name">SQLite База данных</span>
+                    <span class="badge badge--green">OK</span>
+                  </div>
+                  <div class="diag-item__details">Integrity Check</div>
+                  <div class="diag-item__latency" style="color:var(--success);">0.5 ms</div>
+                </div>
+
+                <div class="diag-item">
+                  <div class="diag-item__top">
+                    <span class="diag-item__name">WB Card API</span>
+                    <span class="badge badge--blue" id="diag-wb-badge">Тест...</span>
+                  </div>
+                  <div class="diag-item__details" id="diag-wb-details">card.wb.ru</div>
+                  <div class="diag-item__latency" id="diag-wb-lat">—</div>
+                </div>
+
+                <div class="diag-item">
+                  <div class="diag-item__top">
+                    <span class="diag-item__name">WB Basket CDN</span>
+                    <span class="badge badge--blue" id="diag-cdn-badge">Тест...</span>
+                  </div>
+                  <div class="diag-item__details" id="diag-cdn-details">wbbasket.ru</div>
+                  <div class="diag-item__latency" id="diag-cdn-lat">—</div>
+                </div>
+
+                <div class="diag-item">
+                  <div class="diag-item__top">
+                    <span class="diag-item__name">Telegram Bot API</span>
+                    <span class="badge badge--blue" id="diag-tg-badge">Тест...</span>
+                  </div>
+                  <div class="diag-item__details" id="diag-tg-details">@wbuppp</div>
+                  <div class="diag-item__latency" id="diag-tg-lat">—</div>
+                </div>
+
+                <div class="diag-item">
+                  <div class="diag-item__top">
+                    <span class="diag-item__name">Дисковое место</span>
+                    <span class="badge badge--green">OK</span>
+                  </div>
+                  <div class="diag-item__details" id="diag-disk-details">Хранилище данных</div>
+                  <div class="diag-item__latency" id="diag-disk-space">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity History -->
+          <div class="card">
+            <div class="card__header">
+              <div class="card__title">
+                <span class="material-symbols-outlined">history</span> Последние публикации
+              </div>
+              <button class="btn btn--ghost btn--sm" onclick="app.loadPublications()">Обновить</button>
+            </div>
+            <div class="card__body" style="padding:0;">
+              <div id="activity-container">
+                <div style="text-align:center; padding: 32px; color:var(--fg-muted);">
+                  Загрузка истории...
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB: CATALOG ==================== -->
+        <section id="tab-catalog" class="tab-panel">
+          <!-- Toolbar -->
+          <div class="catalog-toolbar">
+            <div class="catalog-search-row">
+              <div class="search-box">
+                <span class="material-symbols-outlined">search</span>
+                <input type="text" id="catalog-search-input" class="input" placeholder="Быстрый поиск (Ctrl+K) по названию, бренду или артикулу..." oninput="app.onCatalogSearch(this.value)">
+              </div>
+              <select id="catalog-sort-select" class="select" style="max-width: 240px;" onchange="app.onCatalogSort(this.value)">
+                <option value="default">Сортировка: По умолчанию</option>
+                <option value="ai_score_desc">✨ Лучшие карточки ИИ</option>
+                <option value="rating_desc">⭐ Высокий рейтинг</option>
+                <option value="discount_desc">🔥 Максимальная скидка</option>
+                <option value="price_asc">💰 Сначала дешевле</option>
+                <option value="price_desc">💰 Сначала дороже</option>
+                <option value="feedbacks_desc">💬 Популярность (отзывы)</option>
+              </select>
+              <button class="btn btn--secondary" onclick="app.loadCatalog()" title="Загрузить свежие данные">
+                <span class="material-symbols-outlined">sync</span>
+              </button>
+            </div>
+
+            <!-- Filter Chips -->
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div class="chips-row" id="cat-ai-filters"></div>
+              <div class="chips-row" id="cat-seller-filters"></div>
+              <div class="chips-row" id="cat-category-filters"></div>
+            </div>
+          </div>
+
+          <!-- Counter Bar -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px; flex-wrap:wrap; gap:10px;">
+            <div style="font-size:13px; color:var(--fg-muted);" id="cat-counter-wrap">
+              Найдено: <b id="cat-total-count" style="color:var(--fg-primary);">0</b> товаров
+              <span id="cat-ai-summary" style="margin-left: 12px; font-size: 12px;"></span>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn--secondary btn--sm" id="btn-batch-ai" onclick="app.runBatchAIEvaluation()" title="Оценить товары каталога локальным ИИ">
+                <span class="material-symbols-outlined" style="font-size:16px; color:var(--primary);">auto_awesome</span> Оценить фото ИИ
+              </button>
+              <button class="btn btn--ghost btn--sm" onclick="app.toggleSelectAllCatalog()">Выбрать все</button>
+              <button class="btn btn--ghost btn--sm" onclick="app.catalogClearSelection()">Снять выбор</button>
+              <button class="btn btn--ghost btn--sm" onclick="app.catalogResetFilters()">Сбросить фильтры</button>
+            </div>
+          </div>
+
+          <!-- Product Grid -->
+          <div id="catalog-product-grid" class="product-grid"></div>
+
+          <!-- Empty State -->
+          <div id="catalog-empty" style="display:none; text-align:center; padding: 60px 20px; background:var(--bg-surface); border-radius:var(--radius-md); border:1px solid var(--border-card);">
+            <span class="material-symbols-outlined" style="font-size:48px; color:var(--fg-muted); margin-bottom:12px; display:block;">inventory_2</span>
+            <h3 style="font-size:16px; margin-bottom:4px;">Товары не найдены</h3>
+            <p style="color:var(--fg-muted); font-size:13px; margin-bottom:16px;">Попробуйте сбросить фильтры или запустите «Проверить новинки»</p>
+            <button class="btn btn--primary" onclick="app.runCheck()">Проверить новинки WB</button>
+          </div>
+        </section>
+
+        <!-- ==================== TAB: QUEUE ==================== -->
+        <section id="tab-queue" class="tab-panel">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+            <div>
+              <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Очередь публикаций</h2>
+              <div style="color:var(--fg-muted); font-size:13px;">Отложенные посты для автоматической или ручной публикации</div>
+            </div>
+            <button class="btn btn--secondary btn--sm" onclick="app.loadQueue()">
+              <span class="material-symbols-outlined">refresh</span> Обновить очередь
+            </button>
+          </div>
+
+          <div id="queue-container" class="apple-inset-group">
+            <!-- Injected via JS -->
+          </div>
+        </section>
+
+        <!-- ==================== TAB: SELLERS ==================== -->
+        <section id="tab-sellers" class="tab-panel">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+            <div>
+              <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Продавцы Wildberries</h2>
+              <div style="color:var(--fg-muted); font-size:13px;">Список отслеживаемых поставщиков и брендов</div>
+            </div>
+            <button class="btn btn--primary btn--sm" onclick="app.showAddSellerModal()">
+              <span class="material-symbols-outlined">add</span> Добавить продавца
+            </button>
+          </div>
+
+          <div id="sellers-container" class="apple-inset-group">
+            <!-- Injected via JS -->
+          </div>
+        </section>
+
+        <!-- ==================== TAB: PREVIEW & TELEGRAM STUDIO ==================== -->
+        <section id="tab-preview" class="tab-panel">
+          <div class="preview-header-bar">
+            <div>
+              <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Студия публикаций Telegram</h2>
+              <div style="color:var(--fg-muted); font-size:13px;">Предпросмотр поста перед отправкой в канал @wbuppp</div>
+            </div>
+            <div class="preview-header-actions">
+              <button class="btn btn--secondary btn--sm" onclick="app.addCurrentPreviewToQueue()">
+                <span class="material-symbols-outlined">schedule_send</span> <span>В очередь</span>
+              </button>
+              <button class="btn btn--telegram btn--sm btn--publish-main" id="btn-publish-main" onclick="app.publishFromPreview()">
+                <span class="material-symbols-outlined">send</span> <span>Опубликовать в канал</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Empty Preview Alert -->
+          <div id="preview-empty" style="text-align:center; padding: 60px 20px; background:var(--bg-surface); border-radius:var(--radius-md); border:1px solid var(--border-card);">
+            <span class="material-symbols-outlined" style="font-size:48px; color:var(--fg-muted); margin-bottom:12px; display:block;">visibility_off</span>
+            <h3 style="font-size:16px; margin-bottom:4px;">Превью не сгенерировано</h3>
+            <p style="color:var(--fg-muted); font-size:13px; margin-bottom:16px;">Выберите товары в каталоге и нажмите «Превью поста»</p>
+            <button class="btn btn--primary" onclick="app.switchTab('catalog')">Перейти в каталог</button>
+          </div>
+
+          <!-- Split Preview Studio -->
+          <div id="preview-content" class="preview-layout" style="display:none;">
+            <!-- Left: Settings & Editor -->
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <div class="card">
+                <div class="card__header">
+                  <div class="card__title">Текст поста</div>
+                  <button class="btn btn--ghost btn--sm" onclick="app.regeneratePostText()">
+                    <span class="material-symbols-outlined">autorenew</span> Пересоздать
+                  </button>
+                </div>
+                <div class="card__body">
+                  <textarea id="preview-text" class="input" rows="9" style="font-family:inherit; line-height:1.5; font-size:13px;" oninput="app.updateTelegramMockupText(this.value)"></textarea>
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+                    <label style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--fg-muted); cursor:pointer;">
+                      <input type="checkbox" id="preview-include-tags" checked onchange="app.regeneratePostText()"> Добавлять хэштеги (#wildberries #скидки)
+                    </label>
+                    <span style="font-size:11px; color:var(--fg-subtle);" id="preview-char-count">0 / 1024</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Card Options -->
+              <div class="card">
+                <div class="card__header">
+                  <div class="card__title">Действия с карточкой</div>
+                </div>
+                <div class="card__body" style="display:flex; flex-wrap:wrap; gap:10px;">
+                  <button class="btn btn--secondary" style="flex:1; min-width:140px;" onclick="app.downloadCard()">
+                    <span class="material-symbols-outlined">download</span> Скачать коллаж
+                  </button>
+                  <button class="btn btn--secondary" style="flex:1; min-width:140px;" onclick="app.showCanvasStudioModal()">
+                    <span class="material-symbols-outlined">palette</span> Студия 1080×1080
+                  </button>
+                  <button class="btn btn--secondary" id="btn-download-no-bg" style="flex:1; min-width:140px; display:none;" onclick="app.downloadNoBgPhotos()">
+                    <span class="material-symbols-outlined">content_cut</span> Фото без фона
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Real Telegram Mockup inside iPhone 16 Pro Frame -->
+            <div>
+              <div class="iphone-frame">
+                <div class="iphone-dynamic-island">
+                  <div class="iphone-dynamic-island__camera"></div>
+                  <div style="width: 8px; height: 8px; border-radius: 50%; background: #004400; opacity: 0.7;"></div>
+                </div>
+                <div class="iphone-screen">
+                  <div class="tg-mockup__header">
+                    <div class="tg-avatar">W</div>
+                    <div class="tg-channel-info">
+                      <div class="tg-channel-title">WB UP • Находки Wildberries</div>
+                      <div class="tg-channel-subs" id="tg-mockup-channel-sub">канал @wbuppp</div>
+                    </div>
+                  </div>
+                  <div class="tg-chat-area">
+                    <div class="tg-bubble">
+                      <img id="tg-card-img" class="tg-bubble__image" src="" alt="Коллаж карточки" style="display:none;">
+                      <div id="tg-bubble-caption" class="tg-bubble__caption"></div>
+                      <div class="tg-bubble__time" id="tg-bubble-time">12:00</div>
+                    </div>
+
+                    <div class="tg-inline-buttons" id="tg-buttons-container"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB: AI TRAINER ==================== -->
+        <section id="tab-photo" class="tab-panel">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+            <div>
+              <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Локальный ИИ для выбора фото</h2>
+              <div style="color:var(--fg-muted); font-size:13px;">Нейросетевой скоринг для отбора чистых фото без мусорной инфографики</div>
+            </div>
+            <button class="btn btn--primary btn--sm" onclick="app.trainLocalAI()" id="btn-train-ai">
+              <span class="material-symbols-outlined">psychology</span> Обучить модель
+            </button>
+          </div>
+
+          <!-- Model Stats -->
+          <div class="stats-grid mb-4" style="margin-bottom:20px;">
+            <div class="metric-card">
+              <div class="metric-card__label">Статус модели</div>
+              <div class="metric-card__value" id="ai-model-status" style="font-size:18px;">Готова</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-card__label">Точность (Accuracy)</div>
+              <div class="metric-card__value" id="ai-model-accuracy" style="color:var(--success);">94.2%</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-card__label">Размечено фото</div>
+              <div class="metric-card__value" id="ai-labeled-count" style="color:var(--accent);">0</div>
+            </div>
+          </div>
+
+          <!-- Fetch & Label -->
+          <div class="card mb-4" style="margin-bottom:20px;">
+            <div class="card__header">
+              <div class="card__title">Сбор и разметка данных</div>
+              <button class="btn btn--ghost btn--sm" onclick="app.fetchRandomArticlesForLabeling()">Случайный товар</button>
+            </div>
+            <div class="card__body">
+              <div style="display:flex; gap:12px; margin-bottom:16px;">
+                <input type="text" id="ai-article-input" class="input" placeholder="Введите артикул Wildberries (например, 101130291)..." style="flex:1;">
+                <button class="btn btn--secondary" onclick="app.fetchArticleForLabeling()">Скачать фото</button>
+              </div>
+              <div id="ai-labeling-container" class="ai-labeling-grid"></div>
+              <div id="ai-labeling-empty" style="text-align:center; padding:32px; color:var(--fg-muted);">
+                Введите артикул выше, чтобы разметить фото (1 = Отличное, 0 = Мусор/инфографика)
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB: SCHEDULER ==================== -->
+        <section id="tab-scheduler" class="tab-panel">
+          <div style="margin-bottom: 20px;">
+            <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Планировщик автоматических проверок</h2>
+            <div style="color:var(--fg-muted); font-size:13px;">Регулярный обход каталогов поставщиков в фоновом режиме</div>
+          </div>
+
+          <div class="card" style="max-width: 600px;">
+            <div class="card__body">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                <div>
+                  <div style="font-weight:700; font-size:15px;">Статус службы</div>
+                  <div style="font-size:12px; color:var(--fg-muted);">Периодический опрос новинок WB</div>
+                </div>
+                <span class="badge badge--yellow" id="scheduler-status-badge">Остановлен</span>
+              </div>
+
+              <div style="display:flex; gap:12px; margin-bottom: 24px;">
+                <button class="btn btn--success" style="flex:1;" id="btn-start-scheduler" onclick="app.startScheduler()">
+                  <span class="material-symbols-outlined">play_arrow</span> Запустить
+                </button>
+                <button class="btn btn--danger" style="flex:1;" id="btn-stop-scheduler" disabled onclick="app.stopScheduler()">
+                  <span class="material-symbols-outlined">stop</span> Остановить
+                </button>
+              </div>
+
+              <div style="border-top:1px solid var(--border-subtle); padding-top:20px;">
+                <label style="display:block; font-size:13px; font-weight:600; margin-bottom:8px;">Интервал проверки (минуты)</label>
+                <div style="display:flex; gap:10px;">
+                  <input type="number" id="scheduler-interval" class="input" value="60" min="5" max="1440">
+                  <button class="btn btn--primary" onclick="app.saveSchedulerSettings()">Сохранить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB: LOGS ==================== -->
+        <section id="tab-logs" class="tab-panel">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+            <div>
+              <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Журнал системных событий</h2>
+              <div style="color:var(--fg-muted); font-size:13px;">Логи в реальном времени</div>
+            </div>
+            <button class="btn btn--ghost btn--sm" onclick="app.clearLogs()">
+              <span class="material-symbols-outlined">delete</span> Очистить
+            </button>
+          </div>
+
+          <div class="macos-terminal">
+            <div class="macos-terminal__header">
+              <div class="macos-traffic-lights">
+                <span class="traffic-light traffic-light--red" title="Закрыть"></span>
+                <span class="traffic-light traffic-light--yellow" title="Свернуть"></span>
+                <span class="traffic-light traffic-light--green" title="Развернуть"></span>
+              </div>
+              <div class="macos-terminal__title">bash — wb_up_server.log — 80×24</div>
+              <div style="width: 52px; display: flex; justify-content: flex-end;">
+                <button class="btn btn--ghost btn--icon btn--sm" onclick="app.clearLogs()" title="Очистить терминал">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">delete</span>
+                </button>
+              </div>
+            </div>
+            <div class="macos-terminal__body" id="log-console">
+              <div><span style="color:var(--apple-green);">➜</span> <span style="color:var(--apple-blue);">wb_up</span> <span style="color:var(--fg-muted);">[System] Инициализация терминала логов...</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB: SETTINGS ==================== -->
+        <section id="tab-settings" class="tab-panel">
+          <div style="margin-bottom: 20px;">
+            <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Настройки системы</h2>
+            <div style="color:var(--fg-muted); font-size:13px;">Конфигурация алгоритмов отбора и Telegram</div>
+          </div>
+
+          <div class="settings-grid">
+            <!-- Scoring Settings -->
+            <div class="card">
+              <div class="card__header">
+                <div class="card__title" style="display:flex; align-items:center; gap:12px;">
+                  <div style="width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg, #0a84ff, #0055b3); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow: 0 2px 8px rgba(10,132,255,0.3);">
+                    <span class="material-symbols-outlined" style="font-size:18px;">tune</span>
+                  </div>
+                  <span>Фильтрация и скоринг</span>
+                </div>
+              </div>
+              <div class="card__body" style="display:flex; flex-direction:column; gap:14px;">
+                <div>
+                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Минимальный рейтинг (0.0 - 5.0)</label>
+                  <input type="number" id="setting-min-rating" class="input" value="4.7" step="0.1" min="1.0" max="5.0">
+                </div>
+                <div>
+                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Максимальная цена (₽)</label>
+                  <input type="number" id="setting-max-price" class="input" value="3500">
+                </div>
+                <div>
+                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Лимит товаров на категорию</label>
+                  <input type="number" id="setting-products-per-category" class="input" value="10" min="1" max="50">
+                </div>
+                <div>
+                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Режим отбора (mode)</label>
+                  <select id="setting-mode" class="select">
+                    <option value="mixed">Смешанный (mixed)</option>
+                    <option value="new">Приоритет новинкам (new)</option>
+                    <option value="popular">Популярные хиты (popular)</option>
+                  </select>
+                </div>
+                <button class="btn btn--primary mt-2" onclick="app.saveSettings()">Сохранить параметры</button>
+              </div>
+            </div>
+
+            <!-- Telegram Channel Settings -->
+            <div class="card">
+              <div class="card__header">
+                <div class="card__title" style="display:flex; align-items:center; gap:12px;">
+                  <div style="width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg, #2AABEE, #1e87bb); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow: 0 2px 8px rgba(42,171,238,0.3);">
+                    <span class="material-symbols-outlined" style="font-size:18px;">send</span>
+                  </div>
+                  <span>Telegram интеграция</span>
+                </div>
+              </div>
+              <div class="card__body" style="display:flex; flex-direction:column; gap:14px;">
+                <div>
+                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Канал для публикации</label>
+                  <input type="text" id="setting-channel" class="input" placeholder="@wbuppp">
+                </div>
+                <div>
+                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Telegram Bot Token (для автономной отправки)</label>
+                  <input type="password" id="setting-bot-token" class="input" placeholder="8734971912:AAGmygfEBD69qibXSiH1q_lM3JUmCPTXy4c">
+                </div>
+                <div>
+                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Chat ID администратора</label>
+                  <input type="text" id="setting-notification-chat" class="input" placeholder="12345678">
+                </div>
+                <button class="btn btn--primary mt-2" onclick="app.saveTelegramSettings()">Сохранить Telegram</button>
+              </div>
+            </div>
+
+            <!-- Standalone & Offline Mode -->
+            <div class="card">
+              <div class="card__header">
+                <div class="card__title" style="display:flex; align-items:center; gap:12px;">
+                  <div style="width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg, #af52de, #5856d6); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow: 0 2px 8px rgba(175,82,222,0.3);">
+                    <span class="material-symbols-outlined" style="font-size:18px;">cloud_off</span>
+                  </div>
+                  <span>Автономный режим (Standalone)</span>
+                </div>
+              </div>
+              <div class="card__body" style="display:flex; flex-direction:column; gap:14px;">
+                <p style="font-size:13px; color:var(--fg-muted);">
+                  Позволяет работать полностью автономно прямо в браузере или приложении iOS без необходимости запуска локального Python-сервера: прямой опрос Wildberries, Canvas-генератор постеров 1080x1080 и отправка в Telegram.
+                </p>
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px; background:rgba(255,255,255,0.04); border-radius:12px;">
+                  <div>
+                    <div style="font-size:13px; font-weight:600;">Принудительный автономный режим</div>
+                    <div style="font-size:11px; color:var(--fg-muted);">Все запросы идут напрямую с устройства</div>
+                  </div>
+                  <label class="apple-switch">
+                    <input type="checkbox" id="setting-standalone-toggle" onchange="app.toggleStandaloneMode(this.checked)">
+                    <span class="apple-switch__slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Maintenance & Cache -->
+            <div class="card">
+              <div class="card__header">
+                <div class="card__title" style="display:flex; align-items:center; gap:12px;">
+                  <div style="width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg, #ff9f0a, #cc7000); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow: 0 2px 8px rgba(255,159,10,0.3);">
+                    <span class="material-symbols-outlined" style="font-size:18px;">cleaning_services</span>
+                  </div>
+                  <span>Обслуживание и кэш</span>
+                </div>
+              </div>
+              <div class="card__body" style="display:flex; flex-direction:column; gap:14px;">
+                <p style="font-size:13px; color:var(--fg-muted);">
+                  Очистка удаляет временные изображения из кэша и позволяет пересоздать карточки заново.
+                </p>
+                <button class="btn btn--danger" onclick="app.clearCache()">
+                  <span class="material-symbols-outlined">delete_forever</span> Очистить кэш фото
+                </button>
+              </div>
+            </div>
+
+            <!-- System Info -->
+            <div class="card">
+              <div class="card__header">
+                <div class="card__title" style="display:flex; align-items:center; gap:12px;">
+                  <div style="width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg, #8e8e93, #48484a); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow: 0 2px 8px rgba(142,142,147,0.3);">
+                    <span class="material-symbols-outlined" style="font-size:18px;">info</span>
+                  </div>
+                  <span>О системе</span>
+                </div>
+              </div>
+              <div class="card__body">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:13px;">
+                  <div>
+                    <span style="color:var(--fg-muted);">Версия:</span>
+                    <div style="font-weight:700;" id="sys-version">2.3.0</div>
+                  </div>
+                  <div>
+                    <span style="color:var(--fg-muted);">Аптайм:</span>
+                    <div style="font-weight:700;" id="sys-uptime">—</div>
+                  </div>
+                  <div>
+                    <span style="color:var(--fg-muted);">Python:</span>
+                    <div style="font-weight:700;" id="sys-python">—</div>
+                  </div>
+                  <div>
+                    <span style="color:var(--fg-muted);">База данных:</span>
+                    <div style="font-weight:700;" id="sys-db-size">—</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /.canvas -->
+
+      <!-- ====== Floating Action Dock for Catalog Selection ====== -->
+      <div id="catalog-selection-dock" class="action-dock">
+        <div class="action-dock__count">
+          <span class="material-symbols-outlined" style="color:var(--wb-primary);">check_circle</span>
+          <span id="dock-selected-text">Выбрано: 0</span>
+        </div>
+        <div class="action-dock__actions">
+          <button class="btn btn--ghost btn--sm action-dock-btn" onclick="app.catalogClearSelection()" title="Снять выбор">
+            <span class="material-symbols-outlined action-dock-icon">close</span>
+            <span class="btn-text">Снять</span>
+          </button>
+          <button class="btn btn--secondary btn--sm action-dock-btn" onclick="app.generatePreview()" title="Предпросмотр поста">
+            <span class="material-symbols-outlined action-dock-icon">auto_awesome</span>
+            <span class="btn-text">Превью</span>
+          </button>
+          <button class="btn btn--secondary btn--sm action-dock-btn" onclick="app.addSelectedToQueue()" title="Добавить в очередь публикаций">
+            <span class="material-symbols-outlined action-dock-icon">schedule_send</span>
+            <span class="btn-text">В очередь</span>
+          </button>
+          <button class="btn btn--primary btn--sm action-dock-btn action-dock-btn--primary" onclick="app.publishSelected()" title="Опубликовать в Telegram">
+            <span class="material-symbols-outlined action-dock-icon">send</span>
+            <span class="btn-text">Опубликовать</span>
+          </button>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- ====== Mobile Bottom Navigation Bar ====== -->
+    <nav class="mobile-nav">
+      <button class="mobile-nav__item mobile-nav__item--active" data-tab="dashboard" onclick="app.switchTab('dashboard')">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span>Главная</span>
+      </button>
+      <button class="mobile-nav__item" data-tab="catalog" onclick="app.switchTab('catalog')">
+        <span class="material-symbols-outlined">inventory_2</span>
+        <span>Каталог</span>
+      </button>
+      <button class="mobile-nav__item" data-tab="queue" onclick="app.switchTab('queue')">
+        <span class="material-symbols-outlined">schedule_send</span>
+        <span>Очередь</span>
+      </button>
+      <button class="mobile-nav__item" data-tab="preview" onclick="app.switchTab('preview')">
+        <span class="material-symbols-outlined">auto_awesome</span>
+        <span>Превью</span>
+      </button>
+      <button class="mobile-nav__item" data-tab="settings" onclick="app.switchTab('settings')">
+        <span class="material-symbols-outlined">tune</span>
+        <span>Настройки</span>
+      </button>
+    </nav>
+
+  </div><!-- /.app-container -->
+
+  <!-- ====== Modal Overlay ====== -->
+  <div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this) app.closeModal()">
+    <div class="modal">
+      <div class="modal__grabber"></div>
+      <div class="modal__header">
+        <div class="modal__title" id="modal-title"></div>
+        <button class="btn btn--ghost btn--icon btn--sm" onclick="app.closeModal()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal__body" id="modal-body"></div>
+      <div class="modal__footer" id="modal-footer">
+        <button class="btn btn--ghost" onclick="app.closeModal()">Отмена</button>
+        <button class="btn btn--primary" id="modal-confirm-btn" onclick="app.confirmModal()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app2.js?v=apple_hig_v6"></script>
+</body>
+</html>

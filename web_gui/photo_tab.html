@@ -1,0 +1,151 @@
+<!-- ============================================================
+     Photo Tab — Вкладка "Фото" для Web GUI
+     Добавляет функциональность:
+     1. Скачивание фото с WB
+     2. Разметка Good/Bad
+     3. Экспорт датасета
+     ============================================================ -->
+
+<!-- ============================================= -->
+<!-- PHOTO PANEL (новая вкладка)                   -->
+<!-- ============================================= -->
+<div id="tab-photo" class="tab-panel">
+  
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-card__value" id="photo-total">0</div>
+      <div class="stat-card__label">Всего скачано</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card__value" id="photo-articles">0</div>
+      <div class="stat-card__label">Артикулов</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card__value" style="color:#30d158" id="photo-good">0</div>
+      <div class="stat-card__label">Размечено ✅</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card__value" style="color:#ff4535" id="photo-bad">0</div>
+      <div class="stat-card__label">Размечено ❌</div>
+    </div>
+  </div>
+
+  <!-- Download Section -->
+  <div class="list-group">
+    <div class="card__header">
+      <div class="card__title">📥 Скачать фотографии с Wildberries</div>
+    </div>
+    <div class="list-group__item">
+      <div style="width:100%">
+        <label style="font-size:12px;color:#888;margin-bottom:6px;display:block;">
+          Введите артикулы через запятую:
+        </label>
+        <input type="text" id="photo-articles-input" 
+               placeholder="445436608,445436606,574882335"
+               style="width:100%;padding:10px;border-radius:8px;border:1px solid #3a3a3c;background:#1c1c1e;color:white;font-size:14px;">
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button class="btn btn--primary" onclick="app.downloadPhotos()" id="btn-download">
+          📥 Скачать
+        </button>
+        <span id="dl-status" style="font-size:12px;color:#888;line-height:40px;"></span>
+      </div>
+      <!-- Progress bar -->
+      <div id="dl-progress" style="display:none;margin-top:10px;">
+        <div style="width:100%;height:6px;background:#3a3a3c;border-radius:3px;overflow:hidden;">
+          <div id="dl-bar-fill" style="height:100%;background:#0a84ff;width:0%;transition:width 0.3s;"></div>
+        </div>
+        <div style="font-size:11px;color:#888;margin-top:4px;" id="dl-progress-text">0%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Annotation Section -->
+  <div class="list-group">
+    <div class="card__header">
+      <div class="card__title">🏷️ Разметка фотографий</div>
+    </div>
+    
+    <!-- Current photo -->
+    <div style="text-align:center;padding:15px;">
+      <div id="photo-viewer-empty" style="color:#888;">
+        Нажмите "Скачать" или выберите артикул из списка ниже
+      </div>
+      
+      <div id="photo-viewer" style="display:none;">
+        <div style="font-size:16px;font-weight:bold;margin-bottom:8px;" id="current-article"></div>
+        <div style="font-size:13px;color:#888;margin-bottom:12px;" id="current-status"></div>
+        
+        <img id="current-photo" src="" alt="Фото товара" 
+             style="max-width:100%;max-height:400px;border-radius:10px;margin-bottom:12px;">
+        
+        <div style="display:flex;gap:12px;justify-content:center;margin-bottom:10px;">
+          <button class="btn btn--success" onclick="app.markPhoto(1)" style="flex:1;max-width:120px;">
+            ✅ Good (1)
+          </button>
+          <button class="btn" style="background:#ff4535;color:white;flex:1;max-width:120px;" onclick="app.markPhoto(0)">
+            ❌ Bad (0)
+          </button>
+        </div>
+        
+        <div style="display:flex;gap:8px;justify-content:center;">
+          <button class="btn" style="background:#636366;color:white;" onclick="app.prevPhoto()">← Пред</button>
+          <span id="photo-counter" style="line-height:36px;color:#888;"></span>
+          <button class="btn" style="background:#636366;color:white;" onclick="app.nextPhoto()">След →</button>
+        </div>
+        
+        <div style="margin-top:10px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+          <button class="filter-btn active" onclick="app.setPhotoFilter('all',this)">Все</button>
+          <button class="filter-btn" onclick="app.setPhotoFilter('unmarked',this)">未 marked</button>
+          <button class="filter-btn" onclick="app.setPhotoFilter('good',this)">✅ Good</button>
+          <button class="filter-btn" onclick="app.setPhotoFilter('bad',this)">❌ Bad</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Articles List -->
+  <div class="list-group">
+    <div class="card__header">
+      <div class="card__title">📋 Список артикулов с фото</div>
+    </div>
+    <div id="photo-articles-list" style="max-height:300px;overflow-y:auto;">
+      <!-- Заполняется динамически -->
+    </div>
+  </div>
+
+  <!-- Export Dataset -->
+  <div class="list-group">
+    <div class="card__header">
+      <div class="card__title">💾 Экспорт датасета для ML</div>
+    </div>
+    <div class="list-group__item">
+      <div style="text-align:center;">
+        <p style="color:#888;margin-bottom:10px;font-size:13px;">
+          Всего аннотаций: <b id="export-total">0</b> | 
+          Good: <b style="color:#30d158" id="export-good">0</b> | 
+          Bad: <b style="color:#ff4535" id="export-bad">0</b>
+        </p>
+        <button class="btn btn--primary" onclick="app.exportDataset()">
+          💾 Скачать JSON
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .filter-btn {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    background: #3a3a3c;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .filter-btn.active {
+    background: #0a84ff;
+  }
+</style>

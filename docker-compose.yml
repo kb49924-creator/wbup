@@ -1,0 +1,24 @@
+services:
+  bot:
+    build: .
+    container_name: wb-bot
+    restart: always
+    env_file:
+      - .env
+    environment:
+      # Переопределяем BOT_TOKEN из .env (если не задан — будет использован дефолтный из src/config)
+      - BOT_TOKEN=${BOT_TOKEN:-}
+      - CHANNEL_USERNAME=${CHANNEL_USERNAME:-@wbuppp}
+      - MODE=${MODE:-mixed}
+      # Отключаем stdout буферизацию для логов
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Сохраняем БД, логи, кэш между перезапусками
+      - ./data:/app/data
+    # Проверка здоровья — проверяем, что процесс Python жив
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "main.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

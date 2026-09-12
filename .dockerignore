@@ -1,0 +1,38 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.gigacode_vsc
+.idea
+*.swp
+*.swo
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+*.egg-info
+
+# Data (монтируется как volume, не копируем)
+data/
+
+# Планы и документация
+plans/
+USAGE.md
+
+# Локальные env-файлы (используем .env через docker-compose)
+.env
+.env.local
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# OS
+.DS_Store
+Thumbs.db
