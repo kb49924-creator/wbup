@@ -28,6 +28,7 @@ data/
 !web_gui/*.png
 !ios/WBUpStudio/www/*.png
 !ios/WBUpStudio/Assets.xcassets/**
+!apple-touch-icon.png
 web_gui/server.log
 output_*.mp4
 test_*.png
