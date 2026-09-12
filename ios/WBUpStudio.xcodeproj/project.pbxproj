@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		A10000012C8E000100000001 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000022C8E000100000001 /* AppDelegate.swift */; };
 		A10000032C8E000100000001 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000042C8E000100000001 /* ViewController.swift */; };
+		A10000212C8E000100000001 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000222C8E000100000001 /* HapticManager.swift */; };
+		A10000232C8E000100000001 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000242C8E000100000001 /* SceneDelegate.swift */; };
+		A10000252C8E000100000001 /* VisionRemover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000262C8E000100000001 /* VisionRemover.swift */; };
 		A10000052C8E000100000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10000062C8E000100000001 /* Assets.xcassets */; };
 		A10000072C8E000100000001 /* www in Resources */ = {isa = PBXBuildFile; fileRef = A10000082C8E000100000001 /* www */; };
 /* End PBXBuildFile section */
@@ -17,6 +20,9 @@
 		A10000092C8E000100000001 /* WBUpStudio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WBUpStudio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000022C8E000100000001 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A10000042C8E000100000001 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A10000222C8E000100000001 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		A10000242C8E000100000001 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		A10000262C8E000100000001 /* VisionRemover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionRemover.swift; sourceTree = "<group>"; };
 		A10000062C8E000100000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A10000082C8E000100000001 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		A100000A2C8E000100000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -46,6 +52,9 @@
 			children = (
 				A10000022C8E000100000001 /* AppDelegate.swift */,
 				A10000042C8E000100000001 /* ViewController.swift */,
+				A10000222C8E000100000001 /* HapticManager.swift */,
+				A10000242C8E000100000001 /* SceneDelegate.swift */,
+				A10000262C8E000100000001 /* VisionRemover.swift */,
 				A10000062C8E000100000001 /* Assets.xcassets */,
 				A10000082C8E000100000001 /* www */,
 				A100000A2C8E000100000001 /* Info.plist */,
@@ -133,6 +142,9 @@
 			files = (
 				A10000012C8E000100000001 /* AppDelegate.swift in Sources */,
 				A10000032C8E000100000001 /* ViewController.swift in Sources */,
+				A10000212C8E000100000001 /* HapticManager.swift in Sources */,
+				A10000232C8E000100000001 /* SceneDelegate.swift in Sources */,
+				A10000252C8E000100000001 /* VisionRemover.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

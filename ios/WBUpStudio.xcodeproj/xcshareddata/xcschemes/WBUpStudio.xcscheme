@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B00000000000000000000001"
+               BlueprintIdentifier = "A100000F2C8E000100000001"
                BuildableName = "WBUpStudio.app"
                BlueprintName = "WBUpStudio"
                ReferencedContainer = "container:WBUpStudio.xcodeproj">
@@ -44,7 +44,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B00000000000000000000001"
+            BlueprintIdentifier = "A100000F2C8E000100000001"
             BuildableName = "WBUpStudio.app"
             BlueprintName = "WBUpStudio"
             ReferencedContainer = "container:WBUpStudio.xcodeproj">
@@ -61,7 +61,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B00000000000000000000001"
+            BlueprintIdentifier = "A100000F2C8E000100000001"
             BuildableName = "WBUpStudio.app"
             BlueprintName = "WBUpStudio"
             ReferencedContainer = "container:WBUpStudio.xcodeproj">
