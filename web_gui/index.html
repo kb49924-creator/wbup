@@ -16,7 +16,7 @@
   <title>WB Up Studio</title>
 
   <!-- Native Apple SF Pro & SF Mono Typography -->
-  <link rel="stylesheet" href="styles.css?v=apple_hig_v7">
+  <link rel="stylesheet" href="styles.css?v=apple_hig_v9">
 </head>
 <body>
   <!-- ============================================================
@@ -355,12 +355,20 @@
             </div>
           </div>
 
-          <!-- Empty Preview Alert -->
-          <div id="preview-empty" style="text-align:center; padding: 60px 20px; background:var(--bg-surface); border-radius:var(--radius-md); border:1px solid var(--border-card);">
-            <svg class="sf-icon" style="width:48px; height:48px; color:var(--fg-muted); margin-bottom:12px;"><use href="#sf-eye-slash"></use></svg>
-            <h3 style="font-size:16px; margin-bottom:4px;">Превью не сгенерировано</h3>
-            <p style="color:var(--fg-muted); font-size:13px; margin-bottom:16px;">Выберите товары в каталоге и нажмите «Превью поста»</p>
-            <button class="btn btn--primary" onclick="app.switchTab('catalog')">Перейти в каталог</button>
+          <!-- Empty Preview Alert / 1-Tap Post Creator -->
+          <div id="preview-empty" style="text-align:center; padding: 50px 20px; background:var(--ios-bg-card); border-radius:24px; border:0.5px solid var(--border-subtle); max-width: 500px; margin: 24px auto;">
+            <svg class="sf-icon" style="width:48px; height:48px; color:var(--apple-blue); margin-bottom:14px;"><use href="#sf-sparkles"></use></svg>
+            <h3 style="font-size:18px; font-weight:700; margin-bottom:6px; color:#fff;">Студия создания постов</h3>
+            <p style="color:var(--fg-muted); font-size:13px; line-height:1.4; margin-bottom:20px;">Генерация карточки 1080x1080 с вырезанными товарами и готовым текстом для Telegram-канала</p>
+            <div style="display:flex; flex-direction:column; gap:10px; max-width:280px; margin:0 auto;">
+              <button class="btn btn--primary" onclick="app.generatePreview()" style="font-size:15px; font-weight:600; padding:12px 20px; border-radius:14px;">
+                <svg class="sf-icon" style="width:16px; height:16px; margin-right:6px;"><use href="#sf-sparkles"></use></svg>
+                <span>Создать превью поста</span>
+              </button>
+              <button class="btn btn--secondary btn--sm" onclick="app.switchTab('dashboard')" style="font-size:13px; border-radius:12px;">
+                Выбрать товары в каталоге
+              </button>
+            </div>
           </div>
 
           <!-- Split Preview Studio -->
@@ -892,6 +900,6 @@
     </div>
   </div>
 
-  <script src="app2.js?v=apple_hig_v8"></script>
+  <script src="app2.js?v=apple_hig_v9"></script>
 </body>
 </html>

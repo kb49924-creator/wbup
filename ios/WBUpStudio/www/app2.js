@@ -633,35 +633,76 @@ const StandaloneEngine = {
   },
 
   // --- 3. HTML5 Canvas 1080x1080 Poster Generator ---
-  loadImage(src) {
+  loadImage(src, timeoutMs = 3500) {
     return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.onload = () => resolve(img);
-      img.onerror = () => {
-        if (src.includes("/c516x688/")) {
-          const fallback = src.replace("/c516x688/", "/big/");
-          const retryImg = new Image();
-          retryImg.crossOrigin = "anonymous";
-          retryImg.onload = () => resolve(retryImg);
-          retryImg.onerror = () => reject(new Error("Image load failed"));
-          retryImg.src = fallback;
-        } else {
-          reject(new Error("Image load failed"));
+      let settled = false;
+      const timer = setTimeout(() => {
+        if (!settled) {
+          settled = true;
+          reject(new Error(`Timeout loading image: ${src}`));
         }
+      }, timeoutMs);
+
+      const attemptLoad = (url, isRetry = false) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+          if (!settled) {
+            settled = true;
+            clearTimeout(timer);
+            resolve(img);
+          }
+        };
+        img.onerror = () => {
+          if (settled) return;
+          if (!isRetry) {
+            if (url.includes("/c516x688/")) {
+              attemptLoad(url.replace("/c516x688/", "/big/"), true);
+            } else if (url.startsWith("http")) {
+              const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
+              attemptLoad(proxyUrl, true);
+            } else {
+              settled = true;
+              clearTimeout(timer);
+              reject(new Error("Image load failed: " + url));
+            }
+          } else {
+            settled = true;
+            clearTimeout(timer);
+            reject(new Error("Image load failed: " + url));
+          }
+        };
+        img.src = url;
       };
-      img.src = src;
+
+      attemptLoad(src);
     });
   },
 
-  cutoutProduct(img, tolerance = 30) {
+  cutoutProduct(img, tolerance = 28) {
+    const rawW = img.naturalWidth || img.width;
+    const rawH = img.naturalHeight || img.height;
+    if (!rawW || !rawH) return img;
+
+    // Optimization: scale down to max 480px so flood fill runs in ~10ms without freezing mobile Safari
+    const maxDim = 480;
+    let w = rawW;
+    let h = rawH;
+    if (w > maxDim || h > maxDim) {
+      if (w > h) {
+        h = Math.round((h * maxDim) / w);
+        w = maxDim;
+      } else {
+        w = Math.round((w * maxDim) / h);
+        h = maxDim;
+      }
+    }
+
     const c = document.createElement("canvas");
-    const w = img.naturalWidth || img.width;
-    const h = img.naturalHeight || img.height;
     c.width = w;
     c.height = h;
     const ctx = c.getContext("2d", { willReadFrequently: true });
-    ctx.drawImage(img, 0, 0);
+    ctx.drawImage(img, 0, 0, w, h);
 
     try {
       const imgData = ctx.getImageData(0, 0, w, h);
@@ -838,8 +879,38 @@ const StandaloneEngine = {
       }
     }
 
+    // Fallback: If CDN failed to load any product images, create elegant placeholder product shapes
     if (loadedCuts.length === 0) {
-      throw new Error("Не удалось загрузить фотографии товаров с серверов Wildberries");
+      for (const p of products.slice(0, 4)) {
+        const dummyCanvas = document.createElement("canvas");
+        dummyCanvas.width = 400;
+        dummyCanvas.height = 500;
+        const dctx = dummyCanvas.getContext("2d");
+
+        dctx.fillStyle = "rgba(255, 255, 255, 0.06)";
+        this.drawRoundedRect(dctx, 10, 10, 380, 480, 24);
+        dctx.fill();
+        dctx.strokeStyle = "rgba(255, 255, 255, 0.14)";
+        dctx.lineWidth = 1.5;
+        dctx.stroke();
+
+        dctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+        dctx.font = "bold 64px -apple-system, sans-serif";
+        dctx.textAlign = "center";
+        dctx.fillText("🛍️", 200, 210);
+
+        dctx.fillStyle = "#FFFFFF";
+        dctx.font = "600 20px -apple-system, BlinkMacSystemFont, sans-serif";
+        const shortTitle = (p.name || "Товар WB").slice(0, 22);
+        dctx.fillText(shortTitle, 200, 270);
+
+        dctx.fillStyle = "#30D158";
+        dctx.font = "700 26px -apple-system, BlinkMacSystemFont, sans-serif";
+        const pr = p.sale_price || p.price ? `${p.sale_price || p.price} ₽` : "WB";
+        dctx.fillText(pr, 200, 320);
+
+        loadedCuts.push({ product: p, cut: dummyCanvas });
+      }
     }
 
     // 3. Layout: Only Background + Cutout Clothing Photos (No Cards, No Texts, No Overlays)
@@ -2356,8 +2427,19 @@ const app = {
   // --- Preview & Telegram Studio ---
   async generatePreview() {
     if (this.state.selectedArticles.size === 0) {
-      this.showNotification('Выберите хотя бы один товар', 'warning');
-      return;
+      if (this.state.products && this.state.products.length > 0) {
+        const autoSelected = this.state.products.slice(0, 4);
+        for (const p of autoSelected) {
+          this.state.selectedArticles.add(p.article);
+        }
+        this.renderCatalogWorkspace();
+        this.renderHomeFeed();
+        this.updateCatalogButtons();
+        this.showNotification('Автоматически выбрано 4 товара для поста', 'info');
+      } else {
+        this.showNotification('В каталоге нет товаров для генерации поста', 'warning');
+        return;
+      }
     }
 
     const articles = Array.from(this.state.selectedArticles);
