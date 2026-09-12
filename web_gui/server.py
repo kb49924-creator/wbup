@@ -189,10 +189,14 @@ async def server_middleware(request: Request, call_next):
 # Pydantic Models
 # ============================================================
 class SellerAddRequest(BaseModel):
-    input: str
+    input: Optional[str] = None
+    url: Optional[str] = None
+    supplier_id: Optional[int] = None
+    brand: Optional[str] = None
 
 class SellerToggleRequest(BaseModel):
-    id: int
+    id: Optional[int] = None
+    supplier_id: Optional[int] = None
     enabled: bool
 
 class PublishRequest(BaseModel):
@@ -382,38 +386,43 @@ def get_sellers():
     return []
 
 
-def add_seller(input_str: str):
+def add_seller(input_str: str, brand_name: Optional[str] = None):
     try:
-        # Поддержка добавления по числовому ID
-        if input_str.strip().isdigit():
-            supplier_id = input_str.strip()
-            brand = f"ID {supplier_id}"
-            db_execute(
-                "INSERT OR REPLACE INTO sellers (supplier_id, brand, enabled, created_at) VALUES (?, ?, 1, datetime('now'))",
-                (int(supplier_id), brand)
-            )
-            add_log('INFO', f"Added seller by ID: supplier_id={supplier_id}")
-            return {'success': True, 'result': {'supplier_id': int(supplier_id), 'brand': brand}}
+        raw = str(input_str or "").strip()
+        supplier_id = None
+        brand = brand_name
 
-        if 'wildberries.ru' in input_str:
-            parts = input_str.split('/')
-            supplier_id = None
-            for i, p in enumerate(parts):
-                if p == 'supplier_id' and i + 1 < len(parts):
-                    supplier_id = parts[i + 1]
-                    break
-            if not supplier_id:
-                return {'success': False, 'error': 'Не удалось извлечь supplier_id из ссылки'}
+        # Support numeric ID directly
+        if raw.isdigit():
+            supplier_id = int(raw)
         else:
-            return {'success': False, 'error': 'Используйте полную ссылку на страницу продавца WB'}
+            # Match seller/123456 or seller/brand-name-123456
+            m = re.search(r'seller/(?:([a-zA-Zа-яА-Я0-9_-]+)-)?(\d+)', raw, re.IGNORECASE)
+            if m:
+                if m.group(1) and not brand:
+                    brand = m.group(1).replace('-', ' ').title()
+                supplier_id = int(m.group(2))
+            else:
+                m2 = re.search(r'(?:supplier|supplier_id)[/=](\d+)', raw, re.IGNORECASE)
+                if m2:
+                    supplier_id = int(m2.group(1))
+                else:
+                    digits = re.findall(r'\d+', raw)
+                    if digits:
+                        supplier_id = int(digits[-1])
 
-        brand = f"ID {supplier_id}"
+        if not supplier_id:
+            return {'success': False, 'error': 'Не удалось определить ID продавца из ссылки или текста'}
+
+        if not brand:
+            brand = f"Магазин #{supplier_id}"
+
         db_execute(
             "INSERT OR REPLACE INTO sellers (supplier_id, brand, enabled, created_at) VALUES (?, ?, 1, datetime('now'))",
-            (int(supplier_id), brand)
+            (supplier_id, brand)
         )
-        add_log('INFO', f"Added seller: supplier_id={supplier_id}")
-        return {'success': True, 'result': {'supplier_id': int(supplier_id), 'brand': brand}}
+        add_log('INFO', f"Added seller: supplier_id={supplier_id}, brand={brand}")
+        return {'success': True, 'result': {'supplier_id': supplier_id, 'brand': brand}}
 
     except Exception as e:
         add_log('ERROR', f"Error adding seller: {e}")
@@ -1052,13 +1061,17 @@ async def api_sellers():
 @app.post("/api/sellers/add", tags=["Sellers"], status_code=201)
 async def api_sellers_add(req: SellerAddRequest):
     """Добавить продавца."""
-    return await _run_blocking(add_seller, req.input)
+    input_val = req.input or req.url or (str(req.supplier_id) if req.supplier_id else "")
+    return await _run_blocking(add_seller, input_val, req.brand)
 
 
 @app.post("/api/sellers/toggle", tags=["Sellers"])
 async def api_sellers_toggle(req: SellerToggleRequest):
     """Включить/отключить продавца."""
-    return await _run_blocking(toggle_seller_fn, req.id, req.enabled)
+    sid = req.id if req.id is not None else req.supplier_id
+    if sid is None:
+        raise HTTPException(status_code=400, detail="Missing seller id")
+    return await _run_blocking(toggle_seller_fn, sid, req.enabled)
 
 
 @app.delete("/api/sellers/{supplier_id}", tags=["Sellers"])

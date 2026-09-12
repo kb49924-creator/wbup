@@ -12,77 +12,75 @@
    - Apple Intelligence: Iridescent Glow & Sparkle Aura
    ============================================================ */
 
-/* --- Design Tokens (macOS Sequoia & iOS 18 HIG) --- */
+/* --- Design Tokens (Apple iOS 18 & macOS Sequoia HIG) --- */
 :root {
-  /* Apple Dark Mode (Default) — Deep Charcoal Aesthetics */
-  --bg-app: #0a0a0c;
-  --bg-surface: rgba(22, 22, 26, 0.72);
-  --bg-surface-solid: #141418;
-  --bg-surface-elevated: rgba(30, 30, 36, 0.75);
-  --bg-surface-hover: rgba(42, 42, 52, 0.65);
-  --bg-glass: rgba(22, 22, 26, 0.78);
-  --bg-glass-heavy: rgba(14, 14, 18, 0.92);
+  /* Apple iOS 18 4-Tier Elevation Dark Mode (Pure OLED) */
+  --bg-app: #000000;
+  --ios-bg-grouped: #000000;             /* systemGroupedBackground (Pure OLED Black) */
+  --ios-bg-card: #1c1c1e;                /* secondarySystemGroupedBackground */
+  --ios-bg-control: #2c2c2e;             /* tertiarySystemGroupedBackground */
+  --ios-bg-tertiary-fill: rgba(118, 118, 128, 0.24); /* UISearchBar & UISegmentedControl */
+
+  --bg-surface: #1c1c1e;
+  --bg-surface-solid: #1c1c1e;
+  --bg-surface-elevated: #2c2c2e;
+  --bg-surface-hover: rgba(255, 255, 255, 0.08);
+  --bg-glass: rgba(28, 28, 30, 0.82);
+  --bg-glass-heavy: rgba(20, 20, 22, 0.92);
 
   /* Typography Colors (Apple HIG Hierarchical Labels) */
   --fg-primary: #ffffff;
-  --fg-secondary: rgba(235, 235, 245, 0.75);
-  --fg-muted: rgba(235, 235, 245, 0.48);
-  --fg-subtle: rgba(235, 235, 245, 0.28);
+  --fg-secondary: rgba(235, 235, 245, 0.60);
+  --fg-muted: rgba(235, 235, 245, 0.40);
+  --fg-subtle: rgba(235, 235, 245, 0.22);
 
-  /* Apple System Colors */
-  --apple-blue: #0071e3;
+  --ios-label: #ffffff;
+  --ios-secondary-label: rgba(235, 235, 245, 0.60);
+  --ios-tertiary-label: rgba(235, 235, 245, 0.30);
+  --ios-quaternary-label: rgba(235, 235, 245, 0.18);
+
+  /* Apple System Colors (Pure, No Artificial Neon Glow) */
+  --apple-blue: #0a84ff;
   --apple-blue-bright: #0a84ff;
-  --apple-blue-gradient: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
-  --apple-blue-glow: rgba(0, 113, 227, 0.35);
-  --apple-purple: #bf5af2;
-  --apple-purple-glow: rgba(191, 90, 242, 0.32);
   --apple-green: #30d158;
-  --apple-green-glow: rgba(48, 209, 88, 0.28);
   --apple-orange: #ff9f0a;
-  --apple-red: #ff3b30;
-  --apple-red-coral: #ff2d55;
-  --apple-red-glow: rgba(255, 45, 85, 0.32);
+  --apple-red: #ff453a;
+  --apple-purple: #bf5af2;
   --apple-indigo: #5e5ce6;
   --apple-pink: #ff375f;
   --apple-teal: #64d2ff;
-
-  /* Apple Intelligence Multi-color Gradient & Aura */
-  --apple-ai-gradient: linear-gradient(135deg, #ff375f 0%, #bf5af2 35%, #0071e3 75%, #5e5ce6 100%);
-  --apple-ai-glow: rgba(191, 90, 242, 0.38);
+  --apple-yellow: #ffd60a;
+  --apple-gray: #8e8e93;
+  --apple-gray-2: #636366;
 
   /* Brand Accents */
-  --wb-primary: #d01bb3;
-  --wb-gradient: linear-gradient(135deg, #d01bb3 0%, #8b28cf 100%);
-  --wb-glow: rgba(208, 27, 179, 0.32);
-
+  --wb-primary: #af52de;
   --tg-primary: #29b6f6;
-  --tg-gradient: linear-gradient(135deg, #29b6f6 0%, #0288d1 100%);
-  --tg-glow: rgba(41, 182, 246, 0.32);
-
-  --accent: #0071e3;
-  --accent-light: #60a5fa;
-  --accent-bg: rgba(0, 113, 227, 0.14);
+  --accent: #0a84ff;
+  --accent-light: #64d2ff;
+  --accent-bg: rgba(10, 132, 255, 0.14);
 
   /* Semantic Colors */
   --success: #30d158;
   --success-bg: rgba(48, 209, 88, 0.15);
   --warning: #ff9f0a;
   --warning-bg: rgba(255, 159, 10, 0.15);
-  --danger: #ff3b30;
-  --danger-bg: rgba(255, 59, 48, 0.15);
+  --danger: #ff453a;
+  --danger-bg: rgba(255, 69, 58, 0.15);
 
   /* Apple Hairline Borders (0.5px ultra-thin) */
+  --ios-separator: rgba(84, 84, 88, 0.55);
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-card: rgba(255, 255, 255, 0.08);
-  --border-specular: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.14);
-  --border-focus: rgba(0, 113, 227, 0.65);
+  --border-specular: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.12);
+  --border-focus: rgba(10, 132, 255, 0.65);
 
-  /* Apple Elevation Shadows & Ambient Soft Shadows */
+  /* Apple Elevation Shadows (Pure Ambient, No Colored Glow) */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
   --shadow-lg: 0 16px 44px rgba(0, 0, 0, 0.6);
-  --shadow-card: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.12), 0 4px 20px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2);
-  --shadow-ambient: 0 14px 28px rgba(0, 0, 0, 0.16), 0 6px 12px rgba(0, 0, 0, 0.22);
+  --shadow-card: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.08), 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-ambient: 0 12px 28px rgba(0, 0, 0, 0.28);
 
   /* Squircles & Radii */
   --radius-xs: 6px;
@@ -287,7 +285,7 @@ html, body {
   align-items: center;
   justify-content: center;
   color: #fff;
-  box-shadow: 0 2px 10px var(--apple-ai-glow);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
   font-size: 15px;
 }
 
@@ -628,22 +626,22 @@ html, body {
 }
 
 .btn--primary {
-  background: var(--apple-blue-gradient);
+  background: var(--apple-blue);
   color: #ffffff;
   border: 0.5px solid rgba(255, 255, 255, 0.2);
-  box-shadow: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.35), 0 3px 12px var(--apple-blue-glow);
+  box-shadow: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.35), 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 .btn--primary:hover {
   filter: brightness(1.08);
-  box-shadow: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.45), 0 5px 18px rgba(0, 113, 227, 0.45);
+  box-shadow: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.45), 0 4px 12px rgba(0, 0, 0, 0.4);
   transform: translateY(-1px);
 }
 
 .btn--telegram {
-  background: var(--tg-gradient);
+  background: var(--tg-primary);
   color: #fff;
   border: 0.5px solid rgba(255, 255, 255, 0.2);
-  box-shadow: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.3), 0 3px 12px var(--tg-glow);
+  box-shadow: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.3), 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 .btn--telegram:hover {
   filter: brightness(1.08);
@@ -850,7 +848,6 @@ html, body {
 
 .apple-switch input:checked + .apple-switch__slider {
   background-color: var(--apple-green);
-  box-shadow: 0 0 12px var(--apple-green-glow);
 }
 
 .apple-switch input:checked + .apple-switch__slider:before {
@@ -1185,10 +1182,10 @@ html, body {
   color: #ffffff;
 }
 .filter-chip--active {
-  background: var(--apple-blue);
-  color: #fff;
-  border-color: var(--apple-blue);
-  box-shadow: 0 2px 8px var(--apple-blue-glow);
+  background: #ffffff;
+  color: #000000 !important;
+  font-weight: 600;
+  border-color: #ffffff;
 }
 
 /* ============================================================
@@ -1201,9 +1198,7 @@ html, body {
 }
 
 .product-card {
-  background: var(--bg-surface);
-  backdrop-filter: blur(25px) saturate(190%);
-  -webkit-backdrop-filter: blur(25px) saturate(190%);
+  background: var(--ios-bg-card);
   border: 0.5px solid var(--border-card);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -1211,25 +1206,22 @@ html, body {
   flex-direction: column;
   position: relative;
   cursor: pointer;
-  box-shadow: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.12), var(--shadow-card);
-  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.24s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.2s ease;
+  box-shadow: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              outline-color 0.15s ease;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 .product-card:hover {
-  transform: translateY(-4px) scale(1.01);
-  border-color: rgba(255, 255, 255, 0.22);
-  box-shadow: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.2), 0 18px 40px rgba(0, 0, 0, 0.55);
+  transform: translateY(-2px);
 }
 .product-card:active {
-  transform: scale(0.98);
+  transform: scale(0.975);
   transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .product-card--selected {
-  border-color: var(--apple-blue) !important;
-  box-shadow: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.2), 0 0 0 2px var(--apple-blue), 0 12px 36px var(--apple-blue-glow) !important;
+  outline: 2px solid var(--apple-blue);
+  outline-offset: -2px;
 }
 
 .product-card__thumb-wrapper {
@@ -1386,7 +1378,7 @@ html, body {
   background: var(--apple-blue);
   border-color: var(--apple-blue);
   color: #fff;
-  box-shadow: 0 2px 8px var(--apple-blue-glow);
+  box-shadow: none;
 }
 
 /* Meta bar (Rating & Reviews on Image) */
@@ -3116,6 +3108,242 @@ html, body {
   width: 13px;
   height: 13px;
   color: #48484a;
+}
+
+/* ============================================================
+   Apple iOS 18 Sellers Hub & Inset Grouped Items
+   ============================================================ */
+.ios-sellers-list {
+  display: flex;
+  flex-direction: column;
+  background: var(--ios-bg-card);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.ios-seller-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 14px;
+  background: transparent;
+  transition: background 0.12s ease;
+  position: relative;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+.ios-seller-row:active {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.ios-seller-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 14px;
+  color: #ffffff;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.ios-seller-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ios-seller-name {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ios-seller-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ios-seller-id-badge {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: rgba(191, 90, 242, 0.18);
+  color: #bf5af2;
+  letter-spacing: 0.02em;
+}
+
+.ios-seller-count {
+  font-size: 12px;
+  color: var(--ios-secondary-label);
+}
+
+.ios-seller-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.ios-seller-link-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0a84ff;
+  background: rgba(10, 132, 255, 0.1);
+  transition: transform 0.1s;
+}
+.ios-seller-link-btn:active {
+  transform: scale(0.92);
+}
+
+/* ============================================================
+   Apple Photos Style Selection Checkbox
+   ============================================================ */
+.ios-photos-checkbox,
+.product-card__checkbox {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50% !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.75) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: none !important;
+  transition: background 0.15s ease, border-color 0.15s ease !important;
+  z-index: 5;
+}
+
+.ios-photos-checkbox svg,
+.product-card__checkbox svg {
+  width: 14px !important;
+  height: 14px !important;
+  color: transparent !important;
+  transition: color 0.15s ease;
+}
+
+.product-card--selected .ios-photos-checkbox,
+.product-card--selected .product-card__checkbox {
+  background: #0a84ff !important;
+  border-color: #0a84ff !important;
+}
+
+.product-card--selected .ios-photos-checkbox svg,
+.product-card--selected .product-card__checkbox svg {
+  color: #ffffff !important;
+}
+
+/* ============================================================
+   Apple Navigation Buttons & Status Pills
+   ============================================================ */
+.ios-nav-plus-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #0a84ff;
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.35);
+  transition: transform 0.1s ease, filter 0.1s ease;
+  touch-action: manipulation;
+}
+.ios-nav-plus-btn:active {
+  transform: scale(0.92);
+  filter: brightness(0.9);
+}
+.ios-nav-plus-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Category Filter Pills (Horizontal Apple Scroll) */
+.ios-pill-bar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 16px 14px 16px;
+  margin: 0 -16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.ios-pill-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.ios-pill {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  background: rgba(118, 118, 128, 0.24);
+  color: rgba(235, 235, 245, 0.75);
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+  touch-action: manipulation;
+  flex-shrink: 0;
+}
+.ios-pill:active {
+  transform: scale(0.96);
+}
+.ios-pill--active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+/* Status Pill in Navigation Bar */
+.ios-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background 0.12s;
+}
+.ios-status-pill:active {
+  background: rgba(255, 255, 255, 0.16);
 }
 
 /* Specific iPhone 15 Pro & Mobile Viewport Rules */
