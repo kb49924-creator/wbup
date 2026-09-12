@@ -15,6 +15,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
 
     private var webView: WKWebView!
     private var visualEffectView: UIVisualEffectView!
+    private var gradientLayer: CAGradientLayer?
     private var displayLink: CADisplayLink?
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -43,6 +44,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        gradientLayer?.frame = view.bounds
         visualEffectView.frame = view.bounds
         webView.frame = view.bounds
     }
@@ -71,7 +73,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         ]
         gradientLayer.locations = [0.0, 0.5, 1.0]
         gradientLayer.frame = view.bounds
-        gradientLayer.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.gradientLayer = gradientLayer
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
 
@@ -80,7 +82,9 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         configuration.allowsInlineMediaPlayback = true
         configuration.mediaTypesRequiringUserActionForPlayback = []
         configuration.defaultWebpagePreferences.allowsContentJavaScript = true
-        configuration.preferences.isElementFullscreenEnabled = true
+        if #available(iOS 15.4, *) {
+            configuration.preferences.isElementFullscreenEnabled = true
+        }
 
         let userContentController = WKUserContentController()
 

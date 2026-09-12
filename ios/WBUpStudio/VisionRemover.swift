@@ -10,6 +10,7 @@ import UIKit
 import Vision
 import CoreImage
 import CoreImage.CIFilterBuiltins
+import ImageIO
 
 /// Errors that can occur during Apple Vision background removal.
 public enum VisionRemoverError: LocalizedError {
@@ -138,7 +139,7 @@ public final class VisionRemover: @unchecked Sendable {
             let maskedPixelBuffer = try observation.generateMaskedImage(
                 ofInstances: observation.allInstances,
                 from: handler,
-                croppedToInstances: false
+                croppedToInstancesExtent: false
             )
 
             let ciImage = CIImage(cvPixelBuffer: maskedPixelBuffer)
