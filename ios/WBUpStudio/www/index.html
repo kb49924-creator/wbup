@@ -15,15 +15,53 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
   <title>WB Up Studio</title>
 
-  <!-- Google Fonts & Apple SF Pro Fallbacks & Material Symbols -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-
-  <link rel="stylesheet" href="styles.css?v=apple_hig_v6">
+  <!-- Native Apple SF Pro & SF Mono Typography -->
+  <link rel="stylesheet" href="styles.css?v=apple_hig_v7">
 </head>
 <body>
+  <!-- ============================================================
+       Apple SF Symbols Vector Sprite (Native iOS 18 / macOS Sequoia)
+       ============================================================ -->
+  <svg style="display:none;" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="sf-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2.5" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2.5" fill="currentColor"/><rect x="3" y="13" width="8" height="8" rx="2.5" fill="currentColor"/><rect x="13" y="13" width="8" height="8" rx="2.5" fill="currentColor"/></symbol>
+    <symbol id="sf-bag" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 4a3.5 3.5 0 0 1 7 0h2.75A2.75 2.75 0 0 1 21 6.75v11.5A3.75 3.75 0 0 1 17.25 22H6.75A3.75 3.75 0 0 1 3 18.25V6.75A2.75 2.75 0 0 1 5.75 4H8.5zm1.8 0a1.7 1.7 0 0 1 3.4 0H10.3z" fill="currentColor"/></symbol>
+    <symbol id="sf-tray" viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2h11A2.5 2.5 0 0 1 20 4.5V14h-3.2a1.8 1.8 0 0 0-1.6 1l-.7 1.4a1 1 0 0 1-.9.6H10.4a1 1 0 0 1-.9-.6l-.7-1.4a1.8 1.8 0 0 0-1.6-1H4V4.5zM3 16.5v2A3.5 3.5 0 0 0 6.5 22h11a3.5 3.5 0 0 0 3.5-3.5v-2h-3.8l-.5 1a2.2 2.2 0 0 1-2 1.5H9.3a2.2 2.2 0 0 1-2-1.5l-.5-1H3z" fill="currentColor"/></symbol>
+    <symbol id="sf-sparkles" viewBox="0 0 24 24"><path d="M12 1.5l1.6 4.7 4.7 1.6-4.7 1.6L12 14.1l-1.6-4.7-4.7-1.6 4.7-1.6L12 1.5zm7 11.5l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3zm-14 1l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3z" fill="currentColor"/></symbol>
+    <symbol id="sf-gear" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.2 2.3c.4-1.3 2.2-1.3 2.6 0l.4 1.4a2 2 0 0 0 2.2 1.3l1.4-.4c1.3-.4 2.4.9 1.7 2l-.9 1.2a2 2 0 0 0 .6 2.5l1.3.7c1.2.7 1.2 2.5 0 3.2l-1.3.7a2 2 0 0 0-.6 2.5l.9 1.2c.7 1.1-.4 2.4-1.7 2l-1.4-.4a2 2 0 0 0-2.2 1.3l-.4 1.4c-.4 1.3-2.2 1.3-2.6 0l-.4-1.4a2 2 0 0 0-2.2-1.3l-1.4.4c-1.3.4-2.4-.9-1.7-2l.9-1.2a2 2 0 0 0-.6-2.5l-1.3-.7c-1.2-.7-1.2-2.5 0-3.2l1.3-.7a2 2 0 0 0 .6-2.5l-.9-1.2c-.7-1.1.4-2.4 1.7-2l1.4.4a2 2 0 0 0 2.2-1.3l.4-1.4zM12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z" fill="currentColor"/></symbol>
+    <symbol id="sf-search" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 3.5a7 7 0 1 0 4.4 12.4l4.7 4.7a1 1 0 0 0 1.4-1.4l-4.7-4.7A7 7 0 0 0 10.5 3.5zm-5 7a5 5 0 1 1 10 0 5 5 0 0 1-10 0z" fill="currentColor"/></symbol>
+    <symbol id="sf-refresh" viewBox="0 0 24 24"><path d="M12 4a8 8 0 0 1 7.6 5.5.9.9 0 0 1-1.7.6A6.2 6.2 0 1 0 18.2 12a.9.9 0 1 1 1.8 0A8 8 0 1 1 12 4zm7.9 1.1a.9.9 0 0 1 .9.9v4a.9.9 0 0 1-.9.9h-4a.9.9 0 1 1 0-1.8h2.8V6a.9.9 0 0 1 1.2-.9z" fill="currentColor"/></symbol>
+    <symbol id="sf-sync" viewBox="0 0 24 24"><path d="M12 4a8 8 0 0 1 7.6 5.5.9.9 0 0 1-1.7.6A6.2 6.2 0 1 0 18.2 12a.9.9 0 1 1 1.8 0A8 8 0 1 1 12 4zm7.9 1.1a.9.9 0 0 1 .9.9v4a.9.9 0 0 1-.9.9h-4a.9.9 0 1 1 0-1.8h2.8V6a.9.9 0 0 1 1.2-.9z" fill="currentColor"/></symbol>
+    <symbol id="sf-bolt" viewBox="0 0 24 24"><path d="M11.3 1.3a1 1 0 0 1 1 .2l6.5 6.5a1 1 0 0 1-.5 1.7l-4.5.7 2.2 9.8a1 1 0 0 1-1.8.8L5.2 10a1 1 0 0 1 .6-1.6l4.6-.7-1-5.4a1 1 0 0 1 .9-1z" fill="currentColor"/></symbol>
+    <symbol id="sf-check-circle" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.7 7.7a1 1 0 0 0-1.4-1.4L10.5 13.1l-2.3-2.3a1 1 0 0 0-1.4 1.4l3 3a1 1 0 0 0 1.4 0l5.5-5.5z" fill="currentColor"/></symbol>
+    <symbol id="sf-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="sf-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="sf-chevron-right" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="sf-chevron-left" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="sf-xmark" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></symbol>
+    <symbol id="sf-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17L17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="sf-paperplane" viewBox="0 0 24 24"><path d="M2.3 10.2a1.3 1.3 0 0 1 .4-2.4l17.7-6.2a1.3 1.3 0 0 1 1.6 1.6l-6.2 17.7a1.3 1.3 0 0 1-2.4.4l-3.8-5.7-5.7-3.8zm14-4.8L6.8 10.3l3.6 2.4 6-7.3z" fill="currentColor"/></symbol>
+    <symbol id="sf-trash" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4a1 1 0 1 1 0 2h-1.1l-.8 13.4A3 3 0 0 1 14.1 22H9.9a3 3 0 0 1-3-2.6L6.1 6H5a1 1 0 1 1 0-2h4V3zm2 1h2V4h-2V4zm-1.9 4l.7 11.8a1 1 0 0 0 1 .9h4.4a1 1 0 0 0 1-.9L16.9 8H8.1z" fill="currentColor"/></symbol>
+    <symbol id="sf-antenna" viewBox="0 0 24 24"><path d="M12 11a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm-5.7-3.7a8.5 8.5 0 0 1 11.4 0 1 1 0 0 1-1.3 1.5 6.5 6.5 0 0 0-8.8 0 1 1 0 0 1-1.3-1.5zm-2.8-2.8a12.5 12.5 0 0 1 17 0 1 1 0 0 1-1.4 1.4 10.5 10.5 0 0 0-14.2 0 1 1 0 0 1-1.4-1.4zM11 16v5a1 1 0 1 0 2 0v-5h-2z" fill="currentColor"/></symbol>
+    <symbol id="sf-store" viewBox="0 0 24 24"><path d="M4 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2.5a3.5 3.5 0 0 1-3.5 3.5 3.4 3.4 0 0 1-2.5-1.1 3.4 3.4 0 0 1-5 0A3.4 3.4 0 0 1 4.5 10 3.5 3.5 0 0 1 1 6.5V4a2 2 0 0 1 2-2h1zm0 8.8V20a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.2a5.4 5.4 0 0 1-2.5.7 5.4 5.4 0 0 1-3.5-1.3 5.4 5.4 0 0 1-3.5 1.3 5.4 5.4 0 0 1-3.5-1.3 5.4 5.4 0 0 1-2.5-.7h-.5zM9 16a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4H9v-4z" fill="currentColor"/></symbol>
+    <symbol id="sf-cpu" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 2a1 1 0 0 0-1 1v2H5a2 2 0 0 0-2 2v2H1a1 1 0 0 0 0 2h2v2H1a1 1 0 0 0 0 2h2v2a2 2 0 0 0 2 2h2v2a1 1 0 0 0 2 0v-2h2v2a1 1 0 0 0 2 0v-2h2v2a1 1 0 0 0 2 0v-2h2a2 2 0 0 0 2-2v-2h2a1 1 0 0 0 0-2h-2v-2h2a1 1 0 0 0 0-2h-2V7a2 2 0 0 0-2-2h-2V3a1 1 0 0 0-2 0v2h-2V3a1 1 0 0 0-2 0v2H9V3a1 1 0 0 0-1-1zm-1 5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V7zm3 2a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-4z" fill="currentColor"/></symbol>
+    <symbol id="sf-timer" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 2a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2h-2a1 1 0 0 1-1-1zm2 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm-1 4a1 1 0 0 1 2 0v3.4l2.3 1.3a1 1 0 0 1-1 1.8l-2.8-1.6a1 1 0 0 1-.5-.9V10z" fill="currentColor"/></symbol>
+    <symbol id="sf-terminal" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4zm4.3 4.3a1 1 0 0 1 1.4 0l3 3a1 1 0 0 1 0 1.4l-3 3a1 1 0 0 1-1.4-1.4L9.6 12 7.3 9.7a1 1 0 0 1 0-1.4zm5.7 6.7a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1z" fill="currentColor"/></symbol>
+    <symbol id="sf-slider-horizontal" viewBox="0 0 24 24"><path d="M4 6h3m3 0h10M17 12h3M4 12h10M4 18h6m3 0h7M7 4v4M14 10v4M10 16v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="sf-person-2" viewBox="0 0 24 24"><path d="M16 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-8 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zm0 2c-3.3 0-6 2-6 5.5v1a1.5 1.5 0 0 0 1.5 1.5h9A1.5 1.5 0 0 0 14 17.5v-1c0-3.5-2.7-5.5-6-5.5zm8 1c-.8 0-1.6.2-2.3.6 1.4 1.1 2.3 2.7 2.3 4.9v.5h6a1.5 1.5 0 0 0 1.5-1.5v-.5c0-2.5-3.4-4-7.5-4z" fill="currentColor"/></symbol>
+    <symbol id="sf-plus" viewBox="0 0 24 24"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z" fill="currentColor"/></symbol>
+    <symbol id="sf-download" viewBox="0 0 24 24"><path d="M12 2a1 1 0 0 1 1 1v10.6l2.3-2.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l2.3 2.3V3a1 1 0 0 1 1-1zm-7 16a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1z" fill="currentColor"/></symbol>
+    <symbol id="sf-paintpalette" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12c0 3.32 1.63 6.27 4.14 8.08.57.41 1.36.03 1.36-.68v-.6a3.5 3.5 0 0 1 3.5-3.5h1.2a3.5 3.5 0 0 0 3.5-3.5c0-.62.5-1.12 1.12-1.12h1.68c1.38 0 2.5-1.12 2.5-2.5C22 5.37 17.52 2 12 2zM6.5 11a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm4-3.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm3 4.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" fill="currentColor"/></symbol>
+    <symbol id="sf-scissors" viewBox="0 0 24 24"><path d="M9.6 10.8l3.9 3.9-1.4 1.4a3.5 3.5 0 1 1-1.4-1.4l-1.1-1.1zm-3.6 5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm7.5-3.6l6.8-6.8a1 1 0 0 0-1.4-1.4l-6.8 6.8 1.4 1.4zm-1.4-1.4L4.3 4a1 1 0 0 0-1.4 1.4l6.8 6.8 2.4-2.4zm1.4 4.3l1.1 1.1a3.5 3.5 0 1 1-1.4 1.4l-1.1-1.1 1.4-1.4zm4.5 3.9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" fill="currentColor"/></symbol>
+    <symbol id="sf-eye-slash" viewBox="0 0 24 24"><path d="M3.3 2.3a1 1 0 0 0-1.4 1.4l19 19a1 1 0 0 0 1.4-1.4l-3.3-3.3C20.5 16.2 21.6 14.2 22 12c-1.8-4.8-6.5-8-10-8-2.2 0-4.3.9-6.1 2.3L3.3 2.3zM12 6c2.8 0 6.6 2.5 8.2 6-.8 1.7-2.3 3.3-4.1 4.3L13.8 14A3 3 0 0 0 10 10.2L7.6 7.8C8.9 6.6 10.4 6 12 6zm-7.6 3.6C3.1 10.5 2.4 11.5 2 12c1.8 4.8 6.5 8 10 8 2 0 4-.7 5.7-1.8l-1.7-1.7A6 6 0 0 1 12 18c-3.3 0-6.7-2.4-8.2-6 .6-1.4 1.7-2.7 3-3.6l-.4-.8z" fill="currentColor"/></symbol>
+    <symbol id="sf-play" viewBox="0 0 24 24"><path d="M7 4.8a1.5 1.5 0 0 1 2.3-1.3l11 6.7a1.5 1.5 0 0 1 0 2.6l-11 6.7A1.5 1.5 0 0 1 7 18.2V4.8z" fill="currentColor"/></symbol>
+    <symbol id="sf-stop" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="3" fill="currentColor"/></symbol>
+    <symbol id="sf-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="sf-moon" viewBox="0 0 24 24"><path d="M12.3 2a10 10 0 1 0 9.7 12.3 8 8 0 0 1-9.7-12.3z" fill="currentColor"/></symbol>
+    <symbol id="sf-exclamationmark-triangle" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.3 3.2a2 2 0 0 1 3.4 0l8.7 15.2A2 2 0 0 1 20.7 21H3.3a2 2 0 0 1-1.7-2.6l8.7-15.2zM12 8a1 1 0 0 0-1 1v4a1 1 0 1 0 2 0V9a1 1 0 0 0-1-1zm0 8a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z" fill="currentColor"/></symbol>
+    <symbol id="sf-info-circle" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zm-1 5a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0v-5z" fill="currentColor"/></symbol>
+    <symbol id="sf-brain" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 3a6 6 0 0 0-6 6v1.1A4.5 4.5 0 0 0 8 18.8V20a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1.2a4.5 4.5 0 0 0 2-8.7V9a6 6 0 0 0-6-6zm-2 15a2.5 2.5 0 0 1-2.5-2.5c0-.6.2-1.2.6-1.6l.4-.4v-4.5a3.5 3.5 0 1 1 7 0V14l.4.4c.4.4.6 1 .6 1.6A2.5 2.5 0 0 1 14 18h-4z" fill="currentColor"/></symbol>
+    <symbol id="sf-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
   <div class="toast-container" id="toast-container"></div>
 
   <div class="app-container">
@@ -50,48 +88,48 @@
       <nav class="sidebar__nav">
         <div class="nav-section-title">Обзор</div>
         <a class="nav-link nav-link--active" data-tab="dashboard" onclick="app.switchTab('dashboard')">
-          <span class="material-symbols-outlined">dashboard</span>
+          <svg class="sf-icon"><use href="#sf-grid"></use></svg>
           <span>Дашборд</span>
         </a>
         <a class="nav-link" data-tab="catalog" onclick="app.switchTab('catalog')">
-          <span class="material-symbols-outlined">inventory_2</span>
+          <svg class="sf-icon"><use href="#sf-bag"></use></svg>
           <span>Каталог</span>
           <span class="nav-link__badge" id="badge-catalog-count">0</span>
         </a>
         <a class="nav-link" data-tab="queue" onclick="app.switchTab('queue')">
-          <span class="material-symbols-outlined">schedule_send</span>
+          <svg class="sf-icon"><use href="#sf-tray"></use></svg>
           <span>Очередь постов</span>
           <span class="nav-link__badge" id="badge-queue-count" style="background:var(--tg-primary); color:#fff; display:none;">0</span>
         </a>
         <a class="nav-link" data-tab="sellers" onclick="app.switchTab('sellers')">
-          <span class="material-symbols-outlined">storefront</span>
+          <svg class="sf-icon"><use href="#sf-store"></use></svg>
           <span>Продавцы</span>
           <span class="nav-link__badge" id="badge-sellers-count">0</span>
         </a>
 
         <div class="nav-section-title">Публикация</div>
         <a class="nav-link" data-tab="preview" onclick="app.switchTab('preview')">
-          <span class="material-symbols-outlined">auto_awesome</span>
+          <svg class="sf-icon"><use href="#sf-sparkles"></use></svg>
           <span>Студия постов</span>
         </a>
 
         <div class="nav-section-title">Инструменты</div>
         <a class="nav-link" data-tab="photo" onclick="app.switchTab('photo')">
-          <span class="material-symbols-outlined">model_training</span>
+          <svg class="sf-icon"><use href="#sf-brain"></use></svg>
           <span>Локальный ИИ</span>
         </a>
         <a class="nav-link" data-tab="scheduler" onclick="app.switchTab('scheduler')">
-          <span class="material-symbols-outlined">timer</span>
+          <svg class="sf-icon"><use href="#sf-timer"></use></svg>
           <span>Планировщик</span>
         </a>
         <a class="nav-link" data-tab="logs" onclick="app.switchTab('logs')">
-          <span class="material-symbols-outlined">terminal</span>
+          <svg class="sf-icon"><use href="#sf-terminal"></use></svg>
           <span>Журнал событий</span>
         </a>
 
         <div class="nav-section-title">Система</div>
         <a class="nav-link" data-tab="settings" onclick="app.switchTab('settings')">
-          <span class="material-symbols-outlined">tune</span>
+          <svg class="sf-icon"><use href="#sf-gear"></use></svg>
           <span>Настройки</span>
         </a>
       </nav>
@@ -103,7 +141,7 @@
             <span style="font-size:12px; font-weight:600;" id="sidebar-status-text">Онлайн</span>
           </div>
           <button class="btn btn--ghost btn--icon btn--sm" onclick="app.toggleTheme()" title="Переключить тему">
-            <span class="material-symbols-outlined" id="theme-icon" style="font-size:18px;">light_mode</span>
+            <svg class="sf-icon" id="theme-icon" style="width:16px; height:16px;"><use href="#sf-sun"></use></svg>
           </button>
         </div>
       </div>
@@ -123,10 +161,10 @@
         </div>
         <div class="top-header__actions">
           <button class="top-header__icon-btn" id="top-check-btn" onclick="app.runCheck()" title="Проверить новинки Wildberries">
-            <span class="material-symbols-outlined">sync</span>
+            <svg class="sf-icon"><use href="#sf-sync"></use></svg>
           </button>
           <button class="top-header__icon-btn" onclick="app.refreshAll()" title="Обновить">
-            <span class="material-symbols-outlined">refresh</span>
+            <svg class="sf-icon"><use href="#sf-refresh"></use></svg>
           </button>
         </div>
       </header>
@@ -136,6 +174,12 @@
 
         <!-- ==================== TAB: DASHBOARD / CURATED FEED ==================== -->
         <section id="tab-dashboard" class="tab-panel tab-panel--active">
+          <!-- iOS View Large Title -->
+          <div class="ios-view-header">
+            <span class="ios-nav-subtitle">WILDBERRIES FEED</span>
+            <h1 class="ios-large-title">Находки</h1>
+          </div>
+
           <!-- iOS Channel Hero Widget (Single unified card, no empty 0-boxes) -->
           <div class="ios-channel-hero">
             <div class="ios-channel-hero__head">
@@ -168,7 +212,7 @@
             </div>
             <div class="ios-channel-hero__cta">
               <button class="ios-cta-btn" onclick="app.runCheck()" id="btn-hero-check">
-                <span class="material-symbols-outlined" style="font-size:18px;">bolt</span>
+                <svg class="sf-icon" style="width:18px; height:18px; margin-right:6px;"><use href="#sf-bolt"></use></svg>
                 <span>Проверить горячие новинки WB</span>
               </button>
             </div>
@@ -197,7 +241,7 @@
 
           <!-- Empty State for Home Feed -->
           <div id="home-empty-feed" style="display:none; text-align:center; padding: 36px 16px; background:#121214; border-radius:18px; border:0.5px solid rgba(255,255,255,0.08); margin-top:10px;">
-            <span class="material-symbols-outlined" style="font-size:36px; color:#8e8e93; margin-bottom:8px; display:block;">inventory_2</span>
+            <svg class="sf-icon" style="width:36px; height:36px; color:#8e8e93; margin-bottom:8px;"><use href="#sf-bag"></use></svg>
             <div style="font-size:15px; font-weight:700; margin-bottom:4px; color:#fff;">Товары загружаются...</div>
             <div style="color:#8e8e93; font-size:12px; margin-bottom:14px;">Нажмите кнопку ниже, чтобы опросить Wildberries напрямую</div>
             <button class="btn btn--primary btn--sm" onclick="app.runCheck()">Найти новинки WB</button>
@@ -220,14 +264,20 @@
 
         <!-- ==================== TAB: CATALOG ==================== -->
         <section id="tab-catalog" class="tab-panel">
+          <!-- iOS View Large Title -->
+          <div class="ios-view-header">
+            <span class="ios-nav-subtitle">КАТАЛОГ WILDBERRIES</span>
+            <h1 class="ios-large-title">Каталог</h1>
+          </div>
+
           <!-- Toolbar -->
           <div class="catalog-toolbar">
             <div class="catalog-search-row">
-              <div class="search-box">
-                <span class="material-symbols-outlined">search</span>
-                <input type="text" id="catalog-search-input" class="input" placeholder="Быстрый поиск (Ctrl+K) по названию, бренду или артикулу..." oninput="app.onCatalogSearch(this.value)">
+              <div class="ios-search-bar" style="flex:1; margin-bottom:0;">
+                <svg class="sf-icon sf-search-icon"><use href="#sf-search"></use></svg>
+                <input type="text" id="catalog-search-input" class="ios-search-input" placeholder="Поиск по названию, бренду или артикулу..." oninput="app.onCatalogSearch(this.value)">
               </div>
-              <select id="catalog-sort-select" class="select" style="max-width: 240px;" onchange="app.onCatalogSort(this.value)">
+              <select id="catalog-sort-select" class="select" style="max-width: 220px;" onchange="app.onCatalogSort(this.value)">
                 <option value="default">Сортировка: По умолчанию</option>
                 <option value="ai_score_desc">✨ Лучшие карточки ИИ</option>
                 <option value="rating_desc">⭐ Высокий рейтинг</option>
@@ -236,8 +286,8 @@
                 <option value="price_desc">💰 Сначала дороже</option>
                 <option value="feedbacks_desc">💬 Популярность (отзывы)</option>
               </select>
-              <button class="btn btn--secondary" onclick="app.loadCatalog()" title="Загрузить свежие данные">
-                <span class="material-symbols-outlined">sync</span>
+              <button class="btn btn--secondary btn--icon" onclick="app.loadCatalog()" title="Загрузить свежие данные">
+                <svg class="sf-icon"><use href="#sf-sync"></use></svg>
               </button>
             </div>
 
@@ -257,7 +307,7 @@
             </div>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
               <button class="btn btn--secondary btn--sm" id="btn-batch-ai" onclick="app.runBatchAIEvaluation()" title="Оценить товары каталога локальным ИИ">
-                <span class="material-symbols-outlined" style="font-size:16px; color:var(--primary);">auto_awesome</span> Оценить фото ИИ
+                <svg class="sf-icon" style="width:15px; height:15px; color:var(--apple-purple); margin-right:4px;"><use href="#sf-sparkles"></use></svg> Оценить фото ИИ
               </button>
               <button class="btn btn--ghost btn--sm" onclick="app.toggleSelectAllCatalog()">Выбрать все</button>
               <button class="btn btn--ghost btn--sm" onclick="app.catalogClearSelection()">Снять выбор</button>
@@ -270,7 +320,7 @@
 
           <!-- Empty State -->
           <div id="catalog-empty" style="display:none; text-align:center; padding: 60px 20px; background:var(--bg-surface); border-radius:var(--radius-md); border:1px solid var(--border-card);">
-            <span class="material-symbols-outlined" style="font-size:48px; color:var(--fg-muted); margin-bottom:12px; display:block;">inventory_2</span>
+            <svg class="sf-icon" style="width:48px; height:48px; color:var(--fg-muted); margin-bottom:12px;"><use href="#sf-bag"></use></svg>
             <h3 style="font-size:16px; margin-bottom:4px;">Товары не найдены</h3>
             <p style="color:var(--fg-muted); font-size:13px; margin-bottom:16px;">Попробуйте сбросить фильтры или запустите «Проверить новинки»</p>
             <button class="btn btn--primary" onclick="app.runCheck()">Проверить новинки WB</button>
@@ -279,13 +329,16 @@
 
         <!-- ==================== TAB: QUEUE ==================== -->
         <section id="tab-queue" class="tab-panel">
+          <!-- iOS View Large Title -->
+          <div class="ios-view-header">
+            <span class="ios-nav-subtitle">ОЧЕРЕДЬ ПОСТОВ</span>
+            <h1 class="ios-large-title">Очередь</h1>
+          </div>
+
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-            <div>
-              <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Очередь публикаций</h2>
-              <div style="color:var(--fg-muted); font-size:13px;">Отложенные посты для автоматической или ручной публикации</div>
-            </div>
+            <div style="color:var(--fg-muted); font-size:13px;">Отложенные посты для автоматической или ручной публикации</div>
             <button class="btn btn--secondary btn--sm" onclick="app.loadQueue()">
-              <span class="material-symbols-outlined">refresh</span> Обновить очередь
+              <svg class="sf-icon" style="width:14px; height:14px; margin-right:4px;"><use href="#sf-refresh"></use></svg> Обновить очередь
             </button>
           </div>
 
@@ -296,13 +349,16 @@
 
         <!-- ==================== TAB: SELLERS ==================== -->
         <section id="tab-sellers" class="tab-panel">
+          <!-- iOS View Large Title -->
+          <div class="ios-view-header">
+            <span class="ios-nav-subtitle">ПОСТАВЩИКИ</span>
+            <h1 class="ios-large-title">Продавцы</h1>
+          </div>
+
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-            <div>
-              <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Продавцы Wildberries</h2>
-              <div style="color:var(--fg-muted); font-size:13px;">Список отслеживаемых поставщиков и брендов</div>
-            </div>
+            <div style="color:var(--fg-muted); font-size:13px;">Список отслеживаемых поставщиков и брендов</div>
             <button class="btn btn--primary btn--sm" onclick="app.showAddSellerModal()">
-              <span class="material-symbols-outlined">add</span> Добавить продавца
+              <svg class="sf-icon" style="width:14px; height:14px; margin-right:4px;"><use href="#sf-plus"></use></svg> Добавить продавца
             </button>
           </div>
 
@@ -313,24 +369,27 @@
 
         <!-- ==================== TAB: PREVIEW & TELEGRAM STUDIO ==================== -->
         <section id="tab-preview" class="tab-panel">
+          <!-- iOS View Large Title -->
+          <div class="ios-view-header">
+            <span class="ios-nav-subtitle">ПУБЛИКАЦИЯ</span>
+            <h1 class="ios-large-title">Студия</h1>
+          </div>
+
           <div class="preview-header-bar">
-            <div>
-              <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Студия публикаций Telegram</h2>
-              <div style="color:var(--fg-muted); font-size:13px;">Предпросмотр поста перед отправкой в канал @wbuppp</div>
-            </div>
+            <div style="color:var(--fg-muted); font-size:13px;">Предпросмотр поста перед отправкой в канал @wbuppp</div>
             <div class="preview-header-actions">
               <button class="btn btn--secondary btn--sm" onclick="app.addCurrentPreviewToQueue()">
-                <span class="material-symbols-outlined">schedule_send</span> <span>В очередь</span>
+                <svg class="sf-icon" style="width:14px; height:14px; margin-right:4px;"><use href="#sf-tray"></use></svg> <span>В очередь</span>
               </button>
               <button class="btn btn--telegram btn--sm btn--publish-main" id="btn-publish-main" onclick="app.publishFromPreview()">
-                <span class="material-symbols-outlined">send</span> <span>Опубликовать в канал</span>
+                <svg class="sf-icon" style="width:14px; height:14px; margin-right:4px;"><use href="#sf-paperplane"></use></svg> <span>Опубликовать в канал</span>
               </button>
             </div>
           </div>
 
           <!-- Empty Preview Alert -->
           <div id="preview-empty" style="text-align:center; padding: 60px 20px; background:var(--bg-surface); border-radius:var(--radius-md); border:1px solid var(--border-card);">
-            <span class="material-symbols-outlined" style="font-size:48px; color:var(--fg-muted); margin-bottom:12px; display:block;">visibility_off</span>
+            <svg class="sf-icon" style="width:48px; height:48px; color:var(--fg-muted); margin-bottom:12px;"><use href="#sf-eye-slash"></use></svg>
             <h3 style="font-size:16px; margin-bottom:4px;">Превью не сгенерировано</h3>
             <p style="color:var(--fg-muted); font-size:13px; margin-bottom:16px;">Выберите товары в каталоге и нажмите «Превью поста»</p>
             <button class="btn btn--primary" onclick="app.switchTab('catalog')">Перейти в каталог</button>
@@ -344,7 +403,7 @@
                 <div class="card__header">
                   <div class="card__title">Текст поста</div>
                   <button class="btn btn--ghost btn--sm" onclick="app.regeneratePostText()">
-                    <span class="material-symbols-outlined">autorenew</span> Пересоздать
+                    <svg class="sf-icon" style="width:14px; height:14px; margin-right:4px;"><use href="#sf-refresh"></use></svg> Пересоздать
                   </button>
                 </div>
                 <div class="card__body">
@@ -365,13 +424,13 @@
                 </div>
                 <div class="card__body" style="display:flex; flex-wrap:wrap; gap:10px;">
                   <button class="btn btn--secondary" style="flex:1; min-width:140px;" onclick="app.downloadCard()">
-                    <span class="material-symbols-outlined">download</span> Скачать коллаж
+                    <svg class="sf-icon" style="width:14px; height:14px; margin-right:4px;"><use href="#sf-download"></use></svg> Скачать коллаж
                   </button>
                   <button class="btn btn--secondary" style="flex:1; min-width:140px;" onclick="app.showCanvasStudioModal()">
-                    <span class="material-symbols-outlined">palette</span> Студия 1080×1080
+                    <svg class="sf-icon" style="width:14px; height:14px; margin-right:4px;"><use href="#sf-paintpalette"></use></svg> Студия 1080×1080
                   </button>
                   <button class="btn btn--secondary" id="btn-download-no-bg" style="flex:1; min-width:140px; display:none;" onclick="app.downloadNoBgPhotos()">
-                    <span class="material-symbols-outlined">content_cut</span> Фото без фона
+                    <svg class="sf-icon" style="width:14px; height:14px; margin-right:4px;"><use href="#sf-scissors"></use></svg> Фото без фона
                   </button>
                 </div>
               </div>
@@ -409,13 +468,16 @@
 
         <!-- ==================== TAB: AI TRAINER ==================== -->
         <section id="tab-photo" class="tab-panel">
+          <!-- iOS View Large Title -->
+          <div class="ios-view-header">
+            <span class="ios-nav-subtitle">НЕЙРОСЕТЬ</span>
+            <h1 class="ios-large-title">Локальный ИИ</h1>
+          </div>
+
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-            <div>
-              <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Локальный ИИ для выбора фото</h2>
-              <div style="color:var(--fg-muted); font-size:13px;">Нейросетевой скоринг для отбора чистых фото без мусорной инфографики</div>
-            </div>
+            <div style="color:var(--fg-muted); font-size:13px;">Нейросетевой скоринг для отбора чистых фото без мусорной инфографики</div>
             <button class="btn btn--primary btn--sm" onclick="app.trainLocalAI()" id="btn-train-ai">
-              <span class="material-symbols-outlined">psychology</span> Обучить модель
+              <svg class="sf-icon" style="width:14px; height:14px; margin-right:4px;"><use href="#sf-brain"></use></svg> Обучить модель
             </button>
           </div>
 
@@ -456,8 +518,13 @@
 
         <!-- ==================== TAB: SCHEDULER ==================== -->
         <section id="tab-scheduler" class="tab-panel">
+          <!-- iOS View Large Title -->
+          <div class="ios-view-header">
+            <span class="ios-nav-subtitle">АВТОМАТИЗАЦИЯ</span>
+            <h1 class="ios-large-title">Планировщик</h1>
+          </div>
+
           <div style="margin-bottom: 20px;">
-            <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Планировщик автоматических проверок</h2>
             <div style="color:var(--fg-muted); font-size:13px;">Регулярный обход каталогов поставщиков в фоновом режиме</div>
           </div>
 
@@ -473,10 +540,10 @@
 
               <div style="display:flex; gap:12px; margin-bottom: 24px;">
                 <button class="btn btn--success" style="flex:1;" id="btn-start-scheduler" onclick="app.startScheduler()">
-                  <span class="material-symbols-outlined">play_arrow</span> Запустить
+                  <svg class="sf-icon" style="width:14px; height:14px; margin-right:4px;"><use href="#sf-play"></use></svg> Запустить
                 </button>
                 <button class="btn btn--danger" style="flex:1;" id="btn-stop-scheduler" disabled onclick="app.stopScheduler()">
-                  <span class="material-symbols-outlined">stop</span> Остановить
+                  <svg class="sf-icon" style="width:14px; height:14px; margin-right:4px;"><use href="#sf-stop"></use></svg> Остановить
                 </button>
               </div>
 
@@ -493,13 +560,16 @@
 
         <!-- ==================== TAB: LOGS ==================== -->
         <section id="tab-logs" class="tab-panel">
+          <!-- iOS View Large Title -->
+          <div class="ios-view-header">
+            <span class="ios-nav-subtitle">ТЕРМИНАЛ</span>
+            <h1 class="ios-large-title">Журнал событий</h1>
+          </div>
+
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-            <div>
-              <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Журнал системных событий</h2>
-              <div style="color:var(--fg-muted); font-size:13px;">Логи в реальном времени</div>
-            </div>
+            <div style="color:var(--fg-muted); font-size:13px;">Логи в реальном времени</div>
             <button class="btn btn--ghost btn--sm" onclick="app.clearLogs()">
-              <span class="material-symbols-outlined">delete</span> Очистить
+              <svg class="sf-icon" style="width:14px; height:14px; margin-right:4px;"><use href="#sf-trash"></use></svg> Очистить
             </button>
           </div>
 
@@ -513,7 +583,7 @@
               <div class="macos-terminal__title">bash — wb_up_server.log — 80×24</div>
               <div style="width: 52px; display: flex; justify-content: flex-end;">
                 <button class="btn btn--ghost btn--icon btn--sm" onclick="app.clearLogs()" title="Очистить терминал">
-                  <span class="material-symbols-outlined" style="font-size: 16px;">delete</span>
+                  <svg class="sf-icon" style="width:14px; height:14px;"><use href="#sf-trash"></use></svg>
                 </button>
               </div>
             </div>
@@ -525,93 +595,138 @@
 
         <!-- ==================== TAB: SETTINGS ==================== -->
         <section id="tab-settings" class="tab-panel">
-          <div style="margin-bottom: 20px;">
-            <h2 style="font-size:20px; font-weight:800; letter-spacing:-0.02em;">Настройки системы</h2>
-            <div style="color:var(--fg-muted); font-size:13px;">Конфигурация алгоритмов отбора и Telegram</div>
+          <!-- iOS View Large Title -->
+          <div class="ios-view-header">
+            <span class="ios-nav-subtitle">КОНФИГУРАЦИЯ</span>
+            <h1 class="ios-large-title">Настройки</h1>
           </div>
 
-          <div class="settings-grid">
-            <!-- Scoring Settings -->
-            <div class="card">
-              <div class="card__header">
-                <div class="card__title" style="display:flex; align-items:center; gap:12px;">
-                  <div style="width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg, #0a84ff, #0055b3); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow: 0 2px 8px rgba(10,132,255,0.3);">
-                    <span class="material-symbols-outlined" style="font-size:18px;">tune</span>
-                  </div>
-                  <span>Фильтрация и скоринг</span>
+          <!-- Section: Filtration & Scoring -->
+          <div class="ios-grouped-section">
+            <div class="ios-section-header-label">Фильтрация и скоринг</div>
+            <div class="ios-inset-group">
+              <div class="ios-cell">
+                <div class="ios-cell-icon icon-blue">
+                  <svg class="sf-icon"><use href="#sf-slider-horizontal"></use></svg>
+                </div>
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">Минимальный рейтинг</div>
+                  <div class="ios-cell-subtitle">Отсекает карточки ниже порога</div>
+                </div>
+                <div class="ios-cell-control">
+                  <input type="number" id="setting-min-rating" class="ios-cell-input" value="4.7" step="0.1" min="1.0" max="5.0">
                 </div>
               </div>
-              <div class="card__body" style="display:flex; flex-direction:column; gap:14px;">
-                <div>
-                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Минимальный рейтинг (0.0 - 5.0)</label>
-                  <input type="number" id="setting-min-rating" class="input" value="4.7" step="0.1" min="1.0" max="5.0">
+              <div class="ios-cell-divider"></div>
+              <div class="ios-cell">
+                <div class="ios-cell-icon icon-green">
+                  <svg class="sf-icon"><use href="#sf-bag"></use></svg>
                 </div>
-                <div>
-                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Максимальная цена (₽)</label>
-                  <input type="number" id="setting-max-price" class="input" value="3500">
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">Максимальная цена (₽)</div>
+                  <div class="ios-cell-subtitle">Верхний лимит стоимости</div>
                 </div>
-                <div>
-                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Лимит товаров на категорию</label>
-                  <input type="number" id="setting-products-per-category" class="input" value="10" min="1" max="50">
+                <div class="ios-cell-control">
+                  <input type="number" id="setting-max-price" class="ios-cell-input" value="3500">
                 </div>
-                <div>
-                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Режим отбора (mode)</label>
-                  <select id="setting-mode" class="select">
+              </div>
+              <div class="ios-cell-divider"></div>
+              <div class="ios-cell">
+                <div class="ios-cell-icon icon-orange">
+                  <svg class="sf-icon"><use href="#sf-grid"></use></svg>
+                </div>
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">Лимит на категорию</div>
+                  <div class="ios-cell-subtitle">Количество товаров в подборке</div>
+                </div>
+                <div class="ios-cell-control">
+                  <input type="number" id="setting-products-per-category" class="ios-cell-input" value="10" min="1" max="50">
+                </div>
+              </div>
+              <div class="ios-cell-divider"></div>
+              <div class="ios-cell">
+                <div class="ios-cell-icon icon-purple">
+                  <svg class="sf-icon"><use href="#sf-sparkles"></use></svg>
+                </div>
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">Режим отбора</div>
+                  <div class="ios-cell-subtitle">Стратегия ранжирования</div>
+                </div>
+                <div class="ios-cell-control">
+                  <select id="setting-mode" class="ios-cell-select">
                     <option value="mixed">Смешанный (mixed)</option>
-                    <option value="new">Приоритет новинкам (new)</option>
-                    <option value="popular">Популярные хиты (popular)</option>
+                    <option value="new">Новинки (new)</option>
+                    <option value="popular">Популярные (popular)</option>
                   </select>
                 </div>
-                <button class="btn btn--primary mt-2" onclick="app.saveSettings()">Сохранить параметры</button>
               </div>
             </div>
+            <div class="ios-group-action">
+              <button class="ios-button-primary" onclick="app.saveSettings()">Сохранить параметры</button>
+            </div>
+          </div>
 
-            <!-- Telegram Channel Settings -->
-            <div class="card">
-              <div class="card__header">
-                <div class="card__title" style="display:flex; align-items:center; gap:12px;">
-                  <div style="width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg, #2AABEE, #1e87bb); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow: 0 2px 8px rgba(42,171,238,0.3);">
-                    <span class="material-symbols-outlined" style="font-size:18px;">send</span>
-                  </div>
-                  <span>Telegram интеграция</span>
+          <!-- Section: Telegram Channel -->
+          <div class="ios-grouped-section">
+            <div class="ios-section-header-label">Telegram интеграция</div>
+            <div class="ios-inset-group">
+              <div class="ios-cell">
+                <div class="ios-cell-icon icon-telegram">
+                  <svg class="sf-icon"><use href="#sf-paperplane"></use></svg>
+                </div>
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">Канал для публикации</div>
+                  <div class="ios-cell-subtitle">Telegram username с @</div>
+                </div>
+                <div class="ios-cell-control">
+                  <input type="text" id="setting-channel" class="ios-cell-input" placeholder="@wbuppp" style="min-width:110px;">
                 </div>
               </div>
-              <div class="card__body" style="display:flex; flex-direction:column; gap:14px;">
-                <div>
-                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Канал для публикации</label>
-                  <input type="text" id="setting-channel" class="input" placeholder="@wbuppp">
+              <div class="ios-cell-divider"></div>
+              <div class="ios-cell">
+                <div class="ios-cell-icon icon-indigo">
+                  <svg class="sf-icon"><use href="#sf-gear"></use></svg>
                 </div>
-                <div>
-                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Telegram Bot Token (для автономной отправки)</label>
-                  <input type="password" id="setting-bot-token" class="input" placeholder="8734971912:AAGmygfEBD69qibXSiH1q_lM3JUmCPTXy4c">
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">Bot Token</div>
+                  <div class="ios-cell-subtitle">Автономная отправка через API</div>
                 </div>
-                <div>
-                  <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Chat ID администратора</label>
-                  <input type="text" id="setting-notification-chat" class="input" placeholder="12345678">
+                <div class="ios-cell-control">
+                  <input type="password" id="setting-bot-token" class="ios-cell-input" placeholder="Token..." style="min-width:130px;">
                 </div>
-                <button class="btn btn--primary mt-2" onclick="app.saveTelegramSettings()">Сохранить Telegram</button>
+              </div>
+              <div class="ios-cell-divider"></div>
+              <div class="ios-cell">
+                <div class="ios-cell-icon icon-gray">
+                  <svg class="sf-icon"><use href="#sf-person-2"></use></svg>
+                </div>
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">Chat ID администратора</div>
+                  <div class="ios-cell-subtitle">Для уведомлений о сбоях</div>
+                </div>
+                <div class="ios-cell-control">
+                  <input type="text" id="setting-notification-chat" class="ios-cell-input" placeholder="12345678" style="min-width:100px;">
+                </div>
               </div>
             </div>
+            <div class="ios-group-action">
+              <button class="ios-button-primary" onclick="app.saveTelegramSettings()">Сохранить Telegram</button>
+            </div>
+          </div>
 
-            <!-- Standalone & Offline Mode -->
-            <div class="card">
-              <div class="card__header">
-                <div class="card__title" style="display:flex; align-items:center; gap:12px;">
-                  <div style="width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg, #af52de, #5856d6); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow: 0 2px 8px rgba(175,82,222,0.3);">
-                    <span class="material-symbols-outlined" style="font-size:18px;">cloud_off</span>
-                  </div>
-                  <span>Автономный режим (Standalone)</span>
+          <!-- Section: Standalone Mode -->
+          <div class="ios-grouped-section">
+            <div class="ios-section-header-label">Автономный режим</div>
+            <div class="ios-inset-group">
+              <div class="ios-cell">
+                <div class="ios-cell-icon icon-purple">
+                  <svg class="sf-icon"><use href="#sf-antenna"></use></svg>
                 </div>
-              </div>
-              <div class="card__body" style="display:flex; flex-direction:column; gap:14px;">
-                <p style="font-size:13px; color:var(--fg-muted);">
-                  Позволяет работать полностью автономно прямо в браузере или приложении iOS без необходимости запуска локального Python-сервера: прямой опрос Wildberries, Canvas-генератор постеров 1080x1080 и отправка в Telegram.
-                </p>
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px; background:rgba(255,255,255,0.04); border-radius:12px;">
-                  <div>
-                    <div style="font-size:13px; font-weight:600;">Принудительный автономный режим</div>
-                    <div style="font-size:11px; color:var(--fg-muted);">Все запросы идут напрямую с устройства</div>
-                  </div>
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">Принудительный standalone</div>
+                  <div class="ios-cell-subtitle">Прямой опрос Wildberries без Python сервера</div>
+                </div>
+                <div class="ios-cell-control">
                   <label class="apple-switch">
                     <input type="checkbox" id="setting-standalone-toggle" onchange="app.toggleStandaloneMode(this.checked)">
                     <span class="apple-switch__slider"></span>
@@ -619,110 +734,123 @@
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- Live Diagnostics Card -->
-            <div class="card">
-              <div class="card__header">
-                <div class="card__title" style="display:flex; align-items:center; gap:12px;">
-                  <div style="width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg, #0a84ff, #0056b3); display:flex; align-items:center; justify-content:center; color:#fff;">
-                    <span class="material-symbols-outlined" style="font-size:18px;">health_and_safety</span>
-                  </div>
-                  <span>Сетевая диагностика и статус</span>
+          <!-- Section: Diagnostics -->
+          <div class="ios-grouped-section">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding:0 16px;">
+              <div class="ios-section-header-label" style="margin-bottom:0; padding:0;">СЕТЕВАЯ ДИАГНОСТИКА</div>
+              <button class="ios-link-btn" id="btn-run-diag" onclick="app.runDiagnostics()">
+                <svg class="sf-icon" style="width:13px; height:13px; margin-right:4px;"><use href="#sf-refresh"></use></svg>Проверить
+              </button>
+            </div>
+            <div class="ios-inset-group">
+              <div class="ios-cell">
+                <div class="ios-cell-icon icon-blue">
+                  <svg class="sf-icon"><use href="#sf-bag"></use></svg>
                 </div>
-                <button class="btn btn--secondary btn--sm" id="btn-run-diag" onclick="app.runDiagnostics()">
-                  <span class="material-symbols-outlined" style="font-size:16px;">refresh</span> Проверить
-                </button>
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">WB Catalog API</div>
+                  <div class="ios-cell-subtitle" id="diag-wb-details">catalog.wb.ru</div>
+                </div>
+                <div class="ios-cell-control">
+                  <span class="ios-status-badge" id="diag-wb-badge">Тест...</span>
+                  <span class="ios-latency-label" id="diag-wb-lat">—</span>
+                </div>
               </div>
-              <div class="card__body">
-                <div class="diag-grid" id="diag-container">
-                  <div class="diag-item">
-                    <div class="diag-item__top">
-                      <span class="diag-item__name">WB Catalog API</span>
-                      <span class="badge badge--blue" id="diag-wb-badge">Тест...</span>
-                    </div>
-                    <div class="diag-item__details" id="diag-wb-details">catalog.wb.ru</div>
-                    <div class="diag-item__latency" id="diag-wb-lat">—</div>
-                  </div>
-
-                  <div class="diag-item">
-                    <div class="diag-item__top">
-                      <span class="diag-item__name">WB Basket CDN</span>
-                      <span class="badge badge--blue" id="diag-cdn-badge">Тест...</span>
-                    </div>
-                    <div class="diag-item__details" id="diag-cdn-details">wbbasket.ru</div>
-                    <div class="diag-item__latency" id="diag-cdn-lat">—</div>
-                  </div>
-
-                  <div class="diag-item">
-                    <div class="diag-item__top">
-                      <span class="diag-item__name">Telegram Bot API</span>
-                      <span class="badge badge--blue" id="diag-tg-badge">Тест...</span>
-                    </div>
-                    <div class="diag-item__details" id="diag-tg-details">@wbuppp</div>
-                    <div class="diag-item__latency" id="diag-tg-lat">—</div>
-                  </div>
-
-                  <div class="diag-item">
-                    <div class="diag-item__top">
-                      <span class="diag-item__name">Хранилище данных</span>
-                      <span class="badge badge--green">OK</span>
-                    </div>
-                    <div class="diag-item__details" id="diag-disk-details">localStorage Standalone</div>
-                    <div class="diag-item__latency" id="diag-disk-space">OK</div>
-                  </div>
+              <div class="ios-cell-divider"></div>
+              <div class="ios-cell">
+                <div class="ios-cell-icon icon-orange">
+                  <svg class="sf-icon"><use href="#sf-paintpalette"></use></svg>
+                </div>
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">WB Basket CDN</div>
+                  <div class="ios-cell-subtitle" id="diag-cdn-details">wbbasket.ru</div>
+                </div>
+                <div class="ios-cell-control">
+                  <span class="ios-status-badge" id="diag-cdn-badge">Тест...</span>
+                  <span class="ios-latency-label" id="diag-cdn-lat">—</span>
+                </div>
+              </div>
+              <div class="ios-cell-divider"></div>
+              <div class="ios-cell">
+                <div class="ios-cell-icon icon-telegram">
+                  <svg class="sf-icon"><use href="#sf-paperplane"></use></svg>
+                </div>
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">Telegram Bot API</div>
+                  <div class="ios-cell-subtitle" id="diag-tg-details">@wbuppp</div>
+                </div>
+                <div class="ios-cell-control">
+                  <span class="ios-status-badge" id="diag-tg-badge">Тест...</span>
+                  <span class="ios-latency-label" id="diag-tg-lat">—</span>
+                </div>
+              </div>
+              <div class="ios-cell-divider"></div>
+              <div class="ios-cell">
+                <div class="ios-cell-icon icon-green">
+                  <svg class="sf-icon"><use href="#sf-cpu"></use></svg>
+                </div>
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">Хранилище данных</div>
+                  <div class="ios-cell-subtitle" id="diag-disk-details">localStorage Standalone</div>
+                </div>
+                <div class="ios-cell-control">
+                  <span class="ios-status-badge ios-status-badge--green">OK</span>
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- Maintenance & Cache -->
-            <div class="card">
-              <div class="card__header">
-                <div class="card__title" style="display:flex; align-items:center; gap:12px;">
-                  <div style="width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg, #ff9f0a, #cc7000); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow: 0 2px 8px rgba(255,159,10,0.3);">
-                    <span class="material-symbols-outlined" style="font-size:18px;">cleaning_services</span>
-                  </div>
-                  <span>Обслуживание и кэш</span>
+          <!-- Section: Maintenance -->
+          <div class="ios-grouped-section">
+            <div class="ios-section-header-label">ОБСЛУЖИВАНИЕ</div>
+            <div class="ios-inset-group">
+              <div class="ios-cell ios-cell--action" onclick="app.clearCache()">
+                <div class="ios-cell-icon icon-red">
+                  <svg class="sf-icon"><use href="#sf-trash"></use></svg>
                 </div>
-              </div>
-              <div class="card__body" style="display:flex; flex-direction:column; gap:14px;">
-                <p style="font-size:13px; color:var(--fg-muted);">
-                  Очистка удаляет временные изображения из кэша и позволяет пересоздать карточки заново.
-                </p>
-                <button class="btn btn--danger" onclick="app.clearCache()">
-                  <span class="material-symbols-outlined">delete_forever</span> Очистить кэш фото
-                </button>
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title" style="color:var(--apple-red);">Очистить кэш фото</div>
+                  <div class="ios-cell-subtitle">Удаляет временные изображения карточек</div>
+                </div>
+                <div class="ios-cell-control">
+                  <svg class="sf-icon sf-chevron"><use href="#sf-chevron-right"></use></svg>
+                </div>
               </div>
             </div>
+          </div>
 
-            <!-- System Info -->
-            <div class="card">
-              <div class="card__header">
-                <div class="card__title" style="display:flex; align-items:center; gap:12px;">
-                  <div style="width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg, #8e8e93, #48484a); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow: 0 2px 8px rgba(142,142,147,0.3);">
-                    <span class="material-symbols-outlined" style="font-size:18px;">info</span>
-                  </div>
-                  <span>О системе</span>
+          <!-- Section: System Info -->
+          <div class="ios-grouped-section">
+            <div class="ios-section-header-label">О СИСТЕМЕ</div>
+            <div class="ios-inset-group">
+              <div class="ios-cell">
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">Версия WB Up Studio</div>
                 </div>
+                <div class="ios-cell-value" id="sys-version">2.3.0</div>
               </div>
-              <div class="card__body">
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:13px;">
-                  <div>
-                    <span style="color:var(--fg-muted);">Версия:</span>
-                    <div style="font-weight:700;" id="sys-version">2.3.0</div>
-                  </div>
-                  <div>
-                    <span style="color:var(--fg-muted);">Аптайм:</span>
-                    <div style="font-weight:700;" id="sys-uptime">—</div>
-                  </div>
-                  <div>
-                    <span style="color:var(--fg-muted);">Python:</span>
-                    <div style="font-weight:700;" id="sys-python">—</div>
-                  </div>
-                  <div>
-                    <span style="color:var(--fg-muted);">База данных:</span>
-                    <div style="font-weight:700;" id="sys-db-size">—</div>
-                  </div>
+              <div class="ios-cell-divider"></div>
+              <div class="ios-cell">
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">Время непрерывной работы</div>
                 </div>
+                <div class="ios-cell-value" id="sys-uptime">—</div>
+              </div>
+              <div class="ios-cell-divider"></div>
+              <div class="ios-cell">
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">Python среда</div>
+                </div>
+                <div class="ios-cell-value" id="sys-python">—</div>
+              </div>
+              <div class="ios-cell-divider"></div>
+              <div class="ios-cell">
+                <div class="ios-cell-content">
+                  <div class="ios-cell-title">База данных SQLite</div>
+                </div>
+                <div class="ios-cell-value" id="sys-db-size">—</div>
               </div>
             </div>
           </div>
@@ -733,7 +861,7 @@
       <!-- ====== Floating Action Dock for Selection (Apple HIG Floating Capsule) ====== -->
       <div id="catalog-selection-dock" class="action-dock">
         <div class="action-dock__count">
-          <span class="material-symbols-outlined action-dock__icon">check_circle</span>
+          <svg class="sf-icon action-dock__icon" style="width:18px; height:18px; color:#0a84ff;"><use href="#sf-check-circle"></use></svg>
           <span id="dock-selected-text">0 выбрано</span>
         </div>
         <div class="action-dock__actions">
@@ -741,7 +869,7 @@
             Снять
           </button>
           <button class="action-dock__btn action-dock__btn--secondary" onclick="app.generatePreview()" title="Предпросмотр поста">
-            <span class="material-symbols-outlined" style="font-size:15px;">auto_awesome</span>
+            <svg class="sf-icon" style="width:14px; height:14px; margin-right:4px;"><use href="#sf-sparkles"></use></svg>
             <span>Превью</span>
           </button>
           <button class="action-dock__btn action-dock__btn--primary" onclick="app.publishSelected()" title="Опубликовать в Telegram">
@@ -755,23 +883,23 @@
     <!-- ====== Mobile Bottom Navigation Bar (Apple HIG 49pt) ====== -->
     <nav class="mobile-nav">
       <button class="mobile-nav__item mobile-nav__item--active" data-tab="dashboard" onclick="app.switchTab('dashboard')">
-        <span class="material-symbols-outlined">grid_view</span>
+        <svg class="sf-icon"><use href="#sf-grid"></use></svg>
         <span>Лента</span>
       </button>
       <button class="mobile-nav__item" data-tab="catalog" onclick="app.switchTab('catalog')">
-        <span class="material-symbols-outlined">inventory_2</span>
+        <svg class="sf-icon"><use href="#sf-bag"></use></svg>
         <span>Каталог</span>
       </button>
       <button class="mobile-nav__item" data-tab="queue" onclick="app.switchTab('queue')">
-        <span class="material-symbols-outlined">schedule_send</span>
+        <svg class="sf-icon"><use href="#sf-tray"></use></svg>
         <span>Очередь</span>
       </button>
       <button class="mobile-nav__item" data-tab="preview" onclick="app.switchTab('preview')">
-        <span class="material-symbols-outlined">auto_awesome</span>
+        <svg class="sf-icon"><use href="#sf-sparkles"></use></svg>
         <span>Студия</span>
       </button>
       <button class="mobile-nav__item" data-tab="settings" onclick="app.switchTab('settings')">
-        <span class="material-symbols-outlined">tune</span>
+        <svg class="sf-icon"><use href="#sf-gear"></use></svg>
         <span>Настройки</span>
       </button>
     </nav>
@@ -785,7 +913,7 @@
       <div class="modal__header">
         <div class="modal__title" id="modal-title"></div>
         <button class="btn btn--ghost btn--icon btn--sm" onclick="app.closeModal()">
-          <span class="material-symbols-outlined">close</span>
+          <svg class="sf-icon" style="width:14px; height:14px;"><use href="#sf-xmark"></use></svg>
         </button>
       </div>
       <div class="modal__body" id="modal-body"></div>

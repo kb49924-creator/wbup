@@ -1395,24 +1395,24 @@ const app = {
     const toast = document.createElement('div');
     toast.className = 'toast';
 
-    let icon = 'info';
-    let color = 'var(--fg-primary)';
+    let icon = 'info-circle';
+    let color = 'var(--apple-blue)';
     if (type === 'success') {
-      icon = 'check_circle';
-      color = 'var(--success)';
+      icon = 'check-circle';
+      color = 'var(--apple-green)';
     } else if (type === 'error') {
-      icon = 'error';
-      color = 'var(--danger)';
+      icon = 'exclamationmark-triangle';
+      color = 'var(--apple-red)';
     } else if (type === 'warning') {
-      icon = 'warning';
-      color = 'var(--warning)';
+      icon = 'exclamationmark-triangle';
+      color = 'var(--apple-orange)';
     }
 
     toast.innerHTML = `
-      <span class="material-symbols-outlined" style="color:${color}; font-size:20px;">${icon}</span>
+      <svg class="sf-icon" style="color:${color}; width:20px; height:20px; flex-shrink:0;"><use href="#sf-${icon}"></use></svg>
       <div style="flex:1; font-size:13px; font-weight:500;">${this.escHtml(message)}</div>
       <button class="btn btn--ghost btn--icon btn--sm" onclick="this.parentElement.remove()" style="opacity:0.6;">
-        <span class="material-symbols-outlined" style="font-size:16px;">close</span>
+        <svg class="sf-icon" style="width:14px; height:14px;"><use href="#sf-xmark"></use></svg>
       </button>
     `;
 
@@ -1487,7 +1487,7 @@ const app = {
         container.innerHTML = `
           <div style="text-align:center; padding: 40px 20px; color:var(--fg-muted);">
             <div style="width:48px; height:48px; border-radius:14px; background:rgba(255,255,255,0.06); display:inline-flex; align-items:center; justify-content:center; margin-bottom:12px;">
-              <span class="material-symbols-outlined" style="font-size:26px; color:var(--fg-muted);">inbox</span>
+              <svg class="sf-icon" style="width:26px; height:26px; color:var(--fg-muted);"><use href="#sf-tray"></use></svg>
             </div>
             <div style="font-size:14px; font-weight:600; color:var(--fg-primary); margin-bottom:4px;">Пока нет публикаций</div>
             <div style="font-size:12px;">Опубликуйте товары из каталога или запустите очередь</div>
@@ -1501,7 +1501,7 @@ const app = {
           ${pubs.map(p => `
             <div class="apple-list-item">
               <div class="apple-item-avatar" style="background:linear-gradient(135deg, rgba(48,209,88,0.25), rgba(48,209,88,0.08)); border:0.5px solid rgba(48,209,88,0.3); color:var(--apple-green);">
-                <span class="material-symbols-outlined" style="font-size:18px;">check</span>
+                <svg class="sf-icon" style="width:18px; height:18px;"><use href="#sf-check"></use></svg>
               </div>
               <div class="apple-item-content">
                 <div class="apple-item-title">Артикул <b>${p.article}</b></div>
@@ -1510,7 +1510,7 @@ const app = {
               <div class="apple-item-actions">
                 <span class="badge badge--green" style="font-size:11px;">Опубликован</span>
                 <a href="https://www.wildberries.ru/catalog/${p.article}/detail.aspx" target="_blank" class="btn btn--secondary btn--sm" style="padding:4px 10px; font-size:12px;" title="Открыть на Wildberries">
-                  <span class="material-symbols-outlined" style="font-size:14px;">open_in_new</span> WB
+                  <svg class="sf-icon" style="width:14px; height:14px;"><use href="#sf-arrow-up-right"></use></svg> WB
                 </a>
               </div>
             </div>
@@ -1525,7 +1525,7 @@ const app = {
   // --- Network & System Diagnostics ---
   async runDiagnostics(silent = false) {
     const btn = document.getElementById('btn-run-diag');
-    if (btn) btn.innerHTML = `<span class="material-symbols-outlined spin" style="font-size:16px;">sync</span> Проверка...`;
+    if (btn) btn.innerHTML = `<svg class="sf-icon sf-spin" style="width:16px; height:16px;"><use href="#sf-sync"></use></svg> Проверка...`;
 
     try {
       const data = await this.api('/api/system/diagnostics');
@@ -1596,14 +1596,14 @@ const app = {
         this.showNotification('Ошибка диагностики: ' + e.message, 'error');
       }
     } finally {
-      if (btn) btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;">refresh</span> Запустить тест`;
+      if (btn) btn.innerHTML = `<svg class="sf-icon" style="width:16px; height:16px;"><use href="#sf-refresh"></use></svg> Запустить тест`;
     }
   },
 
   // --- Check Novelties (WB Scan) ---
   async runCheck() {
     const btn = document.getElementById('top-check-btn');
-    if (btn) btn.innerHTML = `<span class="material-symbols-outlined spin" style="font-size:16px;">sync</span> Проверка...`;
+    if (btn) btn.innerHTML = `<svg class="sf-icon sf-spin" style="width:16px; height:16px;"><use href="#sf-sync"></use></svg> Проверка...`;
 
     this.showNotification('Запуск проверки продавцов WB (1-3 мин)...', 'info');
 
@@ -1619,7 +1619,7 @@ const app = {
     } catch (e) {
       this.showNotification('Сбой запроса проверки: ' + e.message, 'error');
     } finally {
-      if (btn) btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;">sync</span> Проверить новинки`;
+      if (btn) btn.innerHTML = `<svg class="sf-icon" style="width:16px; height:16px;"><use href="#sf-bolt"></use></svg> Проверить новинки`;
     }
   },
 
@@ -1799,10 +1799,10 @@ const app = {
             <span class="apple-ai-sparkle">✦</span> <span>С карточкой ИИ</span> <span class="apple-badge-count apple-badge-count--ok">${countWithCard}</span>
           </button>
           <button class="apple-segment-btn apple-segment-btn--ai-rejected ${activeAI === 'no_card' ? 'active' : ''}" onclick="app.filterCatalogByAI('no_card')" title="Товары, где ИИ отклонил фото (люди в кадре/обрезано)">
-            <span class="material-symbols-outlined" style="font-size:13px; color:var(--apple-red);">close</span> <span>Без карточки</span> <span class="apple-badge-count apple-badge-count--danger">${countNoCard}</span>
+            <svg class="sf-icon" style="width:12px; height:12px; color:var(--apple-red);"><use href="#sf-xmark"></use></svg> <span>Без карточки</span> <span class="apple-badge-count apple-badge-count--danger">${countNoCard}</span>
           </button>
           <button class="apple-segment-btn apple-segment-btn--ai-pending ${activeAI === 'pending' ? 'active' : ''}" onclick="app.filterCatalogByAI('pending')" title="Товары, ещё не проверенные локальным ИИ">
-            <span class="material-symbols-outlined" style="font-size:13px; color:var(--apple-blue);">hourglass_empty</span> <span>Не проверено</span> <span class="apple-badge-count">${countPending}</span>
+            <svg class="sf-icon" style="width:12px; height:12px; color:var(--apple-blue);"><use href="#sf-clock"></use></svg> <span>Не проверено</span> <span class="apple-badge-count">${countPending}</span>
           </button>
         </div>
       `;
@@ -1914,7 +1914,7 @@ const app = {
           ${hasDiscount ? `<span class="product-card__discount-badge">-${p.discount}%</span>` : ''}
           ${photoCounterHtml}
           <div class="product-card__checkbox">
-            <span class="material-symbols-outlined" style="font-size:16px;">check</span>
+            <svg class="sf-icon" style="width:13px; height:13px;"><use href="#sf-check"></use></svg>
           </div>
           <img src="${imgSrc}"
                id="${prefix}-img-${p.article}"
@@ -1934,7 +1934,7 @@ const app = {
             <span class="product-card__price">${this.formatPrice(price)}</span>
             ${hasDiscount && p.price ? `<span class="product-card__old-price">${this.formatPrice(p.price)}</span>` : ''}
             <a href="https://www.wildberries.ru/catalog/${p.article}/detail.aspx" target="_blank" onclick="event.stopPropagation();" style="margin-left:auto; color:var(--apple-blue);" title="Открыть карточку на WB">
-              <span class="material-symbols-outlined" style="font-size:18px;">open_in_new</span>
+              <svg class="sf-icon" style="width:15px; height:15px;"><use href="#sf-arrow-up-right"></use></svg>
             </a>
           </div>
         </div>
@@ -2026,7 +2026,7 @@ const app = {
 
   async runBatchAIEvaluation() {
     const btn = document.getElementById('btn-batch-ai');
-    if (btn) btn.innerHTML = `<span class="material-symbols-outlined spin" style="font-size:16px;">sync</span> Анализ ИИ...`;
+    if (btn) btn.innerHTML = `<svg class="sf-icon sf-spin" style="width:16px; height:16px;"><use href="#sf-sync"></use></svg> Анализ ИИ...`;
 
     this.showNotification('Запущен пакетный анализ товаров локальным ИИ (в фоне)...', 'info');
     try {
@@ -2044,7 +2044,7 @@ const app = {
     } catch (e) {
       this.showNotification(`Сбой запуска анализа: ${e.message}`, 'error');
     } finally {
-      if (btn) btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px; color:var(--primary);">auto_awesome</span> Оценить фото ИИ`;
+      if (btn) btn.innerHTML = `<svg class="sf-icon" style="width:16px; height:16px; color:var(--apple-blue);"><use href="#sf-sparkles"></use></svg> Оценить фото ИИ`;
     }
   },
 
@@ -2087,7 +2087,7 @@ const app = {
         container.innerHTML = `
           <div style="text-align:center; padding: 60px 20px; color:var(--fg-muted);">
             <div style="width:54px; height:54px; border-radius:16px; background:rgba(255,255,255,0.06); display:inline-flex; align-items:center; justify-content:center; margin-bottom:14px;">
-              <span class="material-symbols-outlined" style="font-size:28px; color:var(--fg-muted);">queue</span>
+              <svg class="sf-icon" style="width:28px; height:28px; color:var(--fg-muted);"><use href="#sf-tray"></use></svg>
             </div>
             <h3 style="font-size:16px; font-weight:700; margin-bottom:4px; color:var(--fg-primary);">Очередь пуста</h3>
             <p style="font-size:13px; margin-bottom:16px;">Выберите товары в каталоге и нажмите «В очередь»</p>
@@ -2109,7 +2109,7 @@ const app = {
         return `
           <div class="apple-list-item">
             <div class="apple-item-avatar" style="background:linear-gradient(135deg, #0a84ff, #5856d6); box-shadow:0 2px 8px rgba(10,132,255,0.3);">
-              <span class="material-symbols-outlined" style="font-size:18px;">schedule_send</span>
+              <svg class="sf-icon" style="width:18px; height:18px;"><use href="#sf-paperplane"></use></svg>
             </div>
             <div class="apple-item-content">
               <div class="apple-item-title" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
@@ -2129,11 +2129,11 @@ const app = {
               ${badgeHtml}
               ${it.status === 'pending' ? `
                 <button class="btn btn--telegram btn--sm" onclick="app.publishQueueItem(${it.id})" title="Опубликовать в Telegram сейчас" style="padding:4px 10px; font-size:12px;">
-                  <span class="material-symbols-outlined" style="font-size:14px;">send</span>
+                  <svg class="sf-icon" style="width:14px; height:14px;"><use href="#sf-paperplane"></use></svg>
                 </button>
               ` : ''}
               <button class="btn btn--ghost btn--icon btn--sm" onclick="app.deleteQueueItem(${it.id})" title="Удалить из очереди">
-                <span class="material-symbols-outlined" style="font-size:16px; color:var(--apple-red);">delete</span>
+                <svg class="sf-icon" style="width:16px; height:16px; color:var(--apple-red);"><use href="#sf-trash"></use></svg>
               </button>
             </div>
           </div>
@@ -2241,7 +2241,7 @@ const app = {
     if (emptyEl) emptyEl.style.display = 'block';
     if (emptyEl) emptyEl.innerHTML = `
       <div style="padding:40px;">
-        <span class="material-symbols-outlined spin" style="font-size:48px; color:var(--accent); display:block; margin-bottom:12px;">sync</span>
+        <svg class="sf-icon sf-spin" style="width:48px; height:48px; color:var(--apple-blue); display:block; margin:0 auto 12px;"><use href="#sf-sync"></use></svg>
         <h3>Идёт обработка изображений...</h3>
         <p style="color:var(--fg-muted); font-size:13px;">Умный отбор фото → удаление фона нейросетью → сборка шаблона</p>
       </div>
@@ -2262,7 +2262,7 @@ const app = {
         if (emptyEl) {
           emptyEl.innerHTML = `
             <div style="padding:40px; color:var(--danger);">
-              <span class="material-symbols-outlined" style="font-size:48px; margin-bottom:12px; display:block;">error</span>
+              <svg class="sf-icon" style="width:48px; height:48px; color:var(--apple-red); display:block; margin:0 auto 12px;"><use href="#sf-exclamationmark-triangle"></use></svg>
               <h3>Ошибка генерации карточки</h3>
               <p>${this.escHtml((res && res.error) || 'Неизвестная ошибка')}</p>
             </div>
@@ -2476,7 +2476,7 @@ const app = {
         container.innerHTML = `
           <div style="text-align:center; padding: 50px 20px; color:var(--fg-muted);">
             <div style="width:54px; height:54px; border-radius:16px; background:rgba(255,255,255,0.06); display:inline-flex; align-items:center; justify-content:center; margin-bottom:14px;">
-              <span class="material-symbols-outlined" style="font-size:28px; color:var(--fg-muted);">storefront</span>
+              <svg class="sf-icon" style="width:28px; height:28px; color:var(--fg-muted);"><use href="#sf-store"></use></svg>
             </div>
             <h3 style="font-size:16px; font-weight:700; margin-bottom:4px; color:var(--fg-primary);">Нет отслеживаемых продавцов</h3>
             <p style="font-size:13px; margin-bottom:16px;">Добавьте бренд или магазин Wildberries для отбора новинок</p>
@@ -2506,10 +2506,10 @@ const app = {
               <span class="apple-switch__slider"></span>
             </label>
             <a href="https://www.wildberries.ru/seller/${s.supplier_id}" target="_blank" class="btn btn--ghost btn--icon btn--sm" title="Открыть магазин на WB">
-              <span class="material-symbols-outlined" style="font-size:16px;">open_in_new</span>
+              <svg class="sf-icon" style="width:16px; height:16px;"><use href="#sf-arrow-up-right"></use></svg>
             </a>
             <button class="btn btn--ghost btn--icon btn--sm" onclick="app.deleteSellerPrompt(${s.supplier_id})" title="Удалить продавца">
-              <span class="material-symbols-outlined" style="font-size:16px; color:var(--apple-red);">delete</span>
+              <svg class="sf-icon" style="width:16px; height:16px; color:var(--apple-red);"><use href="#sf-trash"></use></svg>
             </button>
           </div>
         </div>
@@ -2661,7 +2661,7 @@ const app = {
 
   async trainLocalAI() {
     const btn = document.getElementById('btn-train-ai');
-    if (btn) btn.innerHTML = `<span class="material-symbols-outlined spin">sync</span> Обучение...`;
+    if (btn) btn.innerHTML = `<svg class="sf-icon sf-spin" style="width:16px; height:16px;"><use href="#sf-sync"></use></svg> Обучение...`;
 
     try {
       const res = await this.api('/api/ai/train', { method: 'POST' });
@@ -2674,7 +2674,7 @@ const app = {
     } catch (e) {
       this.showNotification('Сбой обучения: ' + e.message, 'error');
     } finally {
-      if (btn) btn.innerHTML = `<span class="material-symbols-outlined">psychology</span> Обучить модель`;
+      if (btn) btn.innerHTML = `<svg class="sf-icon" style="width:16px; height:16px;"><use href="#sf-brain"></use></svg> Обучить модель`;
     }
   },
 
