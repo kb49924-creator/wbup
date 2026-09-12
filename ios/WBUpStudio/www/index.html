@@ -24,7 +24,6 @@
   <link rel="stylesheet" href="styles.css?v=apple_hig_v6">
 </head>
 <body>
-  <div class="apple-aurora-bg"></div>
   <div class="toast-container" id="toast-container"></div>
 
   <div class="app-container">
@@ -113,22 +112,21 @@
     <!-- ====== Main Content ====== -->
     <main class="main-content">
 
-      <!-- Top Header -->
+      <!-- Top Header (Clean Apple HIG Navigation Bar) -->
       <header class="top-header">
-        <div class="top-header__title">
-          <span id="page-title">Дашборд</span>
+        <div class="top-header__brand-wrap">
+          <div class="top-header__channel-pill" onclick="app.switchTab('settings')" title="Настройки канала">
+            <span class="status-pulse-dot" id="header-status-dot"></span>
+            <span class="top-header__channel-name" id="header-channel-name">@wbuppp</span>
+          </div>
+          <span class="top-header__page-title" id="page-title">Находки WB</span>
         </div>
         <div class="top-header__actions">
-          <button class="btn btn--secondary btn--sm top-header__diag-btn" onclick="app.runDiagnostics()" title="Проверить состояние системы">
-            <span class="material-symbols-outlined" style="font-size:16px;">health_and_safety</span>
-            <span class="btn-text">Диагностика</span>
+          <button class="top-header__icon-btn" id="top-check-btn" onclick="app.runCheck()" title="Проверить новинки Wildberries">
+            <span class="material-symbols-outlined">sync</span>
           </button>
-          <button class="btn btn--primary btn--sm top-header__check-btn" id="top-check-btn" onclick="app.runCheck()" title="Проверить новинки Wildberries">
-            <span class="material-symbols-outlined" style="font-size:16px;">sync</span>
-            <span class="btn-text">Проверить новинки</span>
-          </button>
-          <button class="btn btn--ghost btn--icon" onclick="app.refreshAll()" title="Обновить данные">
-            <span class="material-symbols-outlined" style="font-size:20px;">refresh</span>
+          <button class="top-header__icon-btn" onclick="app.refreshAll()" title="Обновить">
+            <span class="material-symbols-outlined">refresh</span>
           </button>
         </div>
       </header>
@@ -136,168 +134,86 @@
       <!-- Workspace Canvas -->
       <div class="canvas">
 
-        <!-- ==================== TAB: DASHBOARD ==================== -->
+        <!-- ==================== TAB: DASHBOARD / CURATED FEED ==================== -->
         <section id="tab-dashboard" class="tab-panel tab-panel--active">
-          <!-- KPI Metrics Grid -->
-          <div class="stats-grid">
-            <div class="metric-card">
-              <div class="metric-card__header">
-                <span class="metric-card__label">Продавцов</span>
-                <div class="metric-card__icon"><span class="material-symbols-outlined">storefront</span></div>
+          <!-- iOS Channel Hero Widget (Single unified card, no empty 0-boxes) -->
+          <div class="ios-channel-hero">
+            <div class="ios-channel-hero__head">
+              <div class="ios-channel-hero__meta">
+                <span class="ios-tag">Канал витрины</span>
+                <h2 class="ios-channel-title">@wbuppp</h2>
               </div>
-              <div class="metric-card__value" id="stat-sellers">0</div>
-              <div style="font-size:12px; color:var(--fg-muted);">Подключено к мониторингу</div>
+              <span class="ios-live-pill"><span class="status-pulse-dot"></span> Live</span>
             </div>
-
-            <div class="metric-card">
-              <div class="metric-card__header">
-                <span class="metric-card__label">Товаров в каталоге</span>
-                <div class="metric-card__icon"><span class="material-symbols-outlined">inventory_2</span></div>
+            <div class="ios-channel-hero__metrics">
+              <div class="ios-metric-box">
+                <span class="ios-metric-val" id="stat-sellers">4</span>
+                <span class="ios-metric-lbl">Продавца</span>
               </div>
-              <div class="metric-card__value" id="stat-products">0</div>
-              <div style="font-size:12px; color:var(--fg-muted);">Отобрано алгоритмом</div>
-            </div>
-
-            <div class="metric-card">
-              <div class="metric-card__header">
-                <span class="metric-card__label">Очередь постов</span>
-                <div class="metric-card__icon" style="color:var(--tg-primary);"><span class="material-symbols-outlined">schedule_send</span></div>
+              <div class="ios-metric-sep"></div>
+              <div class="ios-metric-box">
+                <span class="ios-metric-val" id="stat-products">0</span>
+                <span class="ios-metric-lbl">В каталоге</span>
               </div>
-              <div class="metric-card__value" id="stat-queue" style="color:var(--tg-primary);">0</div>
-              <div style="font-size:12px; color:var(--fg-muted);">Ожидают отправки</div>
-            </div>
-
-            <div class="metric-card">
-              <div class="metric-card__header">
-                <span class="metric-card__label">Опубликовано</span>
-                <div class="metric-card__icon" style="color:var(--success);"><span class="material-symbols-outlined">check_circle</span></div>
+              <div class="ios-metric-sep"></div>
+              <div class="ios-metric-box">
+                <span class="ios-metric-val" id="stat-queue">0</span>
+                <span class="ios-metric-lbl">В очереди</span>
               </div>
-              <div class="metric-card__value" id="stat-publications">0</div>
-              <div style="font-size:12px; color:var(--fg-muted);">Постов в Telegram-канале</div>
-            </div>
-
-            <div class="metric-card metric-card--scheduler">
-              <div class="metric-card__header">
-                <span class="metric-card__label">Планировщик</span>
-                <div class="metric-card__icon" style="color:var(--warning);"><span class="material-symbols-outlined">timer</span></div>
-              </div>
-              <div class="metric-card__value" style="font-size:18px; margin-top:6px;" id="stat-scheduler">
-                <span class="badge badge--yellow">Остановлен</span>
-              </div>
-              <div style="font-size:12px; color:var(--fg-muted);">Автопроверка по времени</div>
-            </div>
-          </div>
-
-          <!-- Quick Actions Grid -->
-          <div class="quick-actions">
-            <div class="action-tile" onclick="app.runCheck()">
-              <div class="action-tile__icon"><span class="material-symbols-outlined">search</span></div>
-              <div>
-                <div style="font-weight:700;">Проверить WB</div>
-                <div style="font-size:12px; color:var(--fg-muted);">Поиск новых товаров</div>
+              <div class="ios-metric-sep"></div>
+              <div class="ios-metric-box">
+                <span class="ios-metric-val" id="stat-publications">0</span>
+                <span class="ios-metric-lbl">Опубликовано</span>
               </div>
             </div>
-
-            <div class="action-tile" onclick="app.switchTab('catalog')">
-              <div class="action-tile__icon" style="color:var(--accent);"><span class="material-symbols-outlined">grid_view</span></div>
-              <div>
-                <div style="font-weight:700;">Открыть каталог</div>
-                <div style="font-size:12px; color:var(--fg-muted);">Выбор для публикации</div>
-              </div>
-            </div>
-
-            <div class="action-tile" onclick="app.switchTab('queue')">
-              <div class="action-tile__icon" style="color:var(--tg-primary);"><span class="material-symbols-outlined">queue</span></div>
-              <div>
-                <div style="font-weight:700;">Очередь постов</div>
-                <div style="font-size:12px; color:var(--fg-muted);">Отложенные публикации</div>
-              </div>
-            </div>
-
-            <div class="action-tile" onclick="app.switchTab('sellers')">
-              <div class="action-tile__icon" style="color:var(--success);"><span class="material-symbols-outlined">person_add</span></div>
-              <div>
-                <div style="font-weight:700;">Добавить продавца</div>
-                <div style="font-size:12px; color:var(--fg-muted);">По ссылке или ID</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Live Diagnostics Card -->
-          <div class="card mb-4" style="margin-bottom: 24px;">
-            <div class="card__header">
-              <div class="card__title">
-                <span class="material-symbols-outlined" style="color:var(--accent);">health_and_safety</span>
-                Сетевая диагностика и статус сервисов
-              </div>
-              <button class="btn btn--secondary btn--sm" id="btn-run-diag" onclick="app.runDiagnostics()">
-                <span class="material-symbols-outlined" style="font-size:16px;">refresh</span> Запустить тест
+            <div class="ios-channel-hero__cta">
+              <button class="ios-cta-btn" onclick="app.runCheck()" id="btn-hero-check">
+                <span class="material-symbols-outlined" style="font-size:18px;">bolt</span>
+                <span>Проверить горячие новинки WB</span>
               </button>
             </div>
-            <div class="card__body">
-              <div class="diag-grid" id="diag-container">
-                <div class="diag-item">
-                  <div class="diag-item__top">
-                    <span class="diag-item__name">SQLite База данных</span>
-                    <span class="badge badge--green">OK</span>
-                  </div>
-                  <div class="diag-item__details">Integrity Check</div>
-                  <div class="diag-item__latency" style="color:var(--success);">0.5 ms</div>
-                </div>
-
-                <div class="diag-item">
-                  <div class="diag-item__top">
-                    <span class="diag-item__name">WB Card API</span>
-                    <span class="badge badge--blue" id="diag-wb-badge">Тест...</span>
-                  </div>
-                  <div class="diag-item__details" id="diag-wb-details">card.wb.ru</div>
-                  <div class="diag-item__latency" id="diag-wb-lat">—</div>
-                </div>
-
-                <div class="diag-item">
-                  <div class="diag-item__top">
-                    <span class="diag-item__name">WB Basket CDN</span>
-                    <span class="badge badge--blue" id="diag-cdn-badge">Тест...</span>
-                  </div>
-                  <div class="diag-item__details" id="diag-cdn-details">wbbasket.ru</div>
-                  <div class="diag-item__latency" id="diag-cdn-lat">—</div>
-                </div>
-
-                <div class="diag-item">
-                  <div class="diag-item__top">
-                    <span class="diag-item__name">Telegram Bot API</span>
-                    <span class="badge badge--blue" id="diag-tg-badge">Тест...</span>
-                  </div>
-                  <div class="diag-item__details" id="diag-tg-details">@wbuppp</div>
-                  <div class="diag-item__latency" id="diag-tg-lat">—</div>
-                </div>
-
-                <div class="diag-item">
-                  <div class="diag-item__top">
-                    <span class="diag-item__name">Дисковое место</span>
-                    <span class="badge badge--green">OK</span>
-                  </div>
-                  <div class="diag-item__details" id="diag-disk-details">Хранилище данных</div>
-                  <div class="diag-item__latency" id="diag-disk-space">—</div>
-                </div>
-              </div>
-            </div>
           </div>
 
-          <!-- Activity History -->
-          <div class="card">
-            <div class="card__header">
-              <div class="card__title">
-                <span class="material-symbols-outlined">history</span> Последние публикации
-              </div>
-              <button class="btn btn--ghost btn--sm" onclick="app.loadPublications()">Обновить</button>
+          <!-- Live Curated Feed Section -->
+          <div class="ios-section-header">
+            <div>
+              <h3 class="ios-section-title">Горячие находки</h3>
+              <div class="ios-section-sub">Выберите 1–4 товара для публикации в канале</div>
             </div>
-            <div class="card__body" style="padding:0;">
-              <div id="activity-container">
-                <div style="text-align:center; padding: 32px; color:var(--fg-muted);">
-                  Загрузка истории...
-                </div>
-              </div>
+            <button class="ios-link-btn" onclick="app.switchTab('catalog')">Весь каталог →</button>
+          </div>
+
+          <!-- Horizontal Filter Chips (Smooth scroll, no scrollbar) -->
+          <div class="ios-chips-row" id="home-chips">
+            <button class="ios-chip ios-chip--active" onclick="app.filterHomeFeed('all', this)">🔥 Все</button>
+            <button class="ios-chip" onclick="app.filterHomeFeed('clothes', this)">👗 Одежда</button>
+            <button class="ios-chip" onclick="app.filterHomeFeed('shoes', this)">👟 Обувь</button>
+            <button class="ios-chip" onclick="app.filterHomeFeed('discount', this)">🏷 Скидки >50%</button>
+            <button class="ios-chip" onclick="app.filterHomeFeed('top', this)">⭐ Топ 4.8+</button>
+          </div>
+
+          <!-- Curated Product Grid -->
+          <div id="home-product-grid" class="product-grid"></div>
+
+          <!-- Empty State for Home Feed -->
+          <div id="home-empty-feed" style="display:none; text-align:center; padding: 36px 16px; background:#121214; border-radius:18px; border:0.5px solid rgba(255,255,255,0.08); margin-top:10px;">
+            <span class="material-symbols-outlined" style="font-size:36px; color:#8e8e93; margin-bottom:8px; display:block;">inventory_2</span>
+            <div style="font-size:15px; font-weight:700; margin-bottom:4px; color:#fff;">Товары загружаются...</div>
+            <div style="color:#8e8e93; font-size:12px; margin-bottom:14px;">Нажмите кнопку ниже, чтобы опросить Wildberries напрямую</div>
+            <button class="btn btn--primary btn--sm" onclick="app.runCheck()">Найти новинки WB</button>
+          </div>
+
+          <!-- Activity History (Recent publications) -->
+          <div class="ios-section-header" style="margin-top:28px;">
+            <div>
+              <h3 class="ios-section-title">Недавние публикации</h3>
+              <div class="ios-section-sub">История отправки постов в Telegram</div>
+            </div>
+            <button class="ios-link-btn" onclick="app.loadPublications()">Обновить</button>
+          </div>
+          <div id="activity-container">
+            <div style="text-align:center; padding: 24px; color:var(--fg-muted); font-size:13px;">
+              Загрузка истории...
             </div>
           </div>
         </section>
@@ -704,6 +620,60 @@
               </div>
             </div>
 
+            <!-- Live Diagnostics Card -->
+            <div class="card">
+              <div class="card__header">
+                <div class="card__title" style="display:flex; align-items:center; gap:12px;">
+                  <div style="width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg, #0a84ff, #0056b3); display:flex; align-items:center; justify-content:center; color:#fff;">
+                    <span class="material-symbols-outlined" style="font-size:18px;">health_and_safety</span>
+                  </div>
+                  <span>Сетевая диагностика и статус</span>
+                </div>
+                <button class="btn btn--secondary btn--sm" id="btn-run-diag" onclick="app.runDiagnostics()">
+                  <span class="material-symbols-outlined" style="font-size:16px;">refresh</span> Проверить
+                </button>
+              </div>
+              <div class="card__body">
+                <div class="diag-grid" id="diag-container">
+                  <div class="diag-item">
+                    <div class="diag-item__top">
+                      <span class="diag-item__name">WB Catalog API</span>
+                      <span class="badge badge--blue" id="diag-wb-badge">Тест...</span>
+                    </div>
+                    <div class="diag-item__details" id="diag-wb-details">catalog.wb.ru</div>
+                    <div class="diag-item__latency" id="diag-wb-lat">—</div>
+                  </div>
+
+                  <div class="diag-item">
+                    <div class="diag-item__top">
+                      <span class="diag-item__name">WB Basket CDN</span>
+                      <span class="badge badge--blue" id="diag-cdn-badge">Тест...</span>
+                    </div>
+                    <div class="diag-item__details" id="diag-cdn-details">wbbasket.ru</div>
+                    <div class="diag-item__latency" id="diag-cdn-lat">—</div>
+                  </div>
+
+                  <div class="diag-item">
+                    <div class="diag-item__top">
+                      <span class="diag-item__name">Telegram Bot API</span>
+                      <span class="badge badge--blue" id="diag-tg-badge">Тест...</span>
+                    </div>
+                    <div class="diag-item__details" id="diag-tg-details">@wbuppp</div>
+                    <div class="diag-item__latency" id="diag-tg-lat">—</div>
+                  </div>
+
+                  <div class="diag-item">
+                    <div class="diag-item__top">
+                      <span class="diag-item__name">Хранилище данных</span>
+                      <span class="badge badge--green">OK</span>
+                    </div>
+                    <div class="diag-item__details" id="diag-disk-details">localStorage Standalone</div>
+                    <div class="diag-item__latency" id="diag-disk-space">OK</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Maintenance & Cache -->
             <div class="card">
               <div class="card__header">
@@ -760,39 +730,33 @@
 
       </div><!-- /.canvas -->
 
-      <!-- ====== Floating Action Dock for Catalog Selection ====== -->
+      <!-- ====== Floating Action Dock for Selection (Apple HIG Floating Capsule) ====== -->
       <div id="catalog-selection-dock" class="action-dock">
         <div class="action-dock__count">
-          <span class="material-symbols-outlined" style="color:var(--wb-primary);">check_circle</span>
-          <span id="dock-selected-text">Выбрано: 0</span>
+          <span class="material-symbols-outlined action-dock__icon">check_circle</span>
+          <span id="dock-selected-text">0 выбрано</span>
         </div>
         <div class="action-dock__actions">
-          <button class="btn btn--ghost btn--sm action-dock-btn" onclick="app.catalogClearSelection()" title="Снять выбор">
-            <span class="material-symbols-outlined action-dock-icon">close</span>
-            <span class="btn-text">Снять</span>
+          <button class="action-dock__btn action-dock__btn--ghost" onclick="app.catalogClearSelection()" title="Снять выбор">
+            Снять
           </button>
-          <button class="btn btn--secondary btn--sm action-dock-btn" onclick="app.generatePreview()" title="Предпросмотр поста">
-            <span class="material-symbols-outlined action-dock-icon">auto_awesome</span>
-            <span class="btn-text">Превью</span>
+          <button class="action-dock__btn action-dock__btn--secondary" onclick="app.generatePreview()" title="Предпросмотр поста">
+            <span class="material-symbols-outlined" style="font-size:15px;">auto_awesome</span>
+            <span>Превью</span>
           </button>
-          <button class="btn btn--secondary btn--sm action-dock-btn" onclick="app.addSelectedToQueue()" title="Добавить в очередь публикаций">
-            <span class="material-symbols-outlined action-dock-icon">schedule_send</span>
-            <span class="btn-text">В очередь</span>
-          </button>
-          <button class="btn btn--primary btn--sm action-dock-btn action-dock-btn--primary" onclick="app.publishSelected()" title="Опубликовать в Telegram">
-            <span class="material-symbols-outlined action-dock-icon">send</span>
-            <span class="btn-text">Опубликовать</span>
+          <button class="action-dock__btn action-dock__btn--primary" onclick="app.publishSelected()" title="Опубликовать в Telegram">
+            <span>В канал →</span>
           </button>
         </div>
       </div>
 
     </main>
 
-    <!-- ====== Mobile Bottom Navigation Bar ====== -->
+    <!-- ====== Mobile Bottom Navigation Bar (Apple HIG 49pt) ====== -->
     <nav class="mobile-nav">
       <button class="mobile-nav__item mobile-nav__item--active" data-tab="dashboard" onclick="app.switchTab('dashboard')">
-        <span class="material-symbols-outlined">dashboard</span>
-        <span>Главная</span>
+        <span class="material-symbols-outlined">grid_view</span>
+        <span>Лента</span>
       </button>
       <button class="mobile-nav__item" data-tab="catalog" onclick="app.switchTab('catalog')">
         <span class="material-symbols-outlined">inventory_2</span>
@@ -804,7 +768,7 @@
       </button>
       <button class="mobile-nav__item" data-tab="preview" onclick="app.switchTab('preview')">
         <span class="material-symbols-outlined">auto_awesome</span>
-        <span>Превью</span>
+        <span>Студия</span>
       </button>
       <button class="mobile-nav__item" data-tab="settings" onclick="app.switchTab('settings')">
         <span class="material-symbols-outlined">tune</span>

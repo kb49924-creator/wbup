@@ -40,6 +40,77 @@ const StandaloneEngine = {
     { supplier_id: 1266941, brand: "Urban Style", enabled: true, created_at: "2026-09-05" },
   ],
 
+  defaultProducts: [
+    {
+      id: 172938120,
+      article: 172938120,
+      name: "Худи оверсайз базовое с начесом",
+      brand: "StreetStar",
+      supplier: "StreetStar",
+      supplier_id: 110887,
+      price: 4200,
+      sale_price: 1890,
+      discount: 55,
+      rating: 4.8,
+      feedbacks: 1420,
+      category: "Худи",
+      gender: "unisex",
+      is_new: true,
+      ai_card: { status: "ok", score: 96, index: 1, total_photos: 5 }
+    },
+    {
+      id: 204918231,
+      article: 204918231,
+      name: "Кроссовки демисезонные кожаные",
+      brand: "SOQ WAY",
+      supplier: "SOQ WAY",
+      supplier_id: 4183217,
+      price: 6800,
+      sale_price: 2690,
+      discount: 60,
+      rating: 4.9,
+      feedbacks: 890,
+      category: "Обувь",
+      gender: "unisex",
+      is_new: true,
+      ai_card: { status: "ok", score: 94, index: 1, total_photos: 4 }
+    },
+    {
+      id: 189201482,
+      article: 189201482,
+      name: "Джинсы широкие трубы baggy",
+      brand: "Red Flag",
+      supplier: "Red Flag",
+      supplier_id: 42283,
+      price: 3900,
+      sale_price: 1750,
+      discount: 55,
+      rating: 4.7,
+      feedbacks: 2130,
+      category: "Джинсы",
+      gender: "unisex",
+      is_new: true,
+      ai_card: { status: "ok", score: 91, index: 1, total_photos: 6 }
+    },
+    {
+      id: 165098234,
+      article: 165098234,
+      name: "Куртка бомбер утепленный оверсайз",
+      brand: "Urban Style",
+      supplier: "Urban Style",
+      supplier_id: 1266941,
+      price: 8500,
+      sale_price: 3490,
+      discount: 59,
+      rating: 4.8,
+      feedbacks: 640,
+      category: "Верхняя одежда",
+      gender: "unisex",
+      is_new: true,
+      ai_card: { status: "ok", score: 95, index: 1, total_photos: 5 }
+    }
+  ],
+
   // --- 1. Storage Methods ---
   getSettings() {
     try {
@@ -196,9 +267,13 @@ const StandaloneEngine = {
   getCachedCatalog() {
     try {
       const saved = localStorage.getItem(this.STORAGE.CATALOG);
-      return saved ? JSON.parse(saved) : [];
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+      return [...this.defaultProducts];
     } catch (_) {
-      return [];
+      return [...this.defaultProducts];
     }
   },
 
@@ -914,11 +989,16 @@ const StandaloneEngine = {
       const sellers = this.getSellers();
       const pubs = this.getPublications();
       return {
+        sellers: sellers.length,
+        sellers_count: sellers.length,
+        products: prods.length,
         total_products: prods.length,
         new_today: prods.filter(p => p.is_new).length,
+        queue: queue.filter(q => q.status === "pending").length,
         in_queue: queue.filter(q => q.status === "pending").length,
+        publications: pubs.length,
         published_today: pubs.length,
-        sellers_count: sellers.length,
+        scheduler_running: false,
       };
     }
 
@@ -1087,8 +1167,12 @@ const app = {
   initStandaloneState() {
     const isFile = window.location.protocol === 'file:';
     const isIos = Boolean(window.IS_IOS_NATIVE_APP || (window.webkit && window.webkit.messageHandlers));
-    const forced = localStorage.getItem('wbup_force_standalone') === 'true';
-    if (isFile || isIos || forced) {
+    const isGitHub = window.location.hostname.includes('github.io');
+    const isStatic = isFile || isGitHub || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && !window.location.port);
+    const forced = localStorage.getItem('wbup_force_standalone');
+    if (forced !== null) {
+      this.state.isStandalone = forced === 'true';
+    } else if (isStatic || isIos) {
       this.state.isStandalone = true;
     }
   },
@@ -1227,15 +1311,15 @@ const app = {
 
     // Update header title
     const tabTitles = {
-      dashboard: 'Дашборд',
+      dashboard: 'Находки WB',
       catalog: 'Каталог товаров',
-      queue: 'Очередь постов',
+      queue: 'Очередь публикаций',
       sellers: 'Продавцы',
-      preview: 'Студия постов Telegram',
-      photo: 'Локальный ИИ для фото',
-      scheduler: 'Планировщик проверок',
+      preview: 'Студия постов',
+      photo: 'Локальный ИИ',
+      scheduler: 'Планировщик',
       logs: 'Журнал событий',
-      settings: 'Настройки системы',
+      settings: 'Настройки',
     };
     const title = tabTitles[tabName] || 'WB Up Studio';
     const pageTitleEl = document.getElementById('page-title');
@@ -1551,6 +1635,7 @@ const app = {
       this.state.selectedArticles.clear();
 
       this.renderCatalogWorkspace();
+      this.renderHomeFeed();
       this.updateCatalogButtons();
     } catch (e) {
       this.showNotification('Ошибка загрузки каталога: ' + e.message, 'error');
@@ -1607,12 +1692,14 @@ const app = {
       items.forEach(p => this.state.selectedArticles.add(p.article));
     }
     this.renderCatalogWorkspace();
+    this.renderHomeFeed();
     this.updateCatalogButtons();
   },
 
   catalogClearSelection() {
     this.state.selectedArticles.clear();
     this.renderCatalogWorkspace();
+    this.renderHomeFeed();
     this.updateCatalogButtons();
   },
 
@@ -1625,17 +1712,13 @@ const app = {
       this.state.selectedArticles.delete(art);
     }
 
-    // Моментальное точечное обновление DOM без полного ререндера 385 карточек
+    // Toggle on catalog grid
     const cardEl = document.getElementById(`prod-card-${art}`);
-    if (cardEl) {
-      cardEl.classList.toggle('product-card--selected', isNowSelected);
-    } else {
-      const imgEl = document.getElementById(`prod-img-${art}`);
-      if (imgEl) {
-        const parentCard = imgEl.closest('.product-card');
-        if (parentCard) parentCard.classList.toggle('product-card--selected', isNowSelected);
-      }
-    }
+    if (cardEl) cardEl.classList.toggle('product-card--selected', isNowSelected);
+
+    // Toggle on home feed grid
+    const homeCardEl = document.getElementById(`home-card-${art}`);
+    if (homeCardEl) homeCardEl.classList.toggle('product-card--selected', isNowSelected);
 
     this.updateCatalogButtons();
     this.haptic('light');
@@ -1788,87 +1871,124 @@ const app = {
     if (emptyState) emptyState.style.display = 'none';
     grid.style.display = 'grid';
 
-    grid.innerHTML = filtered.map(p => {
-      const isSelected = this.state.selectedArticles.has(p.article);
-      const selClass = isSelected ? 'product-card--selected' : '';
-      const price = p.sale_price || p.price || 0;
-      const hasDiscount = p.discount && p.discount > 0;
+    grid.innerHTML = filtered.map(p => this.renderCardHtml(p, 'prod')).join('');
+    this.updateCatalogButtons();
+  },
 
-      // AI Card Badge & Photo Selection
-      const ai = p.ai_card || { status: 'pending' };
-      const aiIdx = (ai && ai.index != null) ? ai.index : 1;
-      const aiScore = (ai && ai.score != null) ? Math.round(ai.score) : 0;
-      const aiStatus = ai ? ai.status : 'pending';
-      const imgSrc = `/api/image/${p.article}?v=${aiIdx}_${aiScore}&st=${aiStatus}`;
+  renderCardHtml(p, prefix = 'prod') {
+    const isSelected = this.state.selectedArticles.has(p.article);
+    const selClass = isSelected ? 'product-card--selected' : '';
+    const price = p.sale_price || p.price || 0;
+    const hasDiscount = p.discount && p.discount > 0;
 
-      let aiBadgeHtml = '';
-      if (ai.status === 'ok') {
-        aiBadgeHtml = `
-          <div class="apple-ai-badge apple-ai-badge--ok" title="Локальный ИИ подобрал лучшую карточку для поста: фото #${ai.index} (уверенность ${ai.score}%)">
-            <span class="apple-ai-sparkle">✦</span>
-            <span class="apple-ai-label">ИИ Карточка #${ai.index}</span>
-            <span class="apple-ai-score">${ai.score}%</span>
-          </div>`;
-      } else if (ai.status === 'rejected') {
-        aiBadgeHtml = `
-          <div class="apple-ai-badge apple-ai-badge--rejected" title="ИИ отклонил фото (люди в кадре / не подходит для публикации)">
-            <span class="material-symbols-outlined" style="font-size:12px;">close</span>
-            <span>Без карточки ИИ</span>
-          </div>`;
-      } else {
-        aiBadgeHtml = `
-          <div class="apple-ai-badge apple-ai-badge--pending" title="Нажмите, чтобы запустить подбор фото локальным ИИ" onclick="event.stopPropagation(); app.evaluateArticleCard(${p.article});">
-            <span class="material-symbols-outlined" style="font-size:12px;">hourglass_empty</span>
-            <span>Оценить ИИ</span>
-          </div>`;
-      }
+    // AI Card Badge & Photo Selection
+    const ai = p.ai_card || { status: 'pending' };
+    const aiIdx = (ai && ai.index != null) ? ai.index : 1;
+    const aiScore = (ai && ai.score != null) ? Math.round(ai.score) : 0;
+    const aiStatus = ai ? ai.status : 'pending';
 
-      const photoCounterHtml = ai.total_photos > 1 ? `
-        <span class="product-card__photo-pill" title="Индекс фото в каталоге WB">
-          Фото #${aiIdx} из ${ai.total_photos}
-        </span>
-      ` : (ai.status === 'ok' ? `
-        <span class="product-card__photo-pill" title="Индекс фото">
-          Фото #${aiIdx}
-        </span>
-      ` : '');
+    // Direct CDN URL if standalone or on static host
+    const imgSrc = this.state.isStandalone
+      ? (p.photo_url || StandaloneEngine.getPhotoUrl(p.article, aiIdx))
+      : `/api/image/${p.article}?v=${aiIdx}_${aiScore}&st=${aiStatus}`;
 
-      return `
-        <div id="prod-card-${p.article}" class="product-card ${selClass}" onclick="app.toggleArticleCard(${p.article})">
-          <div class="product-card__thumb-wrapper">
-            ${aiBadgeHtml}
-            ${hasDiscount ? `<span class="product-card__discount-badge">-${p.discount}%</span>` : ''}
-            ${photoCounterHtml}
-            <div class="product-card__checkbox">
-              <span class="material-symbols-outlined" style="font-size:16px;">check</span>
-            </div>
-            <img src="${imgSrc}"
-                 id="prod-img-${p.article}"
-                 class="product-card__img"
-                 alt="${this.escHtml(p.name || '')}"
-                 loading="lazy"
-                 onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%231c1c1e\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50%\\' y=\\'50%\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' fill=\\'%238e8e93\\' font-size=\\'12\\'>Фото WB</text></svg>'">
-            <div class="product-card__meta-bar">
-              <span>⭐ ${p.rating || '—'}</span>
-              <span>💬 ${p.feedbacks ? `${p.feedbacks} отз.` : '0'}</span>
-            </div>
+    let aiBadgeHtml = '';
+    if (ai.status === 'ok') {
+      aiBadgeHtml = `
+        <div class="apple-ai-badge apple-ai-badge--ok" title="Локальный ИИ подобрал карточку (фото #${ai.index})">
+          <span class="apple-ai-sparkle">✦</span>
+          <span class="apple-ai-label">ИИ #${ai.index}</span>
+        </div>`;
+    }
+
+    const photoCounterHtml = ai.total_photos > 1 ? `
+      <span class="product-card__photo-pill" title="Индекс фото в каталоге WB">
+        Фото #${aiIdx} из ${ai.total_photos}
+      </span>
+    ` : '';
+
+    return `
+      <div id="${prefix}-card-${p.article}" class="product-card ${selClass}" onclick="app.toggleArticleCard(${p.article})">
+        <div class="product-card__thumb-wrapper">
+          ${aiBadgeHtml}
+          ${hasDiscount ? `<span class="product-card__discount-badge">-${p.discount}%</span>` : ''}
+          ${photoCounterHtml}
+          <div class="product-card__checkbox">
+            <span class="material-symbols-outlined" style="font-size:16px;">check</span>
           </div>
-          <div class="product-card__content">
-            <div class="product-card__brand">${this.escHtml(p.brand || 'WB Brand')}</div>
-            <div class="product-card__name" title="${this.escHtml(p.name || '')}">${this.escHtml(p.name || 'Товар без названия')}</div>
-            <div class="product-card__price-row">
-              <span class="product-card__price">${this.formatPrice(price)}</span>
-              ${hasDiscount && p.price ? `<span class="product-card__old-price">${this.formatPrice(p.price)}</span>` : ''}
-              <a href="https://www.wildberries.ru/catalog/${p.article}/detail.aspx" target="_blank" onclick="event.stopPropagation();" style="margin-left:auto; color:var(--apple-blue);" title="Открыть карточку на WB">
-                <span class="material-symbols-outlined" style="font-size:18px;">open_in_new</span>
-              </a>
-            </div>
+          <img src="${imgSrc}"
+               id="${prefix}-img-${p.article}"
+               class="product-card__img"
+               alt="${this.escHtml(p.name || '')}"
+               loading="lazy"
+               onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%231c1c1e\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50%\\' y=\\'50%\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' fill=\\'%238e8e93\\' font-size=\\'12\\'>Фото WB</text></svg>'">
+          <div class="product-card__meta-bar">
+            <span>⭐ ${p.rating || '—'}</span>
+            <span>💬 ${p.feedbacks ? `${p.feedbacks}` : '0'}</span>
           </div>
         </div>
-      `;
-    }).join('');
+        <div class="product-card__content">
+          <div class="product-card__brand">${this.escHtml(p.brand || 'WB')}</div>
+          <div class="product-card__name" title="${this.escHtml(p.name || '')}">${this.escHtml(p.name || 'Товар без названия')}</div>
+          <div class="product-card__price-row">
+            <span class="product-card__price">${this.formatPrice(price)}</span>
+            ${hasDiscount && p.price ? `<span class="product-card__old-price">${this.formatPrice(p.price)}</span>` : ''}
+            <a href="https://www.wildberries.ru/catalog/${p.article}/detail.aspx" target="_blank" onclick="event.stopPropagation();" style="margin-left:auto; color:var(--apple-blue);" title="Открыть карточку на WB">
+              <span class="material-symbols-outlined" style="font-size:18px;">open_in_new</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
+  },
 
-    this.updateCatalogButtons();
+  renderHomeFeed() {
+    const grid = document.getElementById('home-product-grid');
+    const empty = document.getElementById('home-empty-feed');
+    if (!grid) return;
+
+    let items = this.state.products || [];
+    const filter = this.state.homeCategoryFilter || 'all';
+
+    if (filter === 'clothes') {
+      items = items.filter(p => {
+        const text = `${p.category || ''} ${p.name || ''}`.toLowerCase();
+        return text.includes('одежд') || text.includes('худи') || text.includes('джинс') || text.includes('куртк') || text.includes('футболк') || text.includes('штаны');
+      });
+    } else if (filter === 'shoes') {
+      items = items.filter(p => {
+        const text = `${p.category || ''} ${p.name || ''}`.toLowerCase();
+        return text.includes('обув') || text.includes('кроссовк') || text.includes('кеды') || text.includes('ботинк');
+      });
+    } else if (filter === 'discount') {
+      items = items.filter(p => (p.discount || 0) >= 50);
+    } else if (filter === 'top') {
+      items = items.filter(p => (p.rating || 0) >= 4.8);
+    }
+
+    const displayItems = items.slice(0, 12);
+    if (displayItems.length === 0) {
+      grid.style.display = 'none';
+      if (empty) empty.style.display = 'block';
+      return;
+    }
+
+    if (empty) empty.style.display = 'none';
+    grid.style.display = 'grid';
+    grid.innerHTML = displayItems.map(p => this.renderCardHtml(p, 'home')).join('');
+  },
+
+  filterHomeFeed(category, btnEl) {
+    this.haptic('light');
+    this.state.homeCategoryFilter = category;
+    if (btnEl) {
+      const parent = btnEl.parentElement;
+      if (parent) {
+        parent.querySelectorAll('.ios-chip').forEach(c => c.classList.remove('ios-chip--active'));
+        btnEl.classList.add('ios-chip--active');
+      }
+    }
+    this.renderHomeFeed();
   },
 
   async evaluateArticleCard(article) {
@@ -1934,9 +2054,10 @@ const app = {
     const dockText = document.getElementById('dock-selected-text');
 
     if (dock) {
-      if (count > 0 && this.state.currentTab === 'catalog') {
+      const activeTab = this.state.currentTab;
+      if (count > 0 && (activeTab === 'catalog' || activeTab === 'dashboard')) {
         dock.classList.add('action-dock--visible');
-        if (dockText) dockText.textContent = `Выбрано: ${count}`;
+        if (dockText) dockText.textContent = `${count} выбрано`;
       } else {
         dock.classList.remove('action-dock--visible');
       }

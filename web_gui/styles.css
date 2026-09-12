@@ -162,23 +162,6 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Subtle Apple Ambient Aurora Background (macOS Sequoia & iOS 18) */
-.apple-aurora-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(circle at 12% 14%, rgba(0, 113, 227, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 88% 16%, rgba(191, 90, 242, 0.10) 0%, transparent 45%),
-    radial-gradient(circle at 50% 92%, rgba(94, 92, 230, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 85% 75%, rgba(0, 113, 227, 0.07) 0%, transparent 42%);
-  filter: blur(40px);
-}
-
 /* Apple Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 7px;
@@ -450,6 +433,64 @@ html, body {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.top-header__brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.top-header__channel-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  transition: background 0.15s ease;
+}
+
+.top-header__channel-pill:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.top-header__page-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.top-header__icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform 0.1s ease, background 0.15s ease;
+}
+
+.top-header__icon-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.top-header__icon-btn:active {
+  transform: scale(0.92);
+}
+
+.top-header__icon-btn .material-symbols-outlined {
+  font-size: 18px;
 }
 
 /* Mobile Nav Bar (Bottom) */
@@ -1778,8 +1819,8 @@ html, body {
    ============================================================ */
 @media (max-width: 900px) {
   :root {
-    --header-height: 52px;
-    --mobile-nav-height: 58px;
+    --header-height: 44px;
+    --mobile-nav-height: 49px;
   }
 
   /* 1. Base & Layout Ergonomics */
@@ -1792,7 +1833,7 @@ html, body {
     width: 100% !important;
     max-width: 100vw !important;
     padding-top: 0 !important;
-    padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px) + 76px) !important;
+    padding-bottom: calc(49px + env(safe-area-inset-bottom, 34px) + 16px) !important;
     overflow-x: hidden;
   }
 
@@ -1802,46 +1843,42 @@ html, body {
     top: 0;
     padding-top: env(safe-area-inset-top, 0px);
     height: calc(var(--header-height) + env(safe-area-inset-top, 0px));
-    padding-left: max(14px, env(safe-area-inset-left, 0px));
-    padding-right: max(14px, env(safe-area-inset-right, 0px));
-    background: rgba(18, 18, 20, 0.90);
-    backdrop-filter: blur(25px) saturate(190%);
-    -webkit-backdrop-filter: blur(25px) saturate(190%);
-    border-bottom: 0.5px solid rgba(255, 255, 255, 0.12);
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+    box-shadow: none !important;
     z-index: 100;
   }
 
   .top-header__title {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 700;
     letter-spacing: -0.02em;
   }
 
   .top-header__actions {
-    gap: 6px;
+    gap: 8px;
   }
 
-  .top-header__actions .btn {
-    min-height: 38px;
-    padding: 6px 12px;
-    touch-action: manipulation;
-  }
-
-  /* Bottom Tab Navigation Bar with Home Indicator Inset */
+  /* Bottom Tab Navigation Bar with Home Indicator Inset (Apple HIG 49pt) */
   .mobile-nav {
     display: flex;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
+    height: calc(49px + env(safe-area-inset-bottom, 0px));
     padding-bottom: env(safe-area-inset-bottom, 0px);
     padding-left: max(6px, env(safe-area-inset-left, 0px));
     padding-right: max(6px, env(safe-area-inset-right, 0px));
-    background: rgba(18, 18, 20, 0.94);
-    backdrop-filter: blur(30px) saturate(200%);
-    -webkit-backdrop-filter: blur(30px) saturate(200%);
-    border-top: 0.5px solid rgba(255, 255, 255, 0.12);
+    background: rgba(14, 14, 16, 0.88);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+    box-shadow: none !important;
     z-index: 1000;
     align-items: stretch;
     justify-content: space-around;
@@ -1850,31 +1887,31 @@ html, body {
   .mobile-nav__item {
     flex: 1;
     min-width: 44px;
-    min-height: 44px;
+    height: 49px;
+    min-height: 49px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 2px;
-    padding: 4px 6px;
-    border-radius: 12px;
+    padding: 0;
+    border-radius: 0;
     font-size: 10px;
-    font-weight: 600;
-    color: var(--fg-muted);
+    font-weight: 500;
+    color: #8e8e93;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     -webkit-user-select: none;
     user-select: none;
-    transition: transform 0.12s ease, color 0.12s ease;
+    transition: transform 0.1s ease, color 0.12s ease;
   }
 
   .mobile-nav__item:active {
     transform: scale(0.92);
-    opacity: 0.85;
   }
 
   .mobile-nav__item--active {
-    color: var(--apple-blue);
+    color: #0a84ff;
   }
 
   .mobile-nav__item .material-symbols-outlined {
@@ -2503,20 +2540,294 @@ html, body {
 }
 
 /* ============================================================
-   iPhone 15 Pro & ProMotion 120Hz Ultra-Premium Tuning
+   iPhone 15 Pro & ProMotion 120Hz — Apple Human Interface Guidelines
    Viewport: 393 x 852 pt | Dynamic Island | Super Retina XDR OLED
    ============================================================ */
-@media (max-width: 430px) {
+
+/* Universal Home Feed & Channel Widget Components */
+.ios-channel-hero {
+  background: #121214;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 22px;
+}
+
+.ios-channel-hero__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.ios-tag {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8e8e93;
+}
+
+.ios-channel-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 2px 0 0 0;
+}
+
+.ios-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(48, 209, 88, 0.12);
+  border: 0.5px solid rgba(48, 209, 88, 0.25);
+  color: #30d158;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.status-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #30d158;
+  box-shadow: 0 0 6px rgba(48, 209, 88, 0.7);
+  display: inline-block;
+}
+
+.ios-channel-hero__metrics {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.ios-metric-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+
+.ios-metric-val {
+  font-size: 17px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.ios-metric-lbl {
+  font-size: 10px;
+  font-weight: 500;
+  color: #8e8e93;
+}
+
+.ios-metric-sep {
+  width: 0.5px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ios-channel-hero__cta {
+  width: 100%;
+}
+
+.ios-cta-btn {
+  width: 100%;
+  height: 44px;
+  border-radius: 12px;
+  background: #0a84ff;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 700;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  touch-action: manipulation;
+}
+
+.ios-cta-btn:active {
+  transform: scale(0.98);
+}
+
+.ios-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+.ios-section-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.ios-section-sub {
+  font-size: 12px;
+  color: #8e8e93;
+  margin-top: 2px;
+}
+
+.ios-link-btn {
+  background: none;
+  border: none;
+  color: #0a84ff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  touch-action: manipulation;
+}
+
+.ios-chips-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.ios-chips-row::-webkit-scrollbar {
+  display: none;
+}
+
+.ios-chip {
+  flex-shrink: 0;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  color: #8e8e93;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  touch-action: manipulation;
+}
+
+.ios-chip--active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+/* Floating Action Capsule (iOS 17 Pill) */
+.action-dock {
+  position: fixed !important;
+  bottom: calc(49px + env(safe-area-inset-bottom, 34px) + 12px) !important;
+  left: 14px !important;
+  right: 14px !important;
+  max-width: 400px !important;
+  margin: 0 auto !important;
+  height: 48px !important;
+  padding: 0 8px 0 16px !important;
+  border-radius: 9999px !important;
+  background: rgba(26, 26, 30, 0.94) !important;
+  backdrop-filter: blur(25px) !important;
+  -webkit-backdrop-filter: blur(25px) !important;
+  border: 0.5px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  transform: translateY(140%) scale(0.92) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
+  z-index: 950 !important;
+}
+
+.action-dock--visible {
+  transform: translateY(0) scale(1) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.action-dock__count {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.action-dock__icon {
+  color: #0a84ff;
+  font-size: 18px;
+}
+
+.action-dock__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.action-dock__btn {
+  border: none;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 9999px;
+  transition: transform 0.1s ease;
+  touch-action: manipulation;
+}
+
+.action-dock__btn:active {
+  transform: scale(0.93);
+}
+
+.action-dock__btn--ghost {
+  background: transparent;
+  color: #8e8e93;
+  padding: 6px 10px;
+}
+
+.action-dock__btn--secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.action-dock__btn--primary {
+  background: #0a84ff;
+  color: #ffffff;
+  padding: 7px 14px;
+  font-weight: 700;
+}
+
+/* Specific iPhone 15 Pro & Mobile Viewport Rules */
+@media (max-width: 480px) {
   :root {
     --bg-app: #000000;
-    --bg-surface: rgba(22, 22, 26, 0.85);
-    --bg-surface-elevated: rgba(28, 28, 34, 0.90);
-    --border-card: rgba(255, 255, 255, 0.10);
-    --header-height: 54px;
-    --mobile-nav-height: 60px;
+    --bg-surface: #121214;
+    --bg-surface-elevated: #1c1c1e;
+    --header-height: 44px;
+    --tab-bar-height: 49px;
   }
 
-  /* 1. OLED Pure Black Foundation & Dynamic Island Top Header */
+  /* 1. True OLED Deep Black (No halos, no blur blobs) */
   html, body {
     background-color: #000000 !important;
     overscroll-behavior-y: none;
@@ -2527,215 +2838,276 @@ html, body {
     background-color: #000000 !important;
   }
 
+  /* 2. Top Header / Dynamic Island Safe Area */
   .top-header {
-    padding-top: max(env(safe-area-inset-top, 59px), 16px) !important;
-    height: calc(var(--header-height) + max(env(safe-area-inset-top, 59px), 16px)) !important;
-    padding-left: max(14px, env(safe-area-inset-left, 0px)) !important;
-    padding-right: max(14px, env(safe-area-inset-right, 0px)) !important;
-    background: rgba(10, 10, 14, 0.85) !important;
-    backdrop-filter: blur(35px) saturate(210%) !important;
-    -webkit-backdrop-filter: blur(35px) saturate(210%) !important;
-    border-bottom: 0.5px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), inset 0 -0.5px 0 rgba(255, 255, 255, 0.08) !important;
+    position: sticky !important;
+    top: 0 !important;
+    padding-top: env(safe-area-inset-top, 59px) !important;
+    height: calc(44px + env(safe-area-inset-top, 59px)) !important;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)) !important;
+    padding-right: max(16px, env(safe-area-inset-right, 0px)) !important;
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    z-index: 100 !important;
   }
 
-  .top-header__brand {
-    font-size: 16px !important;
-    font-weight: 700 !important;
-    letter-spacing: -0.02em !important;
+  .top-header__brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
-  .top-header__diag-btn .btn-text {
-    display: none;
+  .top-header__channel-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
+    touch-action: manipulation;
   }
 
-  .top-header__check-btn {
-    padding: 6px 10px !important;
-    min-height: 36px !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    border-radius: 12px !important;
+  .top-header__channel-pill:active {
+    background: rgba(255, 255, 255, 0.15);
   }
 
-  /* 2. Main Viewport & Workspace for 393px Screen */
+  .top-header__page-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+  }
+
+  .top-header__title {
+    display: none !important;
+  }
+
+  .top-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .top-header__icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    touch-action: manipulation;
+  }
+
+  .top-header__icon-btn:active {
+    transform: scale(0.92);
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .top-header__icon-btn .material-symbols-outlined {
+    font-size: 18px;
+  }
+
+  /* 3. Main Viewport & Bottom Padding (Clean 49pt Tab Bar, no huge +90px gaps) */
   .main-content {
-    padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 34px) + 90px) !important;
+    padding-bottom: calc(49px + env(safe-area-inset-bottom, 34px) + 16px) !important;
   }
 
   .canvas {
-    padding: 14px 10px 30px 10px !important;
+    padding: 14px 12px 24px 12px !important;
   }
 
-  /* 3. Catalog 2-Column Grid (Engineered for 393px width) */
+  /* 4. Two-Column Curated Product Grid (Apple Store Style) */
   .product-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 10px !important;
   }
 
   .product-card {
-    border-radius: 18px !important;
-    background: rgba(22, 22, 28, 0.85) !important;
-    border: 0.5px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), inset 0 0.5px 0 rgba(255, 255, 255, 0.18) !important;
+    border-radius: 16px !important;
+    background: #121214 !important;
+    border: 0.5px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: none !important;
     overflow: hidden !important;
-    will-change: transform, opacity;
+    transition: transform 0.12s ease !important;
+    will-change: transform;
   }
 
   .product-card:active {
-    transform: scale3d(0.965, 0.965, 1) !important;
-    transition: transform 0.12s cubic-bezier(0.2, 0, 0, 1) !important;
+    transform: scale(0.96) !important;
+  }
+
+  .product-card--selected {
+    border-color: #0a84ff !important;
   }
 
   .product-card__thumb-wrapper {
-    border-radius: 16px 16px 0 0 !important;
-    padding-top: 133% !important; /* 3:4 Aspect Ratio */
-    background: #0d0d10 !important;
+    border-radius: 14px 14px 0 0 !important;
+    padding-top: 133.33% !important; /* 3:4 Aspect Ratio */
+    background: #18181b !important;
+    position: relative;
   }
 
   .product-card__discount-badge {
     top: 6px !important;
-    right: 36px !important;
+    left: 6px !important;
+    right: auto !important;
     font-size: 10px !important;
     font-weight: 800 !important;
     padding: 3px 6px !important;
-    border-radius: 8px !important;
-    background: linear-gradient(135deg, #ff2d55 0%, #af52de 100%) !important;
-    border: 0.5px solid rgba(255, 255, 255, 0.3) !important;
-    box-shadow: 0 3px 10px rgba(255, 45, 85, 0.5), inset 0 0.5px 0 rgba(255, 255, 255, 0.4) !important;
-    letter-spacing: -0.02em;
+    border-radius: 6px !important;
+    background: rgba(255, 59, 48, 0.92) !important;
+    border: none !important;
+    box-shadow: none !important;
+    letter-spacing: -0.01em;
   }
 
   .product-card__checkbox {
-    width: 26px !important;
-    height: 26px !important;
+    width: 24px !important;
+    height: 24px !important;
     top: 6px !important;
     right: 6px !important;
-    border-radius: 8px !important;
-    background: rgba(14, 14, 18, 0.75) !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.35) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 50% !important;
+    background: rgba(0, 0, 0, 0.45) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .product-card--selected .product-card__checkbox {
-    background: var(--apple-blue) !important;
-    border-color: var(--apple-blue) !important;
-    box-shadow: 0 0 10px rgba(0, 113, 227, 0.6) !important;
+    background: #0a84ff !important;
+    border-color: #0a84ff !important;
+    box-shadow: none !important;
   }
 
   .product-card__content {
-    padding: 10px 10px !important;
-    gap: 3px !important;
+    padding: 8px 10px 10px 10px !important;
+    gap: 2px !important;
   }
 
   .product-card__brand {
     font-size: 10px !important;
-    font-weight: 700 !important;
-    color: var(--apple-blue-bright) !important;
-    letter-spacing: 0.02em !important;
+    font-weight: 600 !important;
+    color: #8e8e93 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.03em !important;
   }
 
   .product-card__name {
     font-size: 12px !important;
     font-weight: 500 !important;
-    line-height: 1.35 !important;
-    height: 32px !important;
-    color: rgba(255, 255, 255, 0.9) !important;
+    line-height: 1.3 !important;
+    height: 31px !important;
+    color: #ffffff !important;
     -webkit-line-clamp: 2 !important;
   }
 
   .product-card__price {
-    font-size: 16px !important;
-    font-weight: 800 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
     letter-spacing: -0.02em !important;
     color: #ffffff !important;
   }
 
   .product-card__old-price {
     font-size: 11px !important;
-    color: rgba(255, 255, 255, 0.4) !important;
+    color: #636366 !important;
   }
 
-  /* 4. Floating Action Dock */
-  .action-dock {
-    bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 34px) + 14px) !important;
-    left: 12px !important;
-    right: 12px !important;
-    border-radius: 22px !important;
-    padding: 8px 12px !important;
-    background: rgba(24, 24, 30, 0.94) !important;
-    backdrop-filter: blur(35px) saturate(220%) !important;
-    -webkit-backdrop-filter: blur(35px) saturate(220%) !important;
-    border: 0.5px solid rgba(255, 255, 255, 0.18) !important;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), inset 0 0.5px 0 rgba(255, 255, 255, 0.25) !important;
-  }
-
-  .action-dock-btn .btn-text {
-    display: none;
-  }
-
-  .action-dock-btn {
-    padding: 8px 11px !important;
-    min-height: 40px !important;
-    border-radius: 12px !important;
-  }
-
-  .action-dock-btn--primary .btn-text {
-    display: inline !important;
-    font-size: 12px !important;
-    font-weight: 700 !important;
-  }
-
-  /* 5. Floating Liquid Glass Tab Navigation Bar */
+  /* 5. Apple HIG Native 49pt Tab Bar (Eliminates "big bottom frame") */
   .mobile-nav {
     position: fixed !important;
     bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    height: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 34px)) !important;
-    padding-bottom: max(env(safe-area-inset-bottom, 34px), 20px) !important;
-    padding-left: max(8px, env(safe-area-inset-left, 0px)) !important;
-    padding-right: max(8px, env(safe-area-inset-right, 0px)) !important;
-    background: rgba(12, 12, 16, 0.88) !important;
-    backdrop-filter: blur(35px) saturate(220%) !important;
-    -webkit-backdrop-filter: blur(35px) saturate(220%) !important;
-    border-top: 0.5px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.6), inset 0 0.5px 0 rgba(255, 255, 255, 0.14) !important;
+    height: calc(49px + env(safe-area-inset-bottom, 34px)) !important;
+    padding-bottom: env(safe-area-inset-bottom, 34px) !important;
+    padding-left: env(safe-area-inset-left, 0px) !important;
+    padding-right: env(safe-area-inset-right, 0px) !important;
+    padding-top: 0 !important;
+    background: rgba(12, 12, 14, 0.88) !important;
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    border-top: 0.5px solid rgba(255, 255, 255, 0.1) !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    display: flex !important;
+    align-items: stretch !important;
+    justify-content: space-around !important;
+    z-index: 900 !important;
   }
 
   .mobile-nav__item {
-    min-height: 44px !important;
-    border-radius: 14px !important;
-    transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), color 0.15s ease !important;
+    flex: 1 !important;
+    height: 49px !important;
+    min-height: 49px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    color: #8e8e93 !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.01em !important;
+    transition: transform 0.1s ease, color 0.12s ease !important;
+    -webkit-tap-highlight-color: transparent !important;
   }
 
   .mobile-nav__item:active {
-    transform: scale3d(0.92, 0.92, 1) !important;
+    transform: scale(0.92) !important;
   }
 
   .mobile-nav__item--active {
-    color: var(--apple-blue-bright) !important;
+    color: #0a84ff !important;
   }
 
-  .mobile-nav__item--active .material-symbols-outlined {
-    filter: drop-shadow(0 0 8px rgba(10, 132, 255, 0.6));
+  .mobile-nav__item .material-symbols-outlined {
+    font-size: 22px !important;
+    filter: none !important;
   }
 
   /* 6. Native iOS Bottom Sheet for Modals */
   .modal {
     border-radius: 28px 28px 0 0 !important;
     padding-bottom: max(env(safe-area-inset-bottom, 34px), 24px) !important;
-    background: rgba(22, 22, 28, 0.96) !important;
-    backdrop-filter: blur(40px) saturate(220%) !important;
-    -webkit-backdrop-filter: blur(40px) saturate(220%) !important;
-    border-top: 0.5px solid rgba(255, 255, 255, 0.22) !important;
-    box-shadow: 0 -16px 50px rgba(0, 0, 0, 0.85), inset 0 0.5px 0 rgba(255, 255, 255, 0.25) !important;
+    background: #18181c !important;
+    backdrop-filter: blur(30px) !important;
+    -webkit-backdrop-filter: blur(30px) !important;
+    border-top: 0.5px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 -16px 50px rgba(0, 0, 0, 0.85) !important;
   }
 
   .modal__grabber {
-    width: 38px !important;
+    width: 36px !important;
     height: 5px !important;
-    background: rgba(255, 255, 255, 0.28) !important;
+    background: rgba(255, 255, 255, 0.25) !important;
     border-radius: 9999px !important;
     margin: 8px auto 6px auto !important;
   }
@@ -2750,33 +3122,27 @@ html, body {
     letter-spacing: -0.02em !important;
   }
 
-  /* 7. Telegram Studio 1080x1080 on iPhone 15 Pro */
+  /* 7. Telegram Studio Preview on Mobile */
   .preview-stage {
     padding: 12px !important;
-    border-radius: 20px !important;
-    background: rgba(16, 16, 20, 0.75) !important;
-    border: 0.5px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 18px !important;
+    background: #141416 !important;
+    border: 0.5px solid rgba(255, 255, 255, 0.08) !important;
   }
 
   .preview-card-img {
-    border-radius: 18px !important;
-    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.7), 0 0 0 0.5px rgba(255, 255, 255, 0.15) !important;
-  }
-
-  .studio-action-btn {
-    min-height: 50px !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
     border-radius: 16px !important;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7) !important;
   }
 }
 
-/* ProMotion 120Hz Hyper-Smooth Hardware Acceleration */
+/* ProMotion 120Hz Hardware Acceleration */
 .canvas,
 .macos-terminal__body,
 .modal__body,
 .iphone-screen,
 .chips-row,
+.ios-chips-row,
 .apple-segmented-control,
 .product-grid {
   -webkit-overflow-scrolling: touch;
