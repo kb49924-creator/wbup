@@ -12,10 +12,6 @@ name: Build iOS IPA (Unsigned / Sideloadable)
         type: boolean
         default: true
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 permissions:
   contents: write
 
