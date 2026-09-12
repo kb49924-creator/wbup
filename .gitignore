@@ -29,6 +29,9 @@ data/
 !ios/WBUpStudio/www/*.png
 !ios/WBUpStudio/Assets.xcassets/**
 !apple-touch-icon.png
+!wb_up_background.jpg
+!web_gui/wb_up_background.jpg
+!ios/WBUpStudio/www/wb_up_background.jpg
 web_gui/server.log
 output_*.mp4
 test_*.png

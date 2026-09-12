@@ -96,13 +96,15 @@ class CardTemplate:
             count = len(product_images)
             cols, rows = self._calc_grid(count)
 
-            # 3. Рассчитываем отступы и размеры плиток
-            margin = self.MARGIN_4 if count <= 4 else 28
+            # 3. Рассчитываем отступы и размеры плиток (учитывая фирменный логотип в шапке фона)
+            top_margin = 130 if background_path else (self.MARGIN_4 if count <= 4 else 28)
+            bottom_margin = 36 if count <= 4 else 28
+            margin_x = self.MARGIN_4 if count <= 4 else 28
             gap = self.GAP_4 if count <= 4 else 16
             tile_radius = self.TILE_RADIUS_4 if count <= 4 else 18
 
-            cell_w = (CARD_SIZE - 2 * margin - (cols - 1) * gap) // cols
-            cell_h = (CARD_SIZE - 2 * margin - (rows - 1) * gap) // rows
+            cell_w = (CARD_SIZE - 2 * margin_x - (cols - 1) * gap) // cols
+            cell_h = (CARD_SIZE - top_margin - bottom_margin - (rows - 1) * gap) // rows
 
             # 4. Размещаем карточки с товарами и типографикой
             self._place_tiles(
@@ -113,7 +115,8 @@ class CardTemplate:
                 rows=rows,
                 cell_w=cell_w,
                 cell_h=cell_h,
-                margin=margin,
+                margin_x=margin_x,
+                top_margin=top_margin,
                 gap=gap,
                 tile_radius=tile_radius,
             )
@@ -130,7 +133,7 @@ class CardTemplate:
             return False
 
     # ------------------------------------------------------------
-    # Фон (macOS Sequoia Dynamic Dark)
+    # Фон (macOS Sequoia Dynamic Dark или фирменный брендовый шаблон)
     # ------------------------------------------------------------
 
     def _draw_background(self, canvas: Image.Image, background_path: str | None):
@@ -139,9 +142,6 @@ class CardTemplate:
             try:
                 bg = Image.open(background_path).convert("RGBA")
                 bg = ImageOps.cover(bg, (CARD_SIZE, CARD_SIZE))
-                # Добавляем лёгкое затемнение для идеального контраста карточек
-                overlay = Image.new("RGBA", (CARD_SIZE, CARD_SIZE), (0, 0, 0, 85))
-                bg = Image.alpha_composite(bg, overlay)
                 canvas.paste(bg, (0, 0))
                 return
             except Exception as e:
@@ -251,7 +251,8 @@ class CardTemplate:
         rows: int,
         cell_w: int,
         cell_h: int,
-        margin: int,
+        margin_x: int,
+        top_margin: int,
         gap: int,
         tile_radius: int,
     ):
@@ -269,11 +270,11 @@ class CardTemplate:
                     offset_x = (CARD_SIZE - total_w) // 2
                     x = offset_x + col * (cell_w + gap)
                 else:
-                    x = margin + col * (cell_w + gap)
+                    x = margin_x + col * (cell_w + gap)
             else:
-                x = margin + col * (cell_w + gap)
+                x = margin_x + col * (cell_w + gap)
 
-            y = margin + row * (cell_h + gap)
+            y = top_margin + row * (cell_h + gap)
 
             img = images[idx]
             prod = products[idx] if idx < len(products) else {}

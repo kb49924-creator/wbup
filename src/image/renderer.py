@@ -262,7 +262,12 @@ class ImageRenderer:
             logger.debug("Logo directory not found: %s", logo_dir)
             return None
 
-        files = sorted(logo_dir.iterdir())
+        target = logo_dir / "wb_up_background.jpg"
+        if target.exists():
+            logger.info("🎨 Using background: %s", target.name)
+            return str(target)
+
+        files = sorted([f for f in logo_dir.iterdir() if f.is_file() and f.suffix.lower() in ('.jpg', '.jpeg', '.png', '.webp')])
         if not files:
             logger.debug("No files in logo directory: %s", logo_dir)
             return None

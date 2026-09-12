@@ -768,66 +768,75 @@ const StandaloneEngine = {
     canvas.height = 1080;
     const ctx = canvas.getContext("2d");
 
-    // 1. Studio Backdrop Gradient
-    const bgGrad = ctx.createRadialGradient(540, 480, 50, 540, 540, 760);
-    bgGrad.addColorStop(0, "#1c1c28");
-    bgGrad.addColorStop(0.6, "#101017");
-    bgGrad.addColorStop(1, "#08080c");
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, 1080, 1080);
+    // 1. Studio Background: Use branded template background if available
+    let hasBrandedBg = false;
+    try {
+      const bgImg = await this.loadImage("wb_up_background.jpg");
+      ctx.drawImage(bgImg, 0, 0, 1080, 1080);
+      hasBrandedBg = true;
+    } catch (_) {
+      // Fallback: Studio Backdrop Gradient
+      const bgGrad = ctx.createRadialGradient(540, 480, 50, 540, 540, 760);
+      bgGrad.addColorStop(0, "#1c1c28");
+      bgGrad.addColorStop(0.6, "#101017");
+      bgGrad.addColorStop(1, "#08080c");
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 1080, 1080);
 
-    // Ambient Lighting
-    ctx.save();
-    ctx.filter = "blur(90px)";
-    ctx.fillStyle = "rgba(175, 82, 222, 0.22)";
-    ctx.beginPath();
-    ctx.arc(280, 240, 260, 0, Math.PI * 2);
-    ctx.fill();
+      // Ambient Lighting
+      ctx.save();
+      ctx.filter = "blur(90px)";
+      ctx.fillStyle = "rgba(175, 82, 222, 0.22)";
+      ctx.beginPath();
+      ctx.arc(280, 240, 260, 0, Math.PI * 2);
+      ctx.fill();
 
-    ctx.fillStyle = "rgba(10, 132, 255, 0.18)";
-    ctx.beginPath();
-    ctx.arc(820, 360, 240, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
+      ctx.fillStyle = "rgba(10, 132, 255, 0.18)";
+      ctx.beginPath();
+      ctx.arc(820, 360, 240, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
 
-    // Outer Frame
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
-    ctx.lineWidth = 2;
-    this.drawRoundedRect(ctx, 20, 20, 1040, 1040, 36);
-    ctx.stroke();
+      // Outer Frame
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+      ctx.lineWidth = 2;
+      this.drawRoundedRect(ctx, 20, 20, 1040, 1040, 36);
+      ctx.stroke();
 
-    // Top Header Banner
-    ctx.save();
-    this.drawRoundedRect(ctx, 50, 44, 400, 54, 27);
-    ctx.fillStyle = "rgba(255, 255, 255, 0.07)";
-    ctx.fill();
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.14)";
-    ctx.lineWidth = 1;
-    ctx.stroke();
+      // Top Header Banner
+      ctx.save();
+      this.drawRoundedRect(ctx, 50, 44, 400, 54, 27);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.07)";
+      ctx.fill();
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.14)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
 
-    ctx.fillStyle = "#AF52DE";
-    ctx.beginPath();
-    ctx.arc(76, 71, 7, 0, Math.PI * 2);
-    ctx.fill();
+      ctx.fillStyle = "#AF52DE";
+      ctx.beginPath();
+      ctx.arc(76, 71, 7, 0, Math.PI * 2);
+      ctx.fill();
 
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = '700 20px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-    ctx.fillText("WB UP STUDIO", 96, 78);
-    ctx.fillStyle = "#8E8E93";
-    ctx.font = '500 17px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-    ctx.fillText("• НАХОДКИ", 262, 77);
-    ctx.restore();
+      ctx.fillStyle = "#FFFFFF";
+      ctx.font = '700 20px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
+      ctx.fillText("WB UP STUDIO", 96, 78);
+      ctx.fillStyle = "#8E8E93";
+      ctx.font = '500 17px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
+      ctx.fillText("• НАХОДКИ", 262, 77);
+      ctx.restore();
+    }
 
     // Top right category badge
     ctx.save();
     const catName = (products[0].category || "ТОП ВЫБОР").toUpperCase();
-    ctx.fillStyle = "rgba(255, 255, 255, 0.06)";
+    ctx.fillStyle = hasBrandedBg ? "rgba(0, 0, 0, 0.06)" : "rgba(255, 255, 255, 0.06)";
     this.drawRoundedRect(ctx, 740, 44, 290, 54, 27);
     ctx.fill();
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+    ctx.strokeStyle = hasBrandedBg ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)";
+    ctx.lineWidth = 1;
     ctx.stroke();
 
-    ctx.fillStyle = "#FFD60A";
+    ctx.fillStyle = hasBrandedBg ? "#111113" : "#FFD60A";
     ctx.font = '700 18px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
     ctx.textAlign = "center";
     ctx.fillText(catName.slice(0, 16), 885, 77);
