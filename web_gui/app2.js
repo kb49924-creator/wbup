@@ -826,22 +826,6 @@ const StandaloneEngine = {
       ctx.restore();
     }
 
-    // Top right category badge
-    ctx.save();
-    const catName = (products[0].category || "ТОП ВЫБОР").toUpperCase();
-    ctx.fillStyle = hasBrandedBg ? "rgba(0, 0, 0, 0.06)" : "rgba(255, 255, 255, 0.06)";
-    this.drawRoundedRect(ctx, 740, 44, 290, 54, 27);
-    ctx.fill();
-    ctx.strokeStyle = hasBrandedBg ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)";
-    ctx.lineWidth = 1;
-    ctx.stroke();
-
-    ctx.fillStyle = hasBrandedBg ? "#111113" : "#FFD60A";
-    ctx.font = '700 18px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-    ctx.textAlign = "center";
-    ctx.fillText(catName.slice(0, 16), 885, 77);
-    ctx.restore();
-
     // 2. Load & Cutout images
     const loadedCuts = [];
     for (const p of products.slice(0, 4)) {
@@ -858,220 +842,109 @@ const StandaloneEngine = {
       throw new Error("Не удалось загрузить фотографии товаров с серверов Wildberries");
     }
 
-    // 3. Layout Rendering
+    // 3. Layout: Only Background + Cutout Clothing Photos (No Cards, No Texts, No Overlays)
+    const shadowColor = hasBrandedBg ? "rgba(0, 0, 0, 0.22)" : "rgba(0, 0, 0, 0.45)";
+
     if (loadedCuts.length === 1) {
-      const { product: p, cut } = loadedCuts[0];
-
-      ctx.save();
-      ctx.shadowColor = "rgba(0, 0, 0, 0.55)";
-      ctx.shadowBlur = 45;
-      ctx.shadowOffsetY = 24;
-
-      const maxW = 720;
-      const maxH = 580;
+      const { cut } = loadedCuts[0];
+      const maxW = 760;
+      const maxH = 820;
       const scale = Math.min(maxW / cut.width, maxH / cut.height);
       const dw = cut.width * scale;
       const dh = cut.height * scale;
       const dx = (1080 - dw) / 2;
-      const dy = 130 + (maxH - dh) / 2;
+      const dy = 140 + (maxH - dh) / 2;
+
+      ctx.save();
+      ctx.shadowColor = shadowColor;
+      ctx.shadowBlur = 34;
+      ctx.shadowOffsetY = 16;
       ctx.drawImage(cut, dx, dy, dw, dh);
       ctx.restore();
 
-      const cardX = 60, cardY = 740, cardW = 960, cardH = 280, cardR = 32;
-      ctx.save();
-      this.drawRoundedRect(ctx, cardX, cardY, cardW, cardH, cardR);
-      ctx.fillStyle = "rgba(20, 20, 28, 0.88)";
-      ctx.fill();
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      ctx.fillStyle = "#AF52DE";
-      ctx.font = '700 24px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-      ctx.fillText((p.brand || "WILDBERRIES").toUpperCase(), cardX + 36, cardY + 54);
-
-      ctx.fillStyle = "#FFD60A";
-      ctx.font = '700 20px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-      ctx.fillText(`★ ${p.rating || 5.0}`, cardX + cardW - 130, cardY + 54);
-
-      ctx.fillStyle = "#FFFFFF";
-      ctx.font = '600 30px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-      const title = (p.name || "Товар").slice(0, 46) + ((p.name || "").length > 46 ? "..." : "");
-      ctx.fillText(title, cardX + 36, cardY + 110);
-
-      const sale = p.sale_price || p.price || 0;
-      const orig = p.price && p.price > sale ? p.price : Math.round(sale * 1.55);
-      const discount = Math.round((1 - sale / orig) * 100);
-
-      ctx.fillStyle = "#34C759";
-      ctx.font = '800 58px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-      const priceText = `${sale.toLocaleString("ru-RU")} ₽`;
-      ctx.fillText(priceText, cardX + 36, cardY + 200);
-
-      const priceWidth = ctx.measureText(priceText).width;
-      const oldX = cardX + 36 + priceWidth + 28;
-      ctx.fillStyle = "#8E8E93";
-      ctx.font = '600 32px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-      const oldText = `${orig.toLocaleString("ru-RU")} ₽`;
-      ctx.fillText(oldText, oldX, cardY + 192);
-
-      const oldWidth = ctx.measureText(oldText).width;
-      ctx.strokeStyle = "#FF3B30";
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(oldX - 4, cardY + 182);
-      ctx.lineTo(oldX + oldWidth + 4, cardY + 182);
-      ctx.stroke();
-
-      if (discount > 0) {
-        const pillX = oldX + oldWidth + 24;
-        const pillY = cardY + 154;
-        const pillW = 100;
-        const pillH = 46;
-        this.drawRoundedRect(ctx, pillX, pillY, pillW, pillH, 14);
-        const pillGrad = ctx.createLinearGradient(pillX, pillY, pillX + pillW, pillY + pillH);
-        pillGrad.addColorStop(0, "#FF3B30");
-        pillGrad.addColorStop(1, "#FF9500");
-        ctx.fillStyle = pillGrad;
-        ctx.fill();
-
-        ctx.fillStyle = "#FFFFFF";
-        ctx.font = '800 24px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-        ctx.textAlign = "center";
-        ctx.fillText(`-${discount}%`, pillX + pillW / 2, pillY + 32);
-      }
-
-      ctx.textAlign = "right";
-      ctx.fillStyle = "#636366";
-      ctx.font = '500 18px -apple-system, BlinkMacSystemFont, "JetBrains Mono", monospace';
-      ctx.fillText(`АРТ: ${p.article}`, cardX + cardW - 36, cardY + 240);
-      ctx.restore();
-
     } else if (loadedCuts.length === 2) {
-      const cardW = 465, cardH = 910, cardY = 125;
-      const positions = [50, 565];
+      const colW = 460;
+      const colH = 820;
+      const coords2 = [
+        { x: 60, y: 140 },
+        { x: 560, y: 140 }
+      ];
 
-      loadedCuts.slice(0, 2).forEach(({ product: p, cut }, idx) => {
-        const cardX = positions[idx];
-        ctx.save();
-        this.drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 28);
-        ctx.fillStyle = "rgba(20, 20, 28, 0.85)";
-        ctx.fill();
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
-        ctx.shadowBlur = 30;
-        ctx.shadowOffsetY = 16;
-
-        const maxW = cardW - 40;
-        const maxH = 500;
-        const scale = Math.min(maxW / cut.width, maxH / cut.height);
+      loadedCuts.slice(0, 2).forEach(({ cut }, idx) => {
+        const c = coords2[idx];
+        const scale = Math.min((colW - 20) / cut.width, (colH - 20) / cut.height);
         const dw = cut.width * scale;
         const dh = cut.height * scale;
-        const dx = cardX + (cardW - dw) / 2;
-        const dy = cardY + 30 + (maxH - dh) / 2;
-        ctx.drawImage(cut, dx, dy, dw, dh);
-        ctx.restore();
+        const dx = c.x + (colW - dw) / 2;
+        const dy = c.y + (colH - dh) / 2;
 
         ctx.save();
-        ctx.fillStyle = "#AF52DE";
-        ctx.font = '700 22px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-        ctx.fillText((p.brand || "WILDBERRIES").toUpperCase().slice(0, 20), cardX + 24, cardY + 580);
-
-        ctx.fillStyle = "#FFFFFF";
-        ctx.font = '600 24px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-        ctx.fillText((p.name || "").slice(0, 26) + "...", cardX + 24, cardY + 625);
-
-        const sale = p.sale_price || p.price || 0;
-        const orig = p.price && p.price > sale ? p.price : Math.round(sale * 1.5);
-        const discount = Math.round((1 - sale / orig) * 100);
-
-        ctx.fillStyle = "#34C759";
-        ctx.font = '800 48px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-        ctx.fillText(`${sale.toLocaleString("ru-RU")} ₽`, cardX + 24, cardY + 700);
-
-        if (discount > 0) {
-          const pillX = cardX + cardW - 105;
-          const pillY = cardY + 660;
-          this.drawRoundedRect(ctx, pillX, pillY, 82, 40, 12);
-          ctx.fillStyle = "#FF3B30";
-          ctx.fill();
-          ctx.fillStyle = "#FFFFFF";
-          ctx.font = '800 20px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-          ctx.textAlign = "center";
-          ctx.fillText(`-${discount}%`, pillX + 41, pillY + 28);
-        }
-
-        ctx.fillStyle = "#636366";
-        ctx.font = '500 18px -apple-system, BlinkMacSystemFont, "JetBrains Mono", monospace';
-        ctx.textAlign = "left";
-        ctx.fillText(`арт. ${p.article}`, cardX + 24, cardY + 760);
+        ctx.shadowColor = shadowColor;
+        ctx.shadowBlur = 28;
+        ctx.shadowOffsetY = 14;
+        ctx.drawImage(cut, dx, dy, dw, dh);
         ctx.restore();
       });
 
-    } else {
-      const cardW = 465, cardH = 435;
-      const coords = [
-        [50, 125],
-        [565, 125],
-        [50, 595],
-        [565, 595]
-      ];
+    } else if (loadedCuts.length === 3) {
+      // Top center
+      const cut0 = loadedCuts[0].cut;
+      const w0 = 500, h0 = 420;
+      const s0 = Math.min((w0 - 20) / cut0.width, (h0 - 20) / cut0.height);
+      const dw0 = cut0.width * s0;
+      const dh0 = cut0.height * s0;
+      const dx0 = (1080 - dw0) / 2;
+      const dy0 = 140 + (h0 - dh0) / 2;
 
-      loadedCuts.slice(0, 4).forEach(({ product: p, cut }, idx) => {
-        const [cardX, cardY] = coords[idx];
+      ctx.save();
+      ctx.shadowColor = shadowColor;
+      ctx.shadowBlur = 26;
+      ctx.shadowOffsetY = 12;
+      ctx.drawImage(cut0, dx0, dy0, dw0, dh0);
+      ctx.restore();
+
+      // Bottom 2
+      const wBot = 460, hBot = 420, yBot = 590;
+      const coordsBot = [{ x: 60, y: yBot }, { x: 560, y: yBot }];
+      for (let i = 0; i < 2; i++) {
+        const cut = loadedCuts[i + 1].cut;
+        const s = Math.min((wBot - 20) / cut.width, (hBot - 20) / cut.height);
+        const dw = cut.width * s;
+        const dh = cut.height * s;
+        const dx = coordsBot[i].x + (wBot - dw) / 2;
+        const dy = coordsBot[i].y + (hBot - dh) / 2;
+
         ctx.save();
-        this.drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 26);
-        ctx.fillStyle = "rgba(22, 22, 30, 0.88)";
-        ctx.fill();
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
-        ctx.shadowBlur = 24;
+        ctx.shadowColor = shadowColor;
+        ctx.shadowBlur = 26;
         ctx.shadowOffsetY = 12;
-
-        const maxW = cardW - 40;
-        const maxH = 260;
-        const scale = Math.min(maxW / cut.width, maxH / cut.height);
-        const dw = cut.width * scale;
-        const dh = cut.height * scale;
-        const dx = cardX + (cardW - dw) / 2;
-        const dy = cardY + 16 + (maxH - dh) / 2;
         ctx.drawImage(cut, dx, dy, dw, dh);
         ctx.restore();
+      }
+
+    } else {
+      // 4 items in 2x2 grid
+      const cellW = 475, cellH = 435;
+      const coords4 = [
+        { x: 50, y: 135 },
+        { x: 555, y: 135 },
+        { x: 50, y: 600 },
+        { x: 555, y: 600 }
+      ];
+
+      loadedCuts.slice(0, 4).forEach(({ cut }, idx) => {
+        const c = coords4[idx];
+        const scale = Math.min((cellW - 30) / cut.width, (cellH - 30) / cut.height);
+        const dw = cut.width * scale;
+        const dh = cut.height * scale;
+        const dx = c.x + (cellW - dw) / 2;
+        const dy = c.y + (cellH - dh) / 2;
 
         ctx.save();
-        ctx.fillStyle = "#AF52DE";
-        ctx.font = '700 18px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-        ctx.fillText((p.brand || "WB").toUpperCase().slice(0, 18), cardX + 20, cardY + 315);
-
-        ctx.fillStyle = "#FFFFFF";
-        ctx.font = '600 20px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-        ctx.fillText((p.name || "").slice(0, 24) + "...", cardX + 20, cardY + 348);
-
-        const sale = p.sale_price || p.price || 0;
-        const orig = p.price && p.price > sale ? p.price : Math.round(sale * 1.5);
-        const discount = Math.round((1 - sale / orig) * 100);
-
-        ctx.fillStyle = "#34C759";
-        ctx.font = '800 36px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-        ctx.fillText(`${sale.toLocaleString("ru-RU")} ₽`, cardX + 20, cardY + 400);
-
-        if (discount > 0) {
-          const pillX = cardX + cardW - 90;
-          const pillY = cardY + 368;
-          this.drawRoundedRect(ctx, pillX, pillY, 70, 34, 10);
-          ctx.fillStyle = "#FF3B30";
-          ctx.fill();
-          ctx.fillStyle = "#FFFFFF";
-          ctx.font = '800 18px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
-          ctx.textAlign = "center";
-          ctx.fillText(`-${discount}%`, pillX + 35, pillY + 24);
-        }
+        ctx.shadowColor = shadowColor;
+        ctx.shadowBlur = 24;
+        ctx.shadowOffsetY = 12;
+        ctx.drawImage(cut, dx, dy, dw, dh);
         ctx.restore();
       });
     }

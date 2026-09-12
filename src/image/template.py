@@ -239,7 +239,7 @@ class CardTemplate:
             return 3, 2
 
     # ------------------------------------------------------------
-    # Размещение плиток товаров
+    # Размещение вырезанных товаров (чистый фон + одежда)
     # ------------------------------------------------------------
 
     def _place_tiles(
@@ -254,129 +254,68 @@ class CardTemplate:
         margin_x: int,
         top_margin: int,
         gap: int,
-        tile_radius: int,
+        tile_radius: int = 0,
     ):
-        """Размещает премиальные плитки товаров с фото, тенями, плашками и типографикой."""
-        total = len(images)
-        for idx in range(min(total, cols * rows)):
-            row = idx // cols
-            col = idx % cols
+        """Размещает вырезанные фото одежды прямо на фоне с мягкими тенями без рамок и карточек."""
+        count = len(images)
+        if count == 1:
+            w, h = 760, 820
+            x = (CARD_SIZE - w) // 2
+            y = 140
+            self._draw_product_cutout(canvas, images[0], x, y, w, h)
+        elif count == 2:
+            w, h = 460, 820
+            coords = [(60, 140), (560, 140)]
+            for i in range(2):
+                self._draw_product_cutout(canvas, images[i], coords[i][0], coords[i][1], w, h)
+        elif count == 3:
+            # 1 сверху по центру, 2 снизу
+            w0, h0 = 500, 420
+            x0 = (CARD_SIZE - w0) // 2
+            y0 = 140
+            self._draw_product_cutout(canvas, images[0], x0, y0, w0, h0)
 
-            # Центрирование последнего ряда при нечетном количестве
-            if rows > 1 and row == rows - 1:
-                last_row_count = total - (cols * (rows - 1))
-                if 0 < last_row_count < cols:
-                    total_w = last_row_count * cell_w + (last_row_count - 1) * gap
-                    offset_x = (CARD_SIZE - total_w) // 2
-                    x = offset_x + col * (cell_w + gap)
-                else:
-                    x = margin_x + col * (cell_w + gap)
-            else:
-                x = margin_x + col * (cell_w + gap)
+            w_bot, h_bot = 460, 420
+            y_bot = 590
+            coords_bot = [(60, y_bot), (560, y_bot)]
+            for i in range(2):
+                self._draw_product_cutout(canvas, images[i + 1], coords_bot[i][0], coords_bot[i][1], w_bot, h_bot)
+        else:
+            # 4 товара (2x2 сетка)
+            w, h = 475, 435
+            coords = [(50, 135), (555, 135), (50, 600), (555, 600)]
+            for i in range(min(count, 4)):
+                self._draw_product_cutout(canvas, images[i], coords[i][0], coords[i][1], w, h)
 
-            y = top_margin + row * (cell_h + gap)
-
-            img = images[idx]
-            prod = products[idx] if idx < len(products) else {}
-            self._draw_product_tile(canvas, img, prod, x, y, cell_w, cell_h, tile_radius)
-
-    def _draw_product_tile(
+    def _draw_product_cutout(
         self,
         canvas: Image.Image,
         img: Image.Image,
-        product: Any,
         x: int,
         y: int,
         w: int,
         h: int,
-        radius: int,
     ):
-        """Рисует индивидуальную плитку товара (Glass Surface + Soft Shadows + Typography)."""
-        d = ImageDraw.Draw(canvas)
-
-        # 1. Фоновая подложка карточки (Apple Frosted Glass)
-        # Полупрозрачный угольный акрил + ультратонкая граница 0.5px
-        tile_bg = (24, 24, 30, 215)
-        border_col = (255, 255, 255, 28)
-        d.rounded_rectangle([x, y, x + w - 1, y + h - 1], radius=radius, fill=tile_bg, outline=border_col, width=1)
-
-        # Верхний спекулярный блик (Apple Liquid Glass highlight)
-        d.line([(x + radius, y + 1), (x + w - radius, y + 1)], fill=(255, 255, 255, 42), width=1)
-
-        # 2. Размещение фото товара с мягкими окружающими тенями (Soft Ambient Shadows)
-        # Зона для фото занимает верхние ~63% карточки
-        img_area_w = w - 36
-        img_area_h = int(h * 0.61)
+        """Размещает индивидуальное вырезанное фото одежды с мягкой рассеянной тенью (без рамок и текста)."""
+        pad = 20
+        img_area_w = max(10, w - pad * 2)
+        img_area_h = max(10, h - pad * 2)
         scale = min(img_area_w / img.width, img_area_h / img.height)
         new_w = max(1, int(img.width * scale))
         new_h = max(1, int(img.height * scale))
         resized_img = img.resize((new_w, new_h), Image.LANCZOS)
 
         paste_x = x + (w - new_w) // 2
-        paste_y = y + 18 + (img_area_h - new_h) // 2
+        paste_y = y + (h - new_h) // 2
 
-        # Наложение двухслойной мягкой тени
+        # Наложение двухслойной мягкой рассеянной тени
         self._draw_soft_ambient_shadow(canvas, resized_img, paste_x, paste_y)
 
-        # Вставка фото поверх тени
+        # Вставка вырезанного фото одежды поверх тени
         if resized_img.mode == "RGBA":
             canvas.paste(resized_img, (paste_x, paste_y), resized_img)
         else:
             canvas.paste(resized_img, (paste_x, paste_y))
-
-        # 3. Элегантная плашка скидки (8px squircle, акцентный Apple Crimson/Coral градиент)
-        discount = self._get_prop(product, "discount")
-        if discount and int(discount) > 0:
-            badge_font = _load_font(size=14 if w < 400 else 15, bold=True)
-            badge_w = 76 if w < 400 else 84
-            badge_h = 28 if w < 400 else 32
-            badge = self._create_gradient_badge(badge_w, badge_h, r=8, text=f"-{discount}%", font=badge_font)
-            # Размещаем в правом верхнем углу плитки
-            badge_x = x + w - badge_w - 14
-            badge_y = y + 14
-            canvas.paste(badge, (badge_x, badge_y), badge)
-
-        # 4. Чёткая иерархия типографики (SF Pro Display / Text)
-        footer_y = y + int(h * 0.65)
-        pad_x = 20 if w >= 400 else 14
-
-        # 4a. Бренд (Uppercase, tracking, Apple Blue #0A84FF)
-        brand = (self._get_prop(product, "brand") or "WILDBERRIES").upper()
-        if len(brand) > 24:
-            brand = brand[:22] + "..."
-        font_brand = _load_font(size=13 if w < 400 else 15, bold=True)
-        d.text((x + pad_x, footer_y), brand, font=font_brand, fill=(41, 151, 255, 255))
-
-        # 4b. Цены (SF Pro Display Heavy крупно + старая зачёркнутая цена)
-        price_val = self._get_prop(product, "sale_price") or self._get_prop(product, "price") or 0
-        old_price_val = self._get_prop(product, "price")
-
-        price_str = f"{int(price_val):,} ₽".replace(",", " ")
-        font_price = _load_font(size=24 if w < 400 else 30, bold=True)
-        price_y = footer_y + (20 if w < 400 else 24)
-        d.text((x + pad_x, price_y), price_str, font=font_price, fill=(255, 255, 255, 255))
-
-        # Старая зачеркнутая цена (если есть скидка)
-        if old_price_val and int(old_price_val) > int(price_val):
-            bbox_p = d.textbbox((x + pad_x, price_y), price_str, font=font_price)
-            old_str = f"{int(old_price_val):,} ₽".replace(",", " ")
-            font_old = _load_font(size=14 if w < 400 else 17, bold=False)
-            old_x = bbox_p[2] + 10
-            old_y = price_y + (4 if w < 400 else 6)
-            d.text((old_x, old_y), old_str, font=font_old, fill=(155, 155, 168, 240))
-
-            # Линия зачёркивания
-            bbox_o = d.textbbox((old_x, old_y), old_str, font=font_old)
-            strike_y = (bbox_o[1] + bbox_o[3]) // 2
-            d.line([(bbox_o[0], strike_y), (bbox_o[2], strike_y)], fill=(155, 155, 168, 240), width=1)
-
-        # 4c. Артикул товара (Muted SF Pro Text)
-        article = self._get_prop(product, "article")
-        if article:
-            art_str = f"арт. {article}"
-            font_art = _load_font(size=11 if w < 400 else 13, bold=False)
-            art_y = price_y + (28 if w < 400 else 34)
-            d.text((x + pad_x, art_y), art_str, font=font_art, fill=(145, 145, 158, 230))
 
     # ------------------------------------------------------------
     # Графика: Мягкие тени и градиентные плашки
