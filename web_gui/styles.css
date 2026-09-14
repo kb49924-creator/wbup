@@ -1,31 +1,31 @@
 /* ============================================================
-   WB Up Studio — Mobile-First Editorial Fashion Design System
+   WB Up Studio — Refined Mobile-First Editorial Fashion Design System
    Target Primary Device: iPhone 15 Pro (393 × 852 px, iOS Safari)
-   Also Tested Across: 375px, 390px, 393px, 402px, 430px & Landscape
+   Visual QA Calibrated for: 375px, 390px, 393px, 402px, 430px & Landscape
+   Aesthetic: Clean / Minimal / Premium / Editorial / Effortless
    ============================================================ */
 
-/* --- Mobile-First CSS Variables & Tokens --- */
+/* --- CSS Tokens & Design Variables --- */
 :root {
-  /* Safe Area Insets (Dynamic Island & Home Indicator) */
+  /* Dynamic Safe Area Insets (Dynamic Island & Home Indicator) */
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
 
-  /* Component Heights */
-  --header-h-mobile: 52px;
-  --bar-h-mobile: 52px;
+  /* Component Dimensions */
+  --header-h-mobile: 48px;
+  --bar-h-mobile: 50px;
   --header-h-desktop: 64px;
 
-  /* Palette */
+  /* Editorial Monochrome Palette */
   --bg-body: #ffffff;
-  --bg-subtle: #f8f8fa;
+  --bg-subtle: #f7f7f9;
   --bg-card: #ffffff;
   --bg-card-hover: #fafafa;
-  --bg-elevated: #ffffff;
-  --bg-glass: rgba(255, 255, 255, 0.94);
-  --bg-overlay: rgba(10, 10, 14, 0.52);
-  --bg-dark: #0f0f12;
+  --bg-glass: rgba(255, 255, 255, 0.96);
+  --bg-overlay: rgba(10, 10, 14, 0.55);
+  --bg-dark: #0e0e11;
 
   --fg-primary: #0a0a0d;
   --fg-secondary: #585864;
@@ -37,31 +37,27 @@
   --border-dark: #121216;
 
   --accent-black: #09090b;
-  --accent-hover: #27272a;
   --accent-red: #e11d48;
   --accent-green: #10b981;
-  --accent-tag: #f4f4f6;
 
-  --radius-xs: 3px;
+  --radius-xs: 2px;
   --radius-sm: 6px;
   --radius-md: 12px;
-  --radius-lg: 16px;
+  --radius-lg: 18px;
   --radius-pill: 9999px;
 
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "SF Mono", Monaco, Inconsolata, monospace;
 
-  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
-  --shadow-dropdown: 0 12px 32px rgba(0, 0, 0, 0.08);
-  --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.16);
-  --shadow-capsule: 0 16px 36px rgba(0, 0, 0, 0.22);
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-modal: 0 20px 50px rgba(0, 0, 0, 0.16);
+  --shadow-capsule: 0 12px 30px rgba(0, 0, 0, 0.2);
 
   --transition-fast: 0.15s ease;
-  --transition-smooth: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-scale: 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.25s ease-out;
 }
 
-/* --- Base & Reset (Strict Zero Horizontal Scroll) --- */
+/* --- Base & Reset (Strict Zero Horizontal Overflow) --- */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -96,7 +92,7 @@ body {
   position: relative;
 }
 
-/* iOS Safari Automatic Zoom Prevention: Font size >= 16px on inputs */
+/* iOS Safari Input Zoom Prevention: font-size >= 16px */
 input, textarea, select {
   font-family: inherit;
   -webkit-appearance: none;
@@ -133,7 +129,7 @@ button {
 .tab-panel {
   display: none;
   width: 100%;
-  animation: fadeIn 0.2s ease-out;
+  animation: fadeIn 0.18s ease-out;
 }
 
 .tab-panel--active {
@@ -141,12 +137,12 @@ button {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(3px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* ============================================================
-   1. MOBILE-FIRST HEADER (iPhone 15 Pro Dynamic Island Clear)
+   1. MOBILE HEADER (Compact, Zero-Overflow, 44px Touch Targets)
    ============================================================ */
 .site-header {
   position: sticky;
@@ -156,8 +152,8 @@ button {
   z-index: 500;
   height: calc(var(--header-h-mobile) + var(--safe-top));
   padding-top: var(--safe-top);
-  padding-left: max(16px, var(--safe-left));
-  padding-right: max(16px, var(--safe-right));
+  padding-left: max(14px, var(--safe-left));
+  padding-right: max(14px, var(--safe-right));
   background: var(--bg-glass);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -168,7 +164,6 @@ button {
 .site-header__inner {
   width: 100%;
   height: var(--header-h-mobile);
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -177,26 +172,25 @@ button {
 /* Brand Logo (Left) */
 .brand-logo {
   display: flex;
-  align-items: baseline;
-  gap: 6px;
+  align-items: center;
+  gap: 5px;
   text-decoration: none;
   color: var(--fg-primary);
   user-select: none;
   height: 44px;
-  align-items: center;
 }
 
 .brand-logo__main {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .brand-logo__tag {
   font-size: 9px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--fg-muted);
 }
@@ -213,47 +207,50 @@ button {
   gap: 8px;
 }
 
-/* Compact Mobile Novelties Pill */
+/* Mobile Quick Novelties Icon Pill (Zero Overflow) */
 .header-action-btn--pulse {
   height: 38px;
   min-height: 38px;
-  padding: 0 12px;
+  padding: 0 10px;
   border-radius: var(--radius-pill);
   background: var(--fg-primary);
   color: #ffffff;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  transition: opacity var(--transition-fast);
 }
 
 .header-action-btn--pulse:active {
   opacity: 0.85;
 }
 
+.header-action-btn__text {
+  display: none; /* Hidden on mobile to keep header clean and unclipped */
+}
+
 .header-action-btn .count-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
   background: #ffffff;
   color: #000000;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 800;
-  border-radius: 9px;
+  border-radius: 8px;
 }
 
 .desktop-only {
   display: none !important;
 }
 
-/* Mobile Burger Menu Button (44×44px Touch Target) */
+/* Mobile Burger Button (44×44px Touch Target) */
 .mobile-burger-btn {
   width: 44px;
   height: 44px;
@@ -263,26 +260,25 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 4.5px;
   background: transparent;
   padding: 0;
 }
 
 .burger-bar {
-  width: 22px;
+  width: 20px;
   height: 1.8px;
   background-color: var(--fg-primary);
   border-radius: 1px;
-  transition: transform var(--transition-fast), opacity var(--transition-fast);
 }
 
 /* ============================================================
-   2. HERO SECTION (Optimized for iPhone 15 Pro 393 × 852 px)
+   2. HERO SECTION (Calibrated for 393 × 852 px Above-The-Fold)
    ============================================================ */
 .hero-editorial {
   position: relative;
   width: 100%;
-  min-height: clamp(340px, 48svh, 420px);
+  min-height: clamp(250px, 32svh, 290px);
   background: #0d0d10;
   overflow: hidden;
   display: flex;
@@ -300,20 +296,20 @@ button {
   height: 100%;
   object-fit: cover;
   object-position: center 22%;
-  filter: brightness(0.68) contrast(1.08);
+  filter: brightness(0.66) contrast(1.08);
 }
 
 .hero-editorial__dimmer {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.85) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.88) 100%);
 }
 
 .hero-editorial__content {
   position: relative;
   z-index: 2;
   width: 100%;
-  padding: 24px 16px 28px;
+  padding: 16px 14px 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -321,49 +317,47 @@ button {
 }
 
 .hero-editorial__eyebrow {
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .hero-editorial__heading {
-  font-size: clamp(24px, 7.2vw, 34px);
+  font-size: clamp(22px, 6.8vw, 30px);
   font-weight: 800;
-  line-height: 1.08;
+  line-height: 1.06;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   max-width: 100%;
-  word-break: normal;
 }
 
 .hero-editorial__sub {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
-  line-height: 1.4;
-  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.82);
   max-width: 290px;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .hero-editorial__buttons {
   display: flex;
   align-items: center;
-  gap: 10px;
   width: 100%;
 }
 
-/* Hero Primary CTA (Thumb-Friendly, 46px Height) */
+/* Single Focused Primary CTA on Mobile */
 .btn--hero-primary {
-  height: 46px;
-  min-height: 44px;
-  padding: 0 24px;
+  height: 42px;
+  min-height: 42px;
+  padding: 0 20px;
   background: #ffffff;
   color: #09090b;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -372,46 +366,31 @@ button {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: opacity var(--transition-fast);
 }
 
 .btn--hero-primary:active {
   opacity: 0.85;
 }
 
+/* Outline button hidden on mobile hero to prevent side-clipping */
 .btn--hero-outline {
-  height: 46px;
-  min-height: 44px;
-  padding: 0 16px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(8px);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  border-radius: var(--radius-pill);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: none !important;
 }
 
-/* Generic Button Styles */
+/* Generic Button Tokens */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   min-height: 44px;
-  padding: 12px 20px;
-  font-size: 13px;
+  padding: 10px 18px;
+  font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   border-radius: var(--radius-pill);
   cursor: pointer;
-  transition: opacity var(--transition-fast), background var(--transition-fast);
 }
 
 .btn:active {
@@ -445,14 +424,14 @@ button {
 }
 
 .btn--lg {
-  min-height: 48px;
-  padding: 14px 24px;
+  min-height: 46px;
+  padding: 12px 22px;
   font-size: 13px;
 }
 
 .btn--sm {
   min-height: 36px;
-  padding: 6px 14px;
+  padding: 6px 12px;
   font-size: 11px;
 }
 
@@ -469,13 +448,13 @@ button {
 }
 
 /* ============================================================
-   3. CATALOG TOOLBAR (Sticky, Horizontal Categories, Search)
+   3. CATALOG TOOLBAR (Compact Search & Horizontal Categories)
    ============================================================ */
 .catalog-toolbar {
   position: sticky;
   top: calc(var(--header-h-mobile) + var(--safe-top));
   z-index: 150;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
@@ -483,17 +462,56 @@ button {
 
 .catalog-toolbar__inner {
   width: 100%;
-  padding: 8px 16px 10px;
+  padding: 8px 14px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
-/* Horizontal Typographic Categories */
+/* Search Bar (16px Font Prevents iOS Safari Zoom) */
+.minimal-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.minimal-search__icon {
+  position: absolute;
+  left: 12px;
+  color: var(--fg-muted);
+  pointer-events: none;
+  width: 15px;
+  height: 15px;
+}
+
+.minimal-search__input {
+  width: 100%;
+  height: 38px;
+  padding: 0 12px 0 36px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-subtle);
+  color: var(--fg-primary);
+  font-size: 16px !important;
+  outline: none;
+}
+
+.minimal-search__input:focus {
+  background: #ffffff;
+  border-color: var(--border-dark);
+}
+
+.minimal-search__input::placeholder {
+  color: var(--fg-muted);
+  font-size: 13px;
+}
+
+/* Typographic Category Links */
 .category-links-bar {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -505,17 +523,17 @@ button {
 }
 
 .cat-link {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--fg-muted);
   cursor: pointer;
   white-space: nowrap;
-  padding: 6px 0;
+  padding: 5px 0;
   position: relative;
   user-select: none;
-  min-height: 32px;
+  min-height: 30px;
   display: inline-flex;
   align-items: center;
 }
@@ -538,59 +556,21 @@ button {
   border-radius: 1px;
 }
 
-/* Mobile Search Input (42px Height, 16px Font Size) */
-.minimal-search {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.minimal-search__icon {
-  position: absolute;
-  left: 14px;
-  color: var(--fg-muted);
-  pointer-events: none;
-  width: 16px;
-  height: 16px;
-}
-
-.minimal-search__input {
-  width: 100%;
-  height: 42px;
-  padding: 0 14px 0 38px;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--border-subtle);
-  background: var(--bg-subtle);
-  color: var(--fg-primary);
-  font-size: 16px !important;
-  outline: none;
-}
-
-.minimal-search__input:focus {
-  background: #ffffff;
-  border-color: var(--border-dark);
-}
-
-.minimal-search__input::placeholder {
-  color: var(--fg-muted);
-}
-
 /* Seller Filter Active Banner */
 .seller-filter-banner {
-  padding: 12px 16px 0;
+  padding: 8px 14px 0;
   width: 100%;
 }
 
 .seller-filter-pill {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 14px;
+  gap: 8px;
+  padding: 5px 12px;
   background: var(--bg-subtle);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
 }
 
@@ -600,23 +580,23 @@ button {
   align-items: center;
   color: var(--fg-muted);
   padding: 4px;
-  min-width: 28px;
-  min-height: 28px;
+  min-width: 26px;
+  min-height: 26px;
   justify-content: center;
 }
 
 /* ============================================================
-   4. PRODUCT CATALOG GRID (2 Columns on iPhone 15 Pro 393px)
+   4. CATALOG GRID (Dual Column on 393px, Zero Shift, 3:4)
    ============================================================ */
 .catalog-grid-wrap {
   width: 100%;
-  padding: 16px 12px calc(var(--bar-h-mobile) + var(--safe-bottom) + 32px) 12px;
+  padding: 12px 10px calc(var(--bar-h-mobile) + var(--safe-bottom) + 32px) 10px;
 }
 
 .fashion-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 18px 10px;
+  gap: 16px 8px;
   width: 100%;
 }
 
@@ -631,7 +611,7 @@ button {
   user-select: none;
 }
 
-/* Aspect-Ratio 3:4 Vertical Editorial Photography */
+/* Exact 3:4 Vertical Editorial Photography */
 .fashion-card__photo-wrap {
   position: relative;
   width: 100%;
@@ -648,17 +628,17 @@ button {
   display: block;
 }
 
-/* Discreet Select Trigger Checkbox (44×44px Hit Target via Pseudo-Element) */
+/* Selection Checkbox (44×44px Thumb Target Area) */
 .fashion-card__checkbox {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
   z-index: 10;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -669,7 +649,7 @@ button {
 .fashion-card__checkbox::before {
   content: "";
   position: absolute;
-  inset: -8px;
+  inset: -9px;
 }
 
 .fashion-card--selected .fashion-card__checkbox {
@@ -686,62 +666,62 @@ button {
 /* Badges (Top Left) */
 .fashion-card__badges {
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 6px;
+  left: 6px;
   z-index: 5;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   pointer-events: none;
 }
 
 .fashion-card__badge-new {
   background: #000000;
   color: #ffffff;
-  font-size: 9px;
+  font-size: 8.5px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: var(--radius-xs);
 }
 
 .fashion-card__discount {
   background: var(--accent-red);
   color: #ffffff;
-  font-size: 9px;
+  font-size: 8.5px;
   font-weight: 700;
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: var(--radius-xs);
 }
 
 .fashion-card__meta {
   position: absolute;
-  bottom: 6px;
-  left: 6px;
+  bottom: 5px;
+  left: 5px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 9px;
+  gap: 5px;
+  font-size: 8.5px;
   font-weight: 600;
   color: #ffffff;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.62);
   backdrop-filter: blur(4px);
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: var(--radius-xs);
   pointer-events: none;
 }
 
-/* Card Body Below Photo */
+/* Card Body */
 .fashion-card__body {
-  padding-top: 8px;
+  padding-top: 6px;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
 .fashion-card__brand {
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -749,9 +729,9 @@ button {
 }
 
 .fashion-card__name {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 400;
-  line-height: 1.35;
+  line-height: 1.32;
   color: var(--fg-primary);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -763,27 +743,27 @@ button {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 .fashion-card__price {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--fg-primary);
   letter-spacing: -0.01em;
 }
 
 .fashion-card__old-price {
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--fg-muted);
   text-decoration: line-through;
-  margin-left: 4px;
+  margin-left: 3px;
 }
 
 .fashion-card__link {
   color: var(--fg-muted);
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -793,32 +773,32 @@ button {
 .fashion-empty {
   grid-column: 1 / -1;
   text-align: center;
-  padding: 60px 16px;
+  padding: 50px 14px;
 }
 
 .fashion-empty__icon {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   color: var(--fg-muted);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .fashion-empty__title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .fashion-empty__desc {
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--fg-secondary);
-  max-width: 300px;
-  margin: 0 auto 16px;
+  max-width: 280px;
+  margin: 0 auto 14px;
 }
 
 /* ============================================================
-   5. PRODUCT DETAIL MODAL (Native Vertical Mobile Sheet)
+   5. PRODUCT DETAIL MODAL (Native Vertical Bottom Sheet)
    ============================================================ */
 .product-modal-overlay {
   position: fixed;
@@ -847,7 +827,7 @@ button {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  animation: slideUpSheet 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideUpSheet 0.25s ease-out;
 }
 
 @keyframes slideUpSheet {
@@ -861,26 +841,33 @@ button {
   height: 4px;
   background-color: #d1d1d6;
   border-radius: 2px;
-  margin: 10px auto 4px auto;
+  margin: 8px auto 4px auto;
   flex-shrink: 0;
 }
 
-/* Close Button (44×44px Touch Target) */
+/* Highly Visible Floating Close Button (44×44px Touch Target) */
 .product-modal-close {
   position: absolute;
   top: 10px;
   right: 12px;
-  z-index: 30;
-  width: 44px;
-  height: 44px;
+  z-index: 50;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--fg-primary);
+  color: #000000;
+}
+
+.product-modal-close svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
 }
 
 .product-modal-content {
@@ -891,10 +878,10 @@ button {
   width: 100%;
 }
 
-/* Gallery Photo at Top */
+/* Top Photo */
 .product-modal__gallery {
   width: 100%;
-  max-height: 44svh;
+  max-height: 42svh;
   aspect-ratio: 3 / 4;
   overflow: hidden;
   background: var(--bg-subtle);
@@ -908,57 +895,57 @@ button {
   display: block;
 }
 
-/* Details and Sticky Action Area */
+/* Product Info & Action Area */
 .product-modal__info {
-  padding: 20px 16px calc(24px + var(--safe-bottom)) 16px;
+  padding: 16px 14px calc(20px + var(--safe-bottom)) 14px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
 .product-modal__brand {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--fg-secondary);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .product-modal__title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.28;
   letter-spacing: -0.01em;
   color: var(--fg-primary);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .product-modal__meta-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 12px;
+  gap: 8px;
+  font-size: 11.5px;
   color: var(--fg-secondary);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .product-modal__price-row {
   display: flex;
   align-items: baseline;
-  gap: 10px;
-  padding-bottom: 16px;
+  gap: 8px;
+  padding-bottom: 14px;
   border-bottom: 1px solid var(--border-subtle);
 }
 
 .product-modal__current-price {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--fg-primary);
 }
 
 .product-modal__original-price {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--fg-muted);
   text-decoration: line-through;
 }
@@ -966,36 +953,36 @@ button {
 .product-modal__discount-tag {
   background: var(--accent-red);
   color: #fff;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  padding: 2px 7px;
+  padding: 2px 6px;
   border-radius: var(--radius-xs);
 }
 
-/* Sizes Rectangular Pills [XS] [S] [M] [L] [XL] [XXL] (44px Height Touch Target) */
+/* Sizes Rectangular Pills [XS] [S] [M] [L] [XL] [XXL] (44px Height) */
 .product-modal__section-label {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--fg-secondary);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .product-modal__sizes-grid {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
 .size-pill {
-  min-width: 48px;
+  min-width: 46px;
   height: 44px;
-  padding: 0 14px;
+  padding: 0 12px;
   border: 1px solid var(--border-medium);
   background: #ffffff;
   color: var(--fg-primary);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   border-radius: var(--radius-xs);
   display: flex;
@@ -1013,16 +1000,16 @@ button {
 .product-modal__actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 6px;
+  gap: 8px;
+  margin-top: 4px;
 }
 
 /* ============================================================
-   6. FLOATING SELECTION DOCK CAPSULE
+   6. FLOATING SELECTION DOCK CAPSULE (Zero Clipping on 375-393px)
    ============================================================ */
 .selection-capsule {
   position: fixed;
-  bottom: calc(var(--bar-h-mobile) + var(--safe-bottom) + 12px);
+  bottom: calc(var(--bar-h-mobile) + var(--safe-bottom) + 10px);
   left: 50%;
   transform: translateX(-50%) translateY(140%);
   z-index: 450;
@@ -1031,12 +1018,12 @@ button {
   -webkit-backdrop-filter: blur(20px);
   color: #ffffff;
   border-radius: var(--radius-pill);
-  padding: 8px 12px 8px 18px;
+  padding: 6px 10px 6px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: calc(100% - 24px);
-  max-width: 380px;
+  width: calc(100% - 20px);
+  max-width: 356px;
   box-shadow: var(--shadow-capsule);
   transition: transform var(--transition-smooth), opacity var(--transition-smooth);
   opacity: 0;
@@ -1053,42 +1040,36 @@ button {
 .selection-capsule__info {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: 6px;
+  font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
 }
 
 .selection-capsule__dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background-color: var(--accent-green);
-  animation: pulseDot 2s infinite;
-}
-
-@keyframes pulseDot {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.3); opacity: 0.7; }
 }
 
 .selection-capsule__actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .capsule-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  height: 38px;
-  min-height: 38px;
-  padding: 0 16px;
+  gap: 4px;
+  height: 34px;
+  min-height: 34px;
+  padding: 0 12px;
   border-radius: var(--radius-pill);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   cursor: pointer;
 }
@@ -1108,20 +1089,20 @@ button {
    ============================================================ */
 .subpage-container {
   width: 100%;
-  padding: 20px 16px calc(var(--bar-h-mobile) + var(--safe-bottom) + 28px) 16px;
+  padding: 16px 14px calc(var(--bar-h-mobile) + var(--safe-bottom) + 24px) 14px;
 }
 
 .subpage-header {
-  margin-bottom: 24px;
+  margin-bottom: 18px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   border-bottom: 1px solid var(--border-subtle);
-  padding-bottom: 16px;
+  padding-bottom: 14px;
 }
 
 .subpage-eyebrow {
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1129,26 +1110,31 @@ button {
 }
 
 .subpage-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.02em;
   text-transform: uppercase;
 }
 
+/* Mobile Subpage Header Action Buttons (Wrapped & Stacked) */
 .subpage-header__actions {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 6px;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
 }
 
-/* Sellers List (Mobile Single Column) */
+.subpage-header__actions .btn {
+  width: 100%;
+}
+
+/* Sellers List (Mobile Single Column, No Clipping) */
 .sellers-meta-row {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .sellers-meta-row__label {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--fg-secondary);
 }
@@ -1156,7 +1142,7 @@ button {
 .sellers-list-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
 }
 
@@ -1164,24 +1150,24 @@ button {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  padding: 16px 14px;
+  padding: 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
 }
 
 .seller-avatar {
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
-  min-height: 44px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 14px;
   color: #ffffff;
   flex-shrink: 0;
 }
@@ -1192,7 +1178,7 @@ button {
 }
 
 .seller-name {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--fg-primary);
   margin-bottom: 2px;
@@ -1202,22 +1188,23 @@ button {
 }
 
 .seller-sub {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--fg-secondary);
 }
 
 .seller-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  flex-shrink: 0;
 }
 
-/* iOS Switch (44px Touch Target) */
+/* Compact iOS Switch (44px Touch Target) */
 .ios-switch {
   position: relative;
   display: inline-block;
-  width: 46px;
-  height: 28px;
+  width: 44px;
+  height: 26px;
 }
 
 .ios-switch input {
@@ -1231,19 +1218,19 @@ button {
   cursor: pointer;
   inset: 0;
   background-color: var(--border-medium);
-  transition: 0.25s;
+  transition: 0.2s ease;
   border-radius: var(--radius-pill);
 }
 
 .ios-switch__slider:before {
   position: absolute;
   content: "";
-  height: 22px;
-  width: 22px;
+  height: 20px;
+  width: 20px;
   left: 3px;
   bottom: 3px;
   background-color: white;
-  transition: 0.25s;
+  transition: 0.2s ease;
   border-radius: 50%;
 }
 
@@ -1255,11 +1242,11 @@ button {
   transform: translateX(18px);
 }
 
-/* Studio 1080x1080 Vertical Mobile Stack */
+/* Studio 1080x1080 Mobile Stack */
 .studio-split-layout {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
   width: 100%;
 }
 
@@ -1284,42 +1271,42 @@ button {
 
 .studio-empty-card {
   text-align: center;
-  padding: 32px 16px;
+  padding: 28px 14px;
 }
 
 .studio-empty-card__icon {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   color: var(--fg-muted);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .studio-empty-card__title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 
 .studio-empty-card__desc {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--fg-secondary);
   max-width: 280px;
-  margin: 0 auto 16px;
+  margin: 0 auto 14px;
 }
 
 .studio-controls-frame {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  padding: 20px 16px;
+  padding: 16px 14px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
 
 .studio-controls-title {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1327,12 +1314,12 @@ button {
 
 .minimal-textarea {
   width: 100%;
-  min-height: 180px;
-  padding: 14px;
+  min-height: 160px;
+  padding: 12px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-medium);
   font-size: 16px !important;
-  line-height: 1.5;
+  line-height: 1.45;
   resize: vertical;
   background: #ffffff;
   color: var(--fg-primary);
@@ -1346,26 +1333,30 @@ button {
 .studio-actions-row {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .studio-secondary-btns {
   display: flex;
-  gap: 10px;
+  gap: 8px;
+}
+
+.studio-secondary-btns .btn {
+  flex: 1;
 }
 
 /* Queue items */
 .queue-items-container {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 /* Settings Forms */
 .settings-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
   width: 100%;
 }
 
@@ -1373,36 +1364,36 @@ button {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  padding: 18px 16px;
+  padding: 16px 14px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .settings-block__title {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border-bottom: 1px solid var(--border-subtle);
-  padding-bottom: 8px;
+  padding-bottom: 6px;
 }
 
 .settings-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 
 .settings-label {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--fg-secondary);
 }
 
 .settings-input {
-  height: 44px;
-  padding: 0 14px;
+  height: 42px;
+  padding: 0 12px;
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-sm);
   font-size: 16px !important;
@@ -1418,8 +1409,8 @@ button {
 .settings-info-row {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
-  padding: 8px 0;
+  font-size: 12.5px;
+  padding: 6px 0;
   border-bottom: 1px dashed var(--border-subtle);
 }
 
@@ -1429,7 +1420,7 @@ button {
 }
 
 /* ============================================================
-   8. MOBILE SLIDE-OVER DRAWER
+   8. MOBILE DRAWER (Slide-Over, 44px Touch Targets, Zero Overflow)
    ============================================================ */
 .mobile-drawer-overlay {
   position: fixed;
@@ -1453,16 +1444,16 @@ button {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 86%;
-  max-width: 340px;
+  width: 82%;
+  max-width: 320px;
   background: #ffffff;
   z-index: 560;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: calc(16px + var(--safe-top)) 20px calc(24px + var(--safe-bottom)) 20px;
+  padding: calc(14px + var(--safe-top)) 16px calc(20px + var(--safe-bottom)) 16px;
   transform: translateX(100%);
-  transition: transform var(--transition-smooth);
+  transition: transform 0.25s ease-out;
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.12);
 }
 
@@ -1474,7 +1465,7 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 18px;
+  padding-bottom: 14px;
   border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -1493,30 +1484,30 @@ button {
 .mobile-drawer__nav {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin: 24px 0 auto;
+  gap: 4px;
+  margin: 18px 0 auto;
 }
 
 .drawer-item {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   text-decoration: none;
   color: var(--fg-primary);
-  min-height: 52px;
-  padding: 8px 0;
+  min-height: 48px;
+  padding: 6px 0;
   border-bottom: 1px solid var(--border-subtle);
   width: 100%;
 }
 
 .drawer-item__index {
-  font-size: 11px;
+  font-size: 10.5px;
   font-family: var(--font-mono);
   color: var(--fg-muted);
 }
 
 .drawer-item__title {
-  font-size: 18px;
+  font-size: 16.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -1527,11 +1518,16 @@ button {
 }
 
 .mobile-drawer__footer {
-  padding-top: 18px;
+  padding-top: 14px;
+}
+
+.mobile-drawer__footer .btn {
+  font-size: 12px;
+  padding: 10px 14px;
 }
 
 /* ============================================================
-   9. MOBILE BOTTOM TAB BAR (iPhone 15 Pro Home Indicator Clear)
+   9. MOBILE BOTTOM TAB BAR (Home Indicator Clear)
    ============================================================ */
 .mobile-nav-bar {
   display: flex;
@@ -1555,16 +1551,16 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 2px;
   color: var(--fg-muted);
   text-decoration: none;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   height: var(--bar-h-mobile);
   min-width: 44px;
-  padding: 4px 10px;
+  padding: 4px 8px;
   position: relative;
   transition: color var(--transition-fast);
 }
@@ -1574,8 +1570,8 @@ button {
 }
 
 .mobile-nav-bar__item .sf-icon {
-  width: 20px;
-  height: 20px;
+  width: 19px;
+  height: 19px;
 }
 
 /* Shared Modal (Add Seller etc.) */
@@ -1600,20 +1596,20 @@ button {
   background: var(--bg-card);
   border-radius: 20px 20px 0 0;
   width: 100%;
-  padding: 24px 20px calc(24px + var(--safe-bottom)) 20px;
+  padding: 20px 16px calc(20px + var(--safe-bottom)) 16px;
   box-shadow: var(--shadow-modal);
-  animation: slideUpSheet 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideUpSheet 0.25s ease-out;
 }
 
 .site-modal-card__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .site-modal-card__title {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 800;
   text-transform: uppercase;
 }
@@ -1631,16 +1627,16 @@ button {
 .site-modal-card__footer {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 8px;
+  margin-top: 18px;
 }
 
-/* Toasts */
+/* Toast Notifications */
 .toast-container {
   position: fixed;
-  top: calc(var(--header-h-mobile) + var(--safe-top) + 12px);
-  right: 16px;
-  left: 16px;
+  top: calc(var(--header-h-mobile) + var(--safe-top) + 10px);
+  right: 14px;
+  left: 14px;
   z-index: 700;
   display: flex;
   flex-direction: column;
@@ -1651,19 +1647,13 @@ button {
 .toast {
   background: #09090b;
   color: #ffffff;
-  padding: 12px 18px;
+  padding: 10px 16px;
   border-radius: var(--radius-pill);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   text-align: center;
-  box-shadow: var(--shadow-dropdown);
-  animation: slideToast 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-modal);
   pointer-events: auto;
-}
-
-@keyframes slideToast {
-  from { transform: translateY(-10px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
 }
 
 /* ============================================================
@@ -1680,12 +1670,21 @@ button {
   .site-header__inner {
     height: 100%;
     max-width: 1480px;
+    margin: 0 auto;
+  }
+
+  .brand-logo__main {
+    font-size: 17px;
+  }
+
+  .header-action-btn__text {
+    display: inline;
   }
 
   .desktop-nav {
     display: flex;
     align-items: center;
-    gap: 36px;
+    gap: 32px;
   }
 
   .desktop-nav__link {
@@ -1745,11 +1744,16 @@ button {
 
   .hero-editorial__content {
     max-width: 1480px;
-    padding: 72px 32px 56px;
+    margin: 0 auto;
+    padding: 64px 32px 48px;
   }
 
   .hero-editorial__heading {
     font-size: clamp(34px, 5.5vw, 68px);
+  }
+
+  .btn--hero-outline {
+    display: inline-flex !important;
   }
 
   .catalog-toolbar {
@@ -1819,6 +1823,7 @@ button {
 
   .subpage-container {
     max-width: 1200px;
+    margin: 0 auto;
     padding: 44px 32px;
   }
 
@@ -1826,6 +1831,15 @@ button {
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;
+  }
+
+  .subpage-header__actions {
+    flex-direction: row;
+    width: auto;
+  }
+
+  .subpage-header__actions .btn {
+    width: auto;
   }
 
   .sellers-list-grid {
@@ -1868,19 +1882,19 @@ button {
 /* Landscape Mode on Phones (<= 500px height) */
 @media (max-height: 500px) and (orientation: landscape) {
   .site-header {
-    height: calc(44px + var(--safe-top));
+    height: calc(42px + var(--safe-top));
   }
 
   .site-header__inner {
-    height: 44px;
+    height: 42px;
   }
 
   .hero-editorial {
-    min-height: 240px;
+    min-height: 220px;
   }
 
   .hero-editorial__content {
-    padding: 16px max(16px, var(--safe-left));
+    padding: 14px max(14px, var(--safe-left));
   }
 
   .product-modal-dialog {
