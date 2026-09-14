@@ -6320,10 +6320,7 @@ const app = {
       return `
         <article class="fashion-card ${selClass}" onclick="app.openProductModal(${p.article})">
           <div class="fashion-card__photo-wrap">
-            <div class="fashion-card__badges">
-              ${p.is_new ? '<span class="fashion-card__badge-new">NEW</span>' : ''}
-              ${hasDiscount ? `<span class="fashion-card__discount">-${p.discount}%</span>` : ''}
-            </div>
+            ${p.is_new ? '<span class="fashion-card__badge-new">NEW</span>' : ''}
             <div class="fashion-card__checkbox" onclick="event.stopPropagation(); app.toggleArticleCard(${p.article});" title="Выбрать для поста">
               <svg class="sf-icon"><use href="#sf-check"></use></svg>
             </div>
@@ -6331,23 +6328,17 @@ const app = {
                  class="fashion-card__img"
                  alt="${this.escHtml(p.name)}"
                  loading="lazy"
-                 onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect fill=\'%23f4f4f6\' width=\'100\' height=\'100\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%238e8e98\' font-size=\'12\'>Фото WB</text></svg>'">
-            <div class="fashion-card__meta">
-              <span>⭐ ${p.rating || '4.8'}</span>
-              <span>💬 ${p.feedbacks || '0'}</span>
-            </div>
+                 onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23f4f4f6\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50%\\' y=\\'50%\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' fill=\\'%238e8e98\\' font-size=\\'12\\'>Фото WB</text></svg>'">
           </div>
           <div class="fashion-card__body">
             <div class="fashion-card__brand">${this.escHtml(p.brand || 'WILDBERRIES')}</div>
             <div class="fashion-card__name" title="${this.escHtml(p.name)}">${this.escHtml(p.name)}</div>
             <div class="fashion-card__price-row">
-              <div>
+              <div class="fashion-card__price-group">
                 <span class="fashion-card__price">${Math.round(salePrice).toLocaleString('ru-RU')} ₽</span>
-                ${hasDiscount ? `<span class="fashion-card__old-price">${Math.round(oldPrice).toLocaleString('ru-RU')} ₽</span>` : ''}
+                ${hasDiscount ? `<span class="fashion-card__discount-tag">-${p.discount}%</span>` : ''}
               </div>
-              <a href="https://www.wildberries.ru/catalog/${p.article}/detail.aspx" target="_blank" rel="noopener noreferrer" class="fashion-card__link" onclick="event.stopPropagation();" title="Открыть на WB">
-                <svg class="sf-icon"><use href="#sf-arrow-up-right"></use></svg>
-              </a>
+              <span class="fashion-card__rating">★ ${p.rating || '4.8'}</span>
             </div>
           </div>
         </article>

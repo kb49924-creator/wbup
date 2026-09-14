@@ -207,25 +207,34 @@ button {
   gap: 8px;
 }
 
-/* Mobile Quick Novelties Icon Pill (Zero Overflow) */
+/* Mobile Quick Novelties Icon Pill (Minimal Ghost Style) */
 .header-action-btn--pulse {
-  height: 38px;
-  min-height: 38px;
-  padding: 0 10px;
+  height: 34px;
+  min-height: 34px;
+  padding: 0 9px;
   border-radius: var(--radius-pill);
-  background: var(--fg-primary);
-  color: #ffffff;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--fg-primary);
   display: inline-flex;
   align-items: center;
   gap: 5px;
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .header-action-btn--pulse:active {
-  opacity: 0.85;
+  background: rgba(0, 0, 0, 0.08);
+  transform: scale(0.96);
+}
+
+.header-action-btn--pulse .sf-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--fg-primary);
 }
 
 .header-action-btn__text {
@@ -239,10 +248,10 @@ button {
   min-width: 16px;
   height: 16px;
   padding: 0 4px;
-  background: #ffffff;
-  color: #000000;
+  background: var(--fg-primary);
+  color: #ffffff;
   font-size: 9px;
-  font-weight: 800;
+  font-weight: 700;
   border-radius: 8px;
 }
 
@@ -628,34 +637,44 @@ button {
   display: block;
 }
 
-/* Selection Checkbox (44×44px Thumb Target Area) */
+/* Selection Checkbox (Discreet subtle hairline ring with 44×44px hit area) */
 .fashion-card__checkbox {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 7px;
+  right: 7px;
   z-index: 10;
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
   color: transparent;
   cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fashion-card__checkbox .sf-icon {
+  width: 11px;
+  height: 11px;
 }
 
 .fashion-card__checkbox::before {
   content: "";
   position: absolute;
-  inset: -9px;
+  inset: -11px; /* expands to 44×44px hit target */
 }
 
 .fashion-card--selected .fashion-card__checkbox {
   background: #000000;
-  border-color: #000000;
+  border-color: #ffffff;
   color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 .fashion-card--selected .fashion-card__photo-wrap {
@@ -663,58 +682,29 @@ button {
   outline-offset: -2px;
 }
 
-/* Badges (Top Left) */
-.fashion-card__badges {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  pointer-events: none;
-}
-
+/* New Badge (Top Left, Discreet) */
 .fashion-card__badge-new {
-  background: #000000;
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   color: #ffffff;
-  font-size: 8.5px;
+  font-size: 8px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 2px 5px;
-  border-radius: var(--radius-xs);
-}
-
-.fashion-card__discount {
-  background: var(--accent-red);
-  color: #ffffff;
-  font-size: 8.5px;
-  font-weight: 700;
-  padding: 2px 5px;
-  border-radius: var(--radius-xs);
-}
-
-.fashion-card__meta {
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 8.5px;
-  font-weight: 600;
-  color: #ffffff;
-  background: rgba(0, 0, 0, 0.62);
-  backdrop-filter: blur(4px);
-  padding: 2px 5px;
-  border-radius: var(--radius-xs);
+  padding: 2.5px 5.5px;
+  border-radius: 2px;
   pointer-events: none;
+  line-height: 1;
 }
 
 /* Card Body */
 .fashion-card__body {
-  padding-top: 6px;
+  padding-top: 7px;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -743,30 +733,33 @@ button {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-top: 2px;
+  margin-top: 3px;
+}
+
+.fashion-card__price-group {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
 }
 
 .fashion-card__price {
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--fg-primary);
   letter-spacing: -0.01em;
 }
 
-.fashion-card__old-price {
-  font-size: 10.5px;
-  color: var(--fg-muted);
-  text-decoration: line-through;
-  margin-left: 3px;
+.fashion-card__discount-tag {
+  font-size: 10px;
+  font-weight: 600;
+  color: #e11d48;
 }
 
-.fashion-card__link {
+.fashion-card__rating {
+  font-size: 10.5px;
+  font-weight: 500;
   color: var(--fg-muted);
-  width: 34px;
-  height: 34px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  letter-spacing: 0.01em;
 }
 
 /* Empty State */
