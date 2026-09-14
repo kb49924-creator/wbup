@@ -377,19 +377,51 @@ body {
   transform: scale(1.03);
 }
 
-/* Discount Badge */
+/* Badges on Card (NEW & Discount) */
+.fashion-card__badges {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.fashion-card__badge-new {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2.5px 6.5px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #0A84FF, #5E5CE6);
+  color: #ffffff;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.45);
+}
+
 .fashion-card__discount {
+  display: inline-block;
+  padding: 2.5px 6px;
+  border-radius: 6px;
+  background: rgba(255, 69, 58, 0.94);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.fashion-card__photo-wrap > .fashion-card__discount {
   position: absolute;
   top: 8px;
   left: 8px;
   z-index: 3;
-  padding: 3px 6px;
-  border-radius: 6px;
-  background: rgba(255, 69, 58, 0.94);
-  color: #ffffff;
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
 }
 
 /* Apple Photos Circular Checkbox */
