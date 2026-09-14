@@ -352,7 +352,10 @@ const app = {
       }
     });
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Only show action capsule on dashboard tab if items are selected
+    this.updateActionCapsule();
+
+    window.scrollTo(0, 0);
   },
 
   // --- Product Card Rendering (Farfetch / SSENSE Style) ---
@@ -457,7 +460,7 @@ const app = {
     if (!capsule) return;
 
     const count = this.state.selectedArticles.size;
-    if (count > 0) {
+    if (count > 0 && this.state.currentTab === 'dashboard') {
       if (label) label.textContent = `${count} выбрано`;
       capsule.classList.add('action-capsule--visible');
     } else {

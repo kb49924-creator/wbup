@@ -38,16 +38,25 @@
   padding: 0;
 }
 
-html, body {
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-app);
+}
+
+body {
+  min-height: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
   background-color: var(--bg-app);
   color: var(--fg-primary);
   font-family: var(--font-sans);
-  min-height: 100dvh;
-  min-height: -webkit-fill-available;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  overflow-x: hidden;
+  position: relative;
 }
 
 /* Vector SF Symbols */
@@ -65,25 +74,33 @@ html, body {
   width: 100%;
   max-width: 520px;
   margin: 0 auto;
+  min-height: 100%;
   min-height: 100dvh;
-  min-height: -webkit-fill-available;
   padding-bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom, 0px) + 24px);
   position: relative;
   background-color: var(--bg-app);
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Tab Panels */
 .tab-panel {
   display: none;
-  animation: fadeIn 0.22s ease-out;
+  width: 100%;
+  flex: 1 0 auto;
+  min-height: calc(100dvh - var(--tabbar-height) - env(safe-area-inset-bottom, 0px));
+  min-height: calc(100vh - var(--tabbar-height) - env(safe-area-inset-bottom, 0px));
+  animation: fadeIn 0.18s ease-out;
 }
 .tab-panel--active {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* ============================================================
@@ -809,20 +826,25 @@ html, body {
    APPLE UITABBAR (50pt Native Mobile Navigation)
    ============================================================ */
 .ios-tabbar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: calc(var(--tabbar-height) + env(safe-area-inset-bottom, 0px));
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: 520px;
+  margin: 0 auto;
+  height: calc(var(--tabbar-height) + env(safe-area-inset-bottom, 0px)) !important;
+  padding-bottom: env(safe-area-inset-bottom, 0px) !important;
   background: rgba(18, 18, 20, 0.94);
   backdrop-filter: blur(30px) saturate(200%);
   -webkit-backdrop-filter: blur(30px) saturate(200%);
   border-top: 0.5px solid rgba(255, 255, 255, 0.12);
-  display: flex;
+  display: flex !important;
   align-items: stretch;
   justify-content: space-around;
-  z-index: 1000;
+  z-index: 9999 !important;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .ios-tabbar__item {
