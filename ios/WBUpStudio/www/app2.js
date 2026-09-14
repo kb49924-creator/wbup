@@ -6124,6 +6124,14 @@ const app = {
     this.renderSellers();
     this.renderQueue();
     this.updateActionCapsule();
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeMobileMenu();
+        this.closeProductModal();
+        this.closeModal();
+      }
+    });
   },
 
   loadState() {
