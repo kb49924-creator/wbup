@@ -6176,30 +6176,81 @@ const app = {
     }
   },
 
-  // --- Tab Navigation ---
+  // --- Tab Navigation (Editorial Desktop & Mobile) ---
   switchTab(tabId) {
     this.haptic('light');
     this.state.currentTab = tabId;
 
+    // Active tab panel
     document.querySelectorAll('.tab-panel').forEach(panel => {
       panel.classList.remove('tab-panel--active');
     });
     const activePanel = document.getElementById(`tab-${tabId}`);
     if (activePanel) activePanel.classList.add('tab-panel--active');
 
-    document.querySelectorAll('.ios-tabbar__item').forEach(item => {
-      if (item.dataset.tab === tabId) {
-        item.classList.add('ios-tabbar__item--active');
-      } else {
-        item.classList.remove('ios-tabbar__item--active');
-      }
+    // Desktop nav links
+    document.querySelectorAll('.desktop-nav__link').forEach(link => {
+      if (link.dataset.tab === tabId) link.classList.add('active');
+      else link.classList.remove('active');
     });
 
+    // Mobile drawer items
+    document.querySelectorAll('.drawer-item').forEach(item => {
+      if (item.dataset.tab === tabId) item.classList.add('active');
+      else item.classList.remove('active');
+    });
+
+    // Mobile bottom nav bar items
+    document.querySelectorAll('.mobile-nav-bar__item').forEach(item => {
+      if (item.dataset.tab === tabId) item.classList.add('active');
+      else item.classList.remove('active');
+    });
+
+    // Legacy tabbar support
+    document.querySelectorAll('.ios-tabbar__item').forEach(item => {
+      if (item.dataset.tab === tabId) item.classList.add('ios-tabbar__item--active');
+      else item.classList.remove('ios-tabbar__item--active');
+    });
+
+    this.closeMobileMenu();
     this.updateActionCapsule();
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   },
 
-  // --- Product Card Rendering (Farfetch / SSENSE Style) ---
+  // --- Mobile Drawer Menu ---
+  toggleMobileMenu() {
+    const overlay = document.getElementById('mobile-drawer-overlay');
+    if (!overlay) return;
+    const isOpen = overlay.classList.contains('active');
+    if (isOpen) {
+      this.closeMobileMenu();
+    } else {
+      this.haptic('light');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  },
+
+  closeMobileMenu() {
+    const overlay = document.getElementById('mobile-drawer-overlay');
+    if (overlay && overlay.classList.contains('active')) {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  },
+
+  // --- Smooth Scroll to Catalog ---
+  scrollToCatalog() {
+    this.switchTab('dashboard');
+    const toolbar = document.querySelector('.catalog-toolbar');
+    if (toolbar) {
+      toolbar.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 420, behavior: 'smooth' });
+    }
+  },
+
+  // --- Product Card Rendering (Ohdamn.online Borderless Minimal Aesthetic) ---
   renderFeed() {
     const grid = document.getElementById('product-grid');
     const emptyEl = document.getElementById('feed-empty');
@@ -6259,20 +6310,20 @@ const app = {
       const hasDiscount = p.discount && p.discount > 0;
 
       return `
-        <article class="fashion-card ${selClass}" onclick="app.toggleArticleCard(${p.article})">
+        <article class="fashion-card ${selClass}" onclick="app.openProductModal(${p.article})">
           <div class="fashion-card__photo-wrap">
             <div class="fashion-card__badges">
               ${p.is_new ? '<span class="fashion-card__badge-new">NEW</span>' : ''}
               ${hasDiscount ? `<span class="fashion-card__discount">-${p.discount}%</span>` : ''}
             </div>
-            <div class="fashion-card__checkbox">
+            <div class="fashion-card__checkbox" onclick="event.stopPropagation(); app.toggleArticleCard(${p.article});" title="Выбрать для поста">
               <svg class="sf-icon"><use href="#sf-check"></use></svg>
             </div>
             <img src="${photoUrl}"
                  class="fashion-card__img"
                  alt="${this.escHtml(p.name)}"
                  loading="lazy"
-                 onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect fill=\'%231c1c1e\' width=\'100\' height=\'100\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%238e8e93\' font-size=\'12\'>Фото WB</text></svg>'">
+                 onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect fill=\'%23f4f4f6\' width=\'100\' height=\'100\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%238e8e98\' font-size=\'12\'>Фото WB</text></svg>'">
             <div class="fashion-card__meta">
               <span>⭐ ${p.rating || '4.8'}</span>
               <span>💬 ${p.feedbacks || '0'}</span>
@@ -6282,9 +6333,11 @@ const app = {
             <div class="fashion-card__brand">${this.escHtml(p.brand || 'WILDBERRIES')}</div>
             <div class="fashion-card__name" title="${this.escHtml(p.name)}">${this.escHtml(p.name)}</div>
             <div class="fashion-card__price-row">
-              <span class="fashion-card__price">${Math.round(salePrice).toLocaleString('ru-RU')} ₽</span>
-              ${hasDiscount ? `<span class="fashion-card__old-price">${Math.round(oldPrice).toLocaleString('ru-RU')} ₽</span>` : ''}
-              <a href="https://www.wildberries.ru/catalog/${p.article}/detail.aspx" target="_blank" class="fashion-card__link" onclick="event.stopPropagation();" title="Открыть на WB">
+              <div>
+                <span class="fashion-card__price">${Math.round(salePrice).toLocaleString('ru-RU')} ₽</span>
+                ${hasDiscount ? `<span class="fashion-card__old-price">${Math.round(oldPrice).toLocaleString('ru-RU')} ₽</span>` : ''}
+              </div>
+              <a href="https://www.wildberries.ru/catalog/${p.article}/detail.aspx" target="_blank" rel="noopener noreferrer" class="fashion-card__link" onclick="event.stopPropagation();" title="Открыть на WB">
                 <svg class="sf-icon"><use href="#sf-arrow-up-right"></use></svg>
               </a>
             </div>
@@ -6292,6 +6345,109 @@ const app = {
         </article>
       `;
     }).join('');
+  },
+
+  // --- Product Detail Modal (2-Column Editorial Desktop / Sheet Mobile) ---
+  openProductModal(article) {
+    this.haptic('light');
+    const p = this.state.feedProducts.find(x => x.article === article);
+    if (!p) return;
+
+    const overlay = document.getElementById('product-modal-overlay');
+    const content = document.getElementById('product-modal-content');
+    if (!overlay || !content) return;
+
+    const isSelected = this.state.selectedArticles.has(article);
+    const photoUrl = p.photo_url || StandaloneEngine.getPhotoUrl(p.article, 1);
+    const salePrice = p.sale_price || p.price || 0;
+    const oldPrice = p.price || 0;
+    const hasDiscount = p.discount && p.discount > 0;
+
+    content.innerHTML = `
+      <div class="product-modal__gallery">
+        <img src="${photoUrl}" class="product-modal__main-img" alt="${this.escHtml(p.name)}">
+      </div>
+      <div class="product-modal__info">
+        <div class="product-modal__header">
+          <div class="product-modal__brand">${this.escHtml(p.brand || 'WILDBERRIES')} · АРТИКУЛ ${p.article}</div>
+          <h2 class="product-modal__title">${this.escHtml(p.name)}</h2>
+          <div class="product-modal__meta-row">
+            <span>⭐ ${p.rating || '4.8'} (${p.feedbacks || 0} отзывов)</span>
+            <span>•</span>
+            <span>Магазин: <strong>${this.escHtml(p.supplier || 'WB Seller')}</strong></span>
+          </div>
+          <div class="product-modal__price-row">
+            <span class="product-modal__current-price">${Math.round(salePrice).toLocaleString('ru-RU')} ₽</span>
+            ${hasDiscount ? `<span class="product-modal__original-price">${Math.round(oldPrice).toLocaleString('ru-RU')} ₽</span>` : ''}
+            ${hasDiscount ? `<span class="product-modal__discount-tag">-${p.discount}%</span>` : ''}
+          </div>
+        </div>
+
+        <div class="product-modal__sizes-section">
+          <div class="product-modal__section-label">Размеры в наличии</div>
+          <div class="product-modal__sizes-grid">
+            <button class="size-pill active" onclick="app.toggleSizePill(this)">XS</button>
+            <button class="size-pill" onclick="app.toggleSizePill(this)">S</button>
+            <button class="size-pill" onclick="app.toggleSizePill(this)">M</button>
+            <button class="size-pill" onclick="app.toggleSizePill(this)">L</button>
+            <button class="size-pill" onclick="app.toggleSizePill(this)">XL</button>
+            <button class="size-pill" onclick="app.toggleSizePill(this)">XXL</button>
+          </div>
+        </div>
+
+        <div class="product-modal__actions">
+          <button class="btn btn--primary btn--full btn--lg" onclick="app.toggleArticleFromModal(${p.article})">
+            <svg class="sf-icon"><use href="#sf-check"></use></svg>
+            <span id="modal-select-btn-text">${isSelected ? 'УДАЛИТЬ ИЗ ПОСТА' : 'ВЫБРАТЬ ДЛЯ ПОСТА'}</span>
+          </button>
+          <a href="https://www.wildberries.ru/catalog/${p.article}/detail.aspx" target="_blank" rel="noopener noreferrer" class="btn btn--secondary btn--full">
+            <svg class="sf-icon"><use href="#sf-arrow-up-right"></use></svg>
+            ОТКРЫТЬ НА WILDBERRIES
+          </a>
+          <button class="btn btn--ghost btn--full" onclick="app.createLookbookFromProduct(${p.article})">
+            <svg class="sf-icon"><use href="#sf-wand-stars"></use></svg>
+            СОЗДАТЬ LOOKBOOK 1080×1080
+          </button>
+        </div>
+      </div>
+    `;
+
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  },
+
+  closeProductModal() {
+    const overlay = document.getElementById('product-modal-overlay');
+    if (overlay) {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  },
+
+  toggleSizePill(el) {
+    this.haptic('light');
+    if (el && el.parentElement) {
+      el.parentElement.querySelectorAll('.size-pill').forEach(btn => btn.classList.remove('active'));
+      el.classList.add('active');
+    }
+  },
+
+  toggleArticleFromModal(article) {
+    this.toggleArticleCard(article);
+    const btnText = document.getElementById('modal-select-btn-text');
+    if (btnText) {
+      const isSelected = this.state.selectedArticles.has(article);
+      btnText.textContent = isSelected ? 'УДАЛИТЬ ИЗ ПОСТА' : 'ВЫБРАТЬ ДЛЯ ПОСТА';
+    }
+  },
+
+  createLookbookFromProduct(article) {
+    this.closeProductModal();
+    this.state.selectedArticles.clear();
+    this.state.selectedArticles.add(article);
+    this.renderFeed();
+    this.updateActionCapsule();
+    this.generatePreview();
   },
 
   toggleArticleCard(article) {
@@ -6315,22 +6471,48 @@ const app = {
   updateActionCapsule() {
     const capsule = document.getElementById('action-capsule');
     const label = document.getElementById('selected-count-label');
-    if (!capsule) return;
-
     const count = this.state.selectedArticles.size;
-    if (count > 0 && this.state.currentTab === 'dashboard') {
-      if (label) label.textContent = `${count} выбрано`;
-      capsule.classList.add('action-capsule--visible');
-    } else {
-      capsule.classList.remove('action-capsule--visible');
+
+    if (capsule) {
+      if (count > 0 && this.state.currentTab === 'dashboard') {
+        if (label) label.textContent = `${count} выбрано`;
+        capsule.classList.add('visible');
+        capsule.classList.add('action-capsule--visible');
+      } else {
+        capsule.classList.remove('visible');
+        capsule.classList.remove('action-capsule--visible');
+      }
     }
+
+    // Sync header and drawer badges
+    const newItemsCount = this.state.feedProducts.filter(p => p.is_new).length;
+    const headerNew = document.getElementById('header-new-badge');
+    if (headerNew) headerNew.textContent = newItemsCount || this.state.feedProducts.length;
+    const drawerNew = document.getElementById('novelty-badge-count');
+    if (drawerNew) drawerNew.textContent = newItemsCount || this.state.feedProducts.length;
+
+    const queueBadge = document.getElementById('queue-count-badge');
+    if (queueBadge) queueBadge.textContent = this.state.queue.length;
+    const queueHeader = document.getElementById('queue-count-header');
+    if (queueHeader) queueHeader.textContent = this.state.queue.length;
+    const drawerQueue = document.getElementById('drawer-queue-count');
+    if (drawerQueue) drawerQueue.textContent = this.state.queue.length;
+
+    const drawerSellers = document.getElementById('drawer-sellers-count');
+    if (drawerSellers) drawerSellers.textContent = this.state.sellers.length;
   },
 
   filterByCategory(cat, btnEl) {
     this.haptic('light');
     this.state.categoryFilter = cat;
-    document.querySelectorAll('#category-chips .ios-chip').forEach(c => c.classList.remove('ios-chip--active'));
-    if (btnEl) btnEl.classList.add('ios-chip--active');
+    document.querySelectorAll('#category-chips .cat-link').forEach(c => {
+      c.classList.remove('active');
+      c.classList.remove('ios-chip--active');
+    });
+    if (btnEl) {
+      btnEl.classList.add('active');
+      btnEl.classList.add('ios-chip--active');
+    }
     this.renderFeed();
   },
 
@@ -6688,9 +6870,9 @@ const app = {
     if (body) {
       body.innerHTML = `
         <div style="display:flex; flex-direction:column; gap:12px;">
-          <label style="font-size:13px; font-weight:600; color:#8e8e93;">Ссылка на магазин или ID поставщика:</label>
-          <input type="text" id="new-seller-input" class="ios-search__input" style="background:#242428; padding:12px 14px; border-radius:12px; border:0.5px solid rgba(255,255,255,0.1); width:100%;" placeholder="https://www.wildberries.ru/seller/SOQ-WAY-4183217 или 110887">
-          <p style="font-size:12px; color:#8e8e93; line-height:1.4;">Система автоматически определит бренд магазина, загрузит его товары и включит в мониторинг новинок.</p>
+          <label style="font-size:12px; font-weight:600; color:var(--fg-secondary); text-transform:uppercase; letter-spacing:0.05em;">Ссылка на магазин или ID поставщика:</label>
+          <input type="text" id="new-seller-input" class="settings-input" style="width:100%;" placeholder="https://www.wildberries.ru/seller/SOQ-WAY-4183217 или 110887">
+          <p style="font-size:12px; color:var(--fg-muted); line-height:1.4;">Система автоматически определит бренд магазина, загрузит его товары и включит в мониторинг новинок.</p>
         </div>
       `;
     }

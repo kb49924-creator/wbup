@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
-  <meta name="description" content="WB Up Studio — фэшн-система управления публикациями Wildberries в Telegram">
-  <meta name="theme-color" content="#000000">
+  <meta name="description" content="WB Up Studio — премиальная fashion-платформа находок Wildberries и менеджер публикаций">
+  <meta name="theme-color" content="#ffffff">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="WB Up">
   <meta name="format-detection" content="telephone=no">
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
-  <title>WB Up Studio</title>
-  <link rel="stylesheet" href="styles.css?v=fashion_ios18_v6_auth">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+  <title>WB Up Studio · Editorial Fashion</title>
+  <link rel="stylesheet" href="styles.css?v=fashion_ohdamn_v7">
 </head>
 <body>
 
-  <!-- Apple SF Symbols Vector Sprite (iOS 18) -->
+  <!-- SF Symbols Vector Sprite -->
   <svg style="display:none;" xmlns="http://www.w3.org/2000/svg">
-    <symbol id="sf-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2.5" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2.5" fill="currentColor"/><rect x="3" y="13" width="8" height="8" rx="2.5" fill="currentColor"/><rect x="13" y="13" width="8" height="8" rx="2.5" fill="currentColor"/></symbol>
+    <symbol id="sf-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="1.5" fill="currentColor"/><rect x="3" y="13" width="8" height="8" rx="1.5" fill="currentColor"/><rect x="13" y="13" width="8" height="8" rx="1.5" fill="currentColor"/></symbol>
     <symbol id="sf-bag" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 4a3.5 3.5 0 0 1 7 0h2.75A2.75 2.75 0 0 1 21 6.75v11.5A3.75 3.75 0 0 1 17.25 22H6.75A3.75 3.75 0 0 1 3 18.25V6.75A2.75 2.75 0 0 1 5.75 4H8.5zm1.8 0a1.7 1.7 0 0 1 3.4 0H10.3z" fill="currentColor"/></symbol>
     <symbol id="sf-store" viewBox="0 0 24 24"><path d="M4 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2.5a3.5 3.5 0 0 1-3.5 3.5 3.4 3.4 0 0 1-2.5-1.1 3.4 3.4 0 0 1-5 0A3.4 3.4 0 0 1 4.5 10 3.5 3.5 0 0 1 1 6.5V4a2 2 0 0 1 2-2h1zm0 8.8V20a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.2a5.4 5.4 0 0 1-2.5.7 5.4 5.4 0 0 1-3.5-1.3 5.4 5.4 0 0 1-3.5 1.3 5.4 5.4 0 0 1-3.5-1.3 5.4 5.4 0 0 1-2.5-.7h-.5zM9 16a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4H9v-4z" fill="currentColor"/></symbol>
     <symbol id="sf-sparkles" viewBox="0 0 24 24"><path d="M12 1.5l1.6 4.7 4.7 1.6-4.7 1.6L12 14.1l-1.6-4.7-4.7-1.6 4.7-1.6L12 1.5zm7 11.5l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3zm-14 1l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3z" fill="currentColor"/></symbol>
@@ -42,325 +42,407 @@
 
   <div class="toast-container" id="toast-container"></div>
 
-  <div class="app-viewport">
-
-    <!-- SCREEN 1: НАХОДКИ (FASHION FEED) -->
-    <section id="tab-dashboard" class="tab-panel tab-panel--active">
+  <!-- EDITORIAL HEADER (Sticky, Minimalist, Ohdamn Style) -->
+  <header class="site-header" id="site-header">
+    <div class="site-header__inner">
       
-      <!-- Apple Large Title Navigation Bar -->
-      <header class="ios-navbar">
-        <div>
-          <span class="ios-navbar__sub">WILDBERRIES FEED</span>
-          <h1 class="ios-navbar__title">Находки</h1>
-        </div>
-        <div class="ios-navbar__actions">
-          <span class="ios-live-badge" id="feed-status-badge"><span class="pulse-dot"></span> Live</span>
-          <button class="ios-circle-btn" onclick="app.runCheck()" aria-label="Проверить новинки Wildberries" title="Проверить новинки WB">
-            <svg class="sf-icon"><use href="#sf-bolt"></use></svg>
-          </button>
-        </div>
-      </header>
+      <!-- Brand Logo (Left) -->
+      <a href="#" class="brand-logo" onclick="app.switchTab('dashboard'); return false;">
+        <span class="brand-logo__main">WB UP</span>
+        <span class="brand-logo__tag">STUDIO</span>
+      </a>
 
-      <!-- Farfetch-style Search Bar -->
-      <div class="ios-search">
-        <svg class="sf-icon ios-search__icon"><use href="#sf-search"></use></svg>
-        <input type="text" id="home-search-input" class="ios-search__input" placeholder="Поиск по названию, бренду или артикулу..." oninput="app.onSearchInput(this.value)">
-      </div>
-
-      <!-- ASOS-style Category Filter Chips (Horizontal Snap) -->
-      <div class="ios-chips-bar" id="category-chips">
-        <button class="ios-chip ios-chip--active" onclick="app.filterByCategory('all', this)">🔥 Все</button>
-        <button class="ios-chip" onclick="app.filterByCategory('clothes', this)">👗 Одежда</button>
-        <button class="ios-chip" onclick="app.filterByCategory('shoes', this)">👟 Обувь</button>
-        <button class="ios-chip" onclick="app.filterByCategory('discount', this)">🏷 Скидки >50%</button>
-        <button class="ios-chip" onclick="app.filterByCategory('top', this)">⭐ Топ 4.8+</button>
-      </div>
-
-      <!-- Active Seller Filter Banner (Dynamic) -->
-      <div id="seller-filter-container" style="display:none;"></div>
-
-      <!-- Quick Action Cards (4 Tiles) -->
-      <div class="quick-actions-bar">
-        <button class="quick-tile" onclick="app.runCheck()">
-          <div class="quick-tile__icon" style="background: linear-gradient(135deg, #FF9F0A, #FF6B00);">
-            <svg class="sf-icon"><use href="#sf-bolt"></use></svg>
-          </div>
-          <span class="quick-tile__label">Новинки</span>
+      <!-- Desktop Navigation Links (Center) -->
+      <nav class="desktop-nav" aria-label="Основное меню">
+        <button class="desktop-nav__link active" data-tab="dashboard" onclick="app.switchTab('dashboard')">Находки</button>
+        <button class="desktop-nav__link" data-tab="sellers" onclick="app.switchTab('sellers')">Магазины</button>
+        <button class="desktop-nav__link" data-tab="preview" onclick="app.switchTab('preview')">Студия</button>
+        <button class="desktop-nav__link" data-tab="queue" onclick="app.switchTab('queue')">
+          Очередь
+          <span class="desktop-nav__pill" id="nav-queue-badge" style="display:none;">0</span>
         </button>
-        <button class="quick-tile" onclick="app.generatePreview()">
-          <div class="quick-tile__icon" style="background: linear-gradient(135deg, #BF5AF2, #AF52DE);">
-            <svg class="sf-icon"><use href="#sf-wand-stars"></use></svg>
-          </div>
-          <span class="quick-tile__label">Создать пост</span>
+        <button class="desktop-nav__link" data-tab="settings" onclick="app.switchTab('settings')">Настройки</button>
+      </nav>
+
+      <!-- Header Actions (Right) -->
+      <div class="header-actions">
+        <!-- Live Novelties Trigger -->
+        <button class="header-action-btn header-action-btn--pulse" onclick="app.runCheck()" title="Опросить магазины на Wildberries">
+          <svg class="sf-icon"><use href="#sf-bolt"></use></svg>
+          <span class="header-action-btn__text">Новинки</span>
+          <span class="count-pill count-pill--dark" id="header-new-badge">12</span>
         </button>
-        <button class="quick-tile" onclick="app.switchTab('sellers')">
-          <div class="quick-tile__icon" style="background: linear-gradient(135deg, #30D158, #248A3D);">
-            <svg class="sf-icon"><use href="#sf-store"></use></svg>
-          </div>
-          <span class="quick-tile__label">Продавцы</span>
+
+        <!-- Studio Quick Launch -->
+        <button class="header-action-btn header-action-btn--ghost desktop-only" onclick="app.generatePreview()" title="Создать постер">
+          <svg class="sf-icon"><use href="#sf-wand-stars"></use></svg>
+          <span class="header-action-btn__text">Пост</span>
         </button>
-        <button class="quick-tile" onclick="app.switchTab('settings')">
-          <div class="quick-tile__icon" style="background: linear-gradient(135deg, #0A84FF, #0066CC);">
-            <svg class="sf-icon"><use href="#sf-gear"></use></svg>
-          </div>
-          <span class="quick-tile__label">Настройки</span>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-burger-btn" id="mobile-burger-btn" onclick="app.toggleMobileMenu()" aria-label="Открыть меню">
+          <span class="burger-bar"></span>
+          <span class="burger-bar"></span>
         </button>
       </div>
 
-      <!-- 2-Column Fashion Product Grid (Farfetch / SSENSE Style) -->
-      <div id="product-grid" class="fashion-grid"></div>
-
-      <!-- Empty State -->
-      <div id="feed-empty" class="fashion-empty" style="display:none;">
-        <svg class="sf-icon fashion-empty__icon"><use href="#sf-bag"></use></svg>
-        <h3 class="fashion-empty__title">Находок пока нет</h3>
-        <p class="fashion-empty__desc">Запустите поиск новинок, чтобы мгновенно опросить магазины на Wildberries</p>
-        <button class="btn btn--primary" onclick="app.runCheck()">
-          <svg class="sf-icon" style="width:16px; height:16px; margin-right:6px;"><use href="#sf-bolt"></use></svg>
-          Найти новинки WB
-        </button>
-      </div>
-
-    </section>
-
-    <!-- SCREEN 2: ПРОДАВЦЫ (SELLERS HUB) -->
-    <section id="tab-sellers" class="tab-panel">
-      
-      <header class="ios-navbar">
-        <div>
-          <span class="ios-navbar__sub">WILDBERRIES STORES</span>
-          <h1 class="ios-navbar__title">Продавцы</h1>
-        </div>
-        <div class="ios-navbar__actions">
-          <button class="ios-circle-btn" onclick="app.runCheck()" aria-label="Поиск по выбранным" title="Поиск по выбранным">
-            <svg class="sf-icon"><use href="#sf-bolt"></use></svg>
-          </button>
-          <button class="ios-circle-btn" onclick="app.openAddSellerModal()" aria-label="Добавить продавца" title="Добавить продавца">
-            <svg class="sf-icon"><use href="#sf-plus"></use></svg>
-          </button>
-        </div>
-      </header>
-
-      <!-- Sellers Quick Action Toolbar -->
-      <div class="sellers-toolbar">
-        <button class="btn btn--primary" style="flex:1;" onclick="app.runCheck()">
-          <svg class="sf-icon" style="width:16px; height:16px; margin-right:6px;"><use href="#sf-bolt"></use></svg>
-          Поиск по выбранным
-        </button>
-        <button class="btn btn--secondary" onclick="app.toggleAllSellers()" title="Выбрать всех / Снять выбор">
-          <svg class="sf-icon" style="width:16px; height:16px;"><use href="#sf-check"></use></svg>
-        </button>
-      </div>
-
-      <div class="ios-section-header">
-        <span>ОТСЛЕЖИВАЕМЫЕ МАГАЗИНЫ</span>
-        <span id="sellers-count-badge" class="ios-count-pill">0</span>
-      </div>
-
-      <!-- Inset Grouped Table View -->
-      <div class="ios-grouped-card" id="sellers-list-container">
-        <!-- Filled dynamically -->
-      </div>
-
-      <div style="padding: 16px;">
-        <button class="btn btn--secondary btn--full" onclick="app.openAddSellerModal()">
-          <svg class="sf-icon" style="width:16px; height:16px; margin-right:8px;"><use href="#sf-plus"></use></svg>
-          Добавить нового продавца
-        </button>
-      </div>
-
-    </section>
-
-    <!-- SCREEN 3: СТУДИЯ ПОСТОВ (1080x1080 LOOKBOOK STUDIO) -->
-    <section id="tab-preview" class="tab-panel">
-      
-      <header class="ios-navbar">
-        <div>
-          <span class="ios-navbar__sub">POST GENERATOR 1080×1080</span>
-          <h1 class="ios-navbar__title">Студия</h1>
-        </div>
-        <div class="ios-navbar__actions">
-          <button class="ios-circle-btn" onclick="app.generatePreview()" aria-label="Пересобрать карточку" title="Пересобрать">
-            <svg class="sf-icon"><use href="#sf-sync"></use></svg>
-          </button>
-        </div>
-      </header>
-
-      <!-- Empty Studio Landing State -->
-      <div id="studio-empty-state" class="studio-empty">
-        <div class="studio-empty__magic">
-          <svg class="sf-icon sf-float" style="width:54px; height:54px; color:#BF5AF2;"><use href="#sf-wand-stars"></use></svg>
-        </div>
-        <h2 class="studio-empty__title">Студия создания постов</h2>
-        <p class="studio-empty__desc">Автоматическое вырезание одежды на ваш фон <strong>wb_up_background.jpg</strong> и мгновенная публикация в Telegram</p>
-        
-        <div class="studio-features-row">
-          <span class="feature-tag"><svg class="sf-icon"><use href="#sf-scissors"></use></svg> Без фона</span>
-          <span class="feature-tag"><svg class="sf-icon"><use href="#sf-sparkles"></use></svg> 1080×1080</span>
-          <span class="feature-tag"><svg class="sf-icon"><use href="#sf-paperplane"></use></svg> @wbuppp</span>
-        </div>
-
-        <button class="btn btn--primary btn--lg" onclick="app.generatePreview()">
-          <svg class="sf-icon" style="width:18px; height:18px; margin-right:8px;"><use href="#sf-wand-stars"></use></svg>
-          Создать превью поста
-        </button>
-      </div>
-
-      <!-- Generated Preview Canvas & Controls -->
-      <div id="studio-active-state" style="display:none;">
-        <div class="preview-mockup-wrapper">
-          <canvas id="poster-canvas" width="1080" height="1080" style="display:none;"></canvas>
-          <img id="poster-result-img" class="preview-mockup-img" alt="Превью поста 1080x1080">
-        </div>
-
-        <div class="preview-actions-bar">
-          <button class="btn btn--primary btn--full" id="btn-publish-tg" onclick="app.publishFromPreview()">
-            <svg class="sf-icon" style="width:18px; height:18px; margin-right:8px;"><use href="#sf-paperplane"></use></svg>
-            Опубликовать в канал @wbuppp
-          </button>
-          <div style="display:flex; gap:10px; width:100%; margin-top:8px;">
-            <button class="btn btn--secondary" style="flex:1;" onclick="app.saveToQueueFromPreview()">
-              <svg class="sf-icon" style="width:16px; height:16px; margin-right:6px;"><use href="#sf-tray"></use></svg>
-              В очередь
-            </button>
-            <button class="btn btn--secondary" style="flex:1;" onclick="app.downloadPosterImage()">
-              <svg class="sf-icon" style="width:16px; height:16px; margin-right:6px;"><use href="#sf-download"></use></svg>
-              Скачать
-            </button>
-          </div>
-        </div>
-
-        <!-- Telegram Caption Editor -->
-        <div class="ios-section-header" style="margin-top:20px;">
-          <span>ТЕКСТ СООБЩЕНИЯ ДЛЯ TELEGRAM</span>
-        </div>
-        <div class="ios-grouped-card" style="padding:14px;">
-          <textarea id="caption-editor" class="ios-textarea" rows="7" placeholder="Текст поста с артикулами..."></textarea>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- SCREEN 4: ОЧЕРЕДЬ (QUEUE) -->
-    <section id="tab-queue" class="tab-panel">
-      <header class="ios-navbar">
-        <div>
-          <span class="ios-navbar__sub">SCHEDULED POSTS</span>
-          <h1 class="ios-navbar__title">Очередь</h1>
-        </div>
-      </header>
-
-      <div class="ios-section-header">
-        <span>ОТЛОЖЕННЫЕ ПУБЛИКАЦИИ</span>
-        <span id="queue-count-badge" class="ios-count-pill">0</span>
-      </div>
-
-      <div class="ios-grouped-card" id="queue-list-container">
-        <!-- Filled dynamically -->
-      </div>
-    </section>
-
-    <!-- SCREEN 5: НАСТРОЙКИ (SETTINGS) -->
-    <section id="tab-settings" class="tab-panel">
-      <header class="ios-navbar">
-        <div>
-          <span class="ios-navbar__sub">PREFERENCES & TELEGRAM</span>
-          <h1 class="ios-navbar__title">Настройки</h1>
-        </div>
-      </header>
-
-      <div class="ios-section-header">TELEGRAM КАНАЛ</div>
-      <div class="ios-grouped-card">
-        <div class="ios-cell">
-          <span class="ios-cell__label">Канал</span>
-          <input type="text" id="setting-tg-channel" class="ios-cell__input" placeholder="@wbuppp" value="@wbuppp" onchange="app.saveSetting('tgChannel', this.value)">
-        </div>
-        <div class="ios-cell">
-          <span class="ios-cell__label">Токен бота</span>
-          <input type="password" id="setting-tg-token" class="ios-cell__input" placeholder="7801828859:AA..." onchange="app.saveSetting('tgToken', this.value)">
-        </div>
-      </div>
-
-      <div class="ios-section-header">АВТОНОМНЫЙ ДВИЖОК</div>
-      <div class="ios-grouped-card">
-        <div class="ios-cell">
-          <span class="ios-cell__label">Статус движка</span>
-          <span class="ios-badge-ok">🟢 Standalone Active</span>
-        </div>
-        <div class="ios-cell">
-          <span class="ios-cell__label">Фоновое изображение</span>
-          <span style="color:#8e8e93; font-size:13px;">wb_up_background.jpg</span>
-        </div>
-        <div class="ios-cell">
-          <span class="ios-cell__label">Версия дизайна</span>
-          <span style="color:#8e8e93; font-size:13px;">iOS 18 Fashion v1.0</span>
-        </div>
-      </div>
-
-      <div style="padding: 20px 16px;">
-        <button class="btn btn--danger btn--full" onclick="app.resetAllCache()">
-          <svg class="sf-icon" style="width:16px; height:16px; margin-right:6px;"><use href="#sf-trash"></use></svg>
-          Сбросить кэш и обновить базу
-        </button>
-      </div>
-    </section>
-
-  </div><!-- /.app-viewport -->
-
-  <!-- FLOATING ACTION DOCK (Farfetch / Apple Capsule) -->
-  <div class="action-capsule" id="action-capsule">
-    <div class="action-capsule__info">
-      <span class="action-capsule__dot"></span>
-      <span id="selected-count-label">0 выбрано</span>
     </div>
-    <div class="action-capsule__btns">
-      <button class="action-capsule__btn action-capsule__btn--ghost" onclick="app.clearSelection()">Снять</button>
-      <button class="action-capsule__btn action-capsule__btn--primary" onclick="app.generatePreview()">✨ Создать пост</button>
+  </header>
+
+  <!-- MOBILE SLIDE-OVER DRAWER -->
+  <div class="mobile-drawer-overlay" id="mobile-drawer-overlay" onclick="app.closeMobileMenu()">
+    <div class="mobile-drawer" onclick="event.stopPropagation()">
+      <div class="mobile-drawer__top">
+        <div class="brand-logo">
+          <span class="brand-logo__main">WB UP</span>
+          <span class="brand-logo__tag">STUDIO</span>
+        </div>
+        <button class="drawer-close-btn" onclick="app.closeMobileMenu()" aria-label="Закрыть меню">
+          <svg class="sf-icon"><use href="#sf-xmark"></use></svg>
+        </button>
+      </div>
+
+      <nav class="mobile-drawer__nav">
+        <button class="drawer-item active" data-tab="dashboard" onclick="app.switchTab('dashboard'); app.closeMobileMenu();">
+          <span class="drawer-item__index">01</span>
+          <span class="drawer-item__title">Находки</span>
+          <span class="desktop-nav__pill" id="novelty-badge-count" style="margin-left:auto;">12</span>
+        </button>
+        <button class="drawer-item" data-tab="sellers" onclick="app.switchTab('sellers'); app.closeMobileMenu();">
+          <span class="drawer-item__index">02</span>
+          <span class="drawer-item__title">Магазины</span>
+          <span class="desktop-nav__pill" id="drawer-sellers-count" style="margin-left:auto;">4</span>
+        </button>
+        <button class="drawer-item" data-tab="preview" onclick="app.switchTab('preview'); app.closeMobileMenu();">
+          <span class="drawer-item__index">03</span>
+          <span class="drawer-item__title">Студия постов</span>
+        </button>
+        <button class="drawer-item" data-tab="queue" onclick="app.switchTab('queue'); app.closeMobileMenu();">
+          <span class="drawer-item__index">04</span>
+          <span class="drawer-item__title">Очередь</span>
+          <span class="desktop-nav__pill" id="drawer-queue-count" style="margin-left:auto;">0</span>
+        </button>
+        <button class="drawer-item" data-tab="settings" onclick="app.switchTab('settings'); app.closeMobileMenu();">
+          <span class="drawer-item__index">05</span>
+          <span class="drawer-item__title">Настройки</span>
+        </button>
+      </nav>
+
+      <div class="mobile-drawer__footer">
+        <button class="btn btn--primary btn--full" onclick="app.runCheck(); app.closeMobileMenu();">
+          <svg class="sf-icon" style="margin-right:8px;"><use href="#sf-bolt"></use></svg>
+          Проверить новинки WB
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- APPLE UITABBAR (49pt Native Mobile Navigation) -->
-  <nav class="ios-tabbar">
-    <button class="ios-tabbar__item ios-tabbar__item--active" data-tab="dashboard" onclick="app.switchTab('dashboard')">
+  <!-- MAIN APPLICATION CONTENT CONTAINER -->
+  <main class="site-main">
+
+    <!-- ======================================================== -->
+    <!-- TAB 1: НАХОДКИ (EDITORIAL CATALOG & FEED) -->
+    <!-- ======================================================== -->
+    <section id="tab-dashboard" class="tab-panel tab-panel--active">
+      
+      <!-- HERO SECTION (Editorial Brand Drop) -->
+      <section class="hero-editorial">
+        <div class="hero-editorial__bg">
+          <img src="wb_up_background.jpg" alt="Editorial Fashion" class="hero-editorial__img" onerror="this.style.display='none'">
+          <div class="hero-editorial__dimmer"></div>
+        </div>
+        <div class="hero-editorial__content">
+          <span class="hero-editorial__eyebrow">WILDBERRIES SELECTION · EDITORIAL DROP</span>
+          <h1 class="hero-editorial__heading">CURATED DROPS</h1>
+          <p class="hero-editorial__sub">Селекция актуального стритвира, денима и новинок от проверенных магазинов Wildberries</p>
+          <div class="hero-editorial__buttons">
+            <button class="btn btn--hero-primary" onclick="app.scrollToCatalog()">
+              Смотреть находки
+              <svg class="sf-icon" style="width:14px; height:14px; margin-left:6px;"><use href="#sf-arrow-up-right"></use></svg>
+            </button>
+            <button class="btn btn--hero-outline" onclick="app.runCheck()">
+              <svg class="sf-icon" style="width:14px; height:14px; margin-right:6px;"><use href="#sf-bolt"></use></svg>
+              Проверить новинки
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEARCH & FILTER TOOLBAR -->
+      <div class="catalog-toolbar" id="catalog-anchor">
+        <div class="catalog-toolbar__inner">
+          
+          <!-- Search Bar (Minimalist Line) -->
+          <div class="minimal-search">
+            <svg class="sf-icon minimal-search__icon"><use href="#sf-search"></use></svg>
+            <input type="text" id="home-search-input" class="minimal-search__input" placeholder="Поиск по названию, бренду или артикулу..." oninput="app.onSearchInput(this.value)">
+          </div>
+
+          <!-- Typographic Category Links (Not heavy buttons!) -->
+          <div class="category-links-bar" id="category-chips">
+            <button class="cat-link ios-chip active" onclick="app.filterByCategory('all', this)">Все</button>
+            <button class="cat-link ios-chip" onclick="app.filterByCategory('clothes', this)">Одежда</button>
+            <button class="cat-link ios-chip" onclick="app.filterByCategory('shoes', this)">Обувь</button>
+            <button class="cat-link ios-chip" onclick="app.filterByCategory('discount', this)">Скидки &gt;50%</button>
+            <button class="cat-link ios-chip" onclick="app.filterByCategory('top', this)">Топ 4.8+</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Active Seller Filter Banner (Dynamic) -->
+      <div id="seller-filter-container" class="seller-filter-banner" style="display:none;"></div>
+
+      <!-- PRODUCT GRID SECTION -->
+      <div class="catalog-grid-wrap">
+        <div id="product-grid" class="fashion-grid"></div>
+
+        <!-- Empty State -->
+        <div id="feed-empty" class="fashion-empty" style="display:none;">
+          <svg class="sf-icon fashion-empty__icon"><use href="#sf-bag"></use></svg>
+          <h3 class="fashion-empty__title">Находок пока нет</h3>
+          <p class="fashion-empty__desc">Запустите поиск новинок, чтобы мгновенно загрузить товары от выбранных магазинов Wildberries</p>
+          <button class="btn btn--primary" onclick="app.runCheck()">
+            <svg class="sf-icon" style="width:16px; height:16px; margin-right:6px;"><use href="#sf-bolt"></use></svg>
+            Найти новинки WB
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 2: МАГАЗИНЫ (SELLERS DIRECTORY) -->
+    <!-- ======================================================== -->
+    <section id="tab-sellers" class="tab-panel">
+      <div class="subpage-container">
+        
+        <div class="subpage-header">
+          <div>
+            <span class="subpage-eyebrow">WILDBERRIES STORES</span>
+            <h1 class="subpage-title">Магазины</h1>
+          </div>
+          <div class="subpage-header__actions">
+            <button class="btn btn--secondary" onclick="app.openAddSellerModal()">
+              <svg class="sf-icon" style="margin-right:6px;"><use href="#sf-plus"></use></svg>
+              Добавить продавца
+            </button>
+            <button class="btn btn--primary" onclick="app.runCheck()">
+              <svg class="sf-icon" style="margin-right:6px;"><use href="#sf-bolt"></use></svg>
+              Найти новинки
+            </button>
+          </div>
+        </div>
+
+        <div class="sellers-meta-row">
+          <div class="sellers-meta-row__label">
+            <span>ОТСЛЕЖИВАЕМЫЕ МАГАЗИНЫ</span>
+            <span id="sellers-count-badge" class="count-pill">0</span>
+          </div>
+          <button class="text-link-btn" onclick="app.toggleAllSellers()">Выбрать всех / Снять выбор</button>
+        </div>
+
+        <div class="sellers-list-grid" id="sellers-list-container">
+          <!-- Populated dynamically by app2.js -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 3: СТУДИЯ ПОСТОВ (1080x1080 LOOKBOOK STUDIO) -->
+    <!-- ======================================================== -->
+    <section id="tab-preview" class="tab-panel">
+      <div class="subpage-container">
+        
+        <div class="subpage-header">
+          <div>
+            <span class="subpage-eyebrow">POST GENERATOR 1080×1080</span>
+            <h1 class="subpage-title">Студия постов</h1>
+          </div>
+        </div>
+
+        <!-- Empty Studio State -->
+        <div id="studio-empty-state" class="studio-empty-card">
+          <div class="studio-empty-card__icon">
+            <svg class="sf-icon" style="width:48px; height:48px;"><use href="#sf-wand-stars"></use></svg>
+          </div>
+          <h2 class="studio-empty-card__title">Генератор лукбук-постов</h2>
+          <p class="studio-empty-card__desc">Скомпонуйте выбранные находки в готовый пост 1080×1080 с ценами и артикулами для мгновенной публикации в Telegram</p>
+          <button class="btn btn--primary btn--lg" onclick="app.generatePreview()">
+            <svg class="sf-icon" style="margin-right:8px;"><use href="#sf-wand-stars"></use></svg>
+            Создать превью поста
+          </button>
+        </div>
+
+        <!-- Active Studio State -->
+        <div id="studio-active-state" style="display:none;">
+          <div class="studio-split-layout">
+            <div class="studio-preview-frame">
+              <canvas id="poster-canvas" width="1080" height="1080" style="display:none;"></canvas>
+              <img id="poster-result-img" class="studio-preview-img" alt="Превью поста 1080x1080">
+            </div>
+
+            <div class="studio-controls-frame">
+              <h3 class="studio-controls-title">Текст публикации в Telegram</h3>
+              <textarea id="caption-editor" class="minimal-textarea" rows="8" placeholder="Текст поста с артикулами..."></textarea>
+              
+              <div class="studio-actions-row">
+                <button class="btn btn--primary btn--full" id="btn-publish-tg" onclick="app.publishFromPreview()">
+                  <svg class="sf-icon" style="margin-right:8px;"><use href="#sf-paperplane"></use></svg>
+                  Опубликовать в @wbuppp
+                </button>
+                <div class="studio-secondary-btns">
+                  <button class="btn btn--secondary" style="flex:1;" onclick="app.saveToQueueFromPreview()">
+                    <svg class="sf-icon" style="margin-right:6px;"><use href="#sf-tray"></use></svg>
+                    В очередь
+                  </button>
+                  <button class="btn btn--secondary" style="flex:1;" onclick="app.downloadPosterImage()">
+                    <svg class="sf-icon" style="margin-right:6px;"><use href="#sf-download"></use></svg>
+                    Скачать
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 4: ОЧЕРЕДЬ (SCHEDULED POSTS) -->
+    <!-- ======================================================== -->
+    <section id="tab-queue" class="tab-panel">
+      <div class="subpage-container">
+        <div class="subpage-header">
+          <div>
+            <span class="subpage-eyebrow">SCHEDULED POSTS</span>
+            <h1 class="subpage-title">Очередь</h1>
+          </div>
+          <span id="queue-count-badge" class="count-pill">0</span>
+        </div>
+
+        <div class="queue-items-container" id="queue-list-container">
+          <!-- Filled dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 5: НАСТРОЙКИ (PREFERENCES) -->
+    <!-- ======================================================== -->
+    <section id="tab-settings" class="tab-panel">
+      <div class="subpage-container">
+        <div class="subpage-header">
+          <div>
+            <span class="subpage-eyebrow">PREFERENCES</span>
+            <h1 class="subpage-title">Настройки</h1>
+          </div>
+        </div>
+
+        <div class="settings-form">
+          <div class="settings-block">
+            <h3 class="settings-block__title">Telegram Интеграция</h3>
+            <div class="settings-field">
+              <label class="settings-label" for="setting-tg-channel">Канал публикаций</label>
+              <input type="text" id="setting-tg-channel" class="settings-input" placeholder="@wbuppp" value="@wbuppp" onchange="app.saveSetting('tgChannel', this.value)">
+            </div>
+            <div class="settings-field">
+              <label class="settings-label" for="setting-tg-token">Токен Telegram бота</label>
+              <input type="password" id="setting-tg-token" class="settings-input" placeholder="7801828859:AA..." onchange="app.saveSetting('tgToken', this.value)">
+            </div>
+          </div>
+
+          <div class="settings-block">
+            <h3 class="settings-block__title">Системные параметры</h3>
+            <div class="settings-info-row">
+              <span class="settings-info-row__key">Движок каталога</span>
+              <span class="badge-status-ok">● Standalone Multi-Tier Live</span>
+            </div>
+            <div class="settings-info-row">
+              <span class="settings-info-row__key">Дизайн</span>
+              <span>Editorial Minimal v7</span>
+            </div>
+          </div>
+
+          <div style="margin-top:24px;">
+            <button class="btn btn--danger btn--full" onclick="app.resetAllCache()">
+              <svg class="sf-icon" style="margin-right:6px;"><use href="#sf-trash"></use></svg>
+              Сбросить кэш и обновить базу
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FLOATING SELECTION CAPSULE (Minimalist Dock) -->
+  <div class="selection-capsule" id="action-capsule">
+    <div class="selection-capsule__info">
+      <span class="selection-capsule__dot"></span>
+      <span id="selected-count-label">0 выбрано</span>
+    </div>
+    <div class="selection-capsule__actions">
+      <button class="capsule-btn capsule-btn--ghost" onclick="app.clearSelection()">Снять</button>
+      <button class="capsule-btn capsule-btn--primary" onclick="app.generatePreview()">Создать пост</button>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION BAR -->
+  <nav class="mobile-nav-bar" aria-label="Мобильная навигация">
+    <button class="mobile-nav-bar__item active" data-tab="dashboard" onclick="app.switchTab('dashboard')">
       <svg class="sf-icon"><use href="#sf-grid"></use></svg>
       <span>Находки</span>
     </button>
-    <button class="ios-tabbar__item" data-tab="sellers" onclick="app.switchTab('sellers')">
+    <button class="mobile-nav-bar__item" data-tab="sellers" onclick="app.switchTab('sellers')">
       <svg class="sf-icon"><use href="#sf-store"></use></svg>
-      <span>Продавцы</span>
+      <span>Магазины</span>
     </button>
-    <button class="ios-tabbar__item" data-tab="preview" onclick="app.switchTab('preview')">
+    <button class="mobile-nav-bar__item" data-tab="preview" onclick="app.switchTab('preview')">
       <svg class="sf-icon"><use href="#sf-sparkles"></use></svg>
       <span>Студия</span>
     </button>
-    <button class="ios-tabbar__item" data-tab="queue" onclick="app.switchTab('queue')">
+    <button class="mobile-nav-bar__item" data-tab="queue" onclick="app.switchTab('queue')">
       <svg class="sf-icon"><use href="#sf-tray"></use></svg>
       <span>Очередь</span>
     </button>
-    <button class="ios-tabbar__item" data-tab="settings" onclick="app.switchTab('settings')">
+    <button class="mobile-nav-bar__item" data-tab="settings" onclick="app.switchTab('settings')">
       <svg class="sf-icon"><use href="#sf-gear"></use></svg>
       <span>Настройки</span>
     </button>
   </nav>
 
-  <!-- NATIVE APPLE BOTTOM SHEET MODAL -->
-  <div class="ios-modal-overlay" id="modal-overlay" onclick="if(event.target===this) app.closeModal()" role="dialog" aria-modal="true">
-    <div class="ios-sheet">
-      <div class="ios-sheet__grabber"></div>
-      <div class="ios-sheet__header">
-        <h3 class="ios-sheet__title" id="modal-title">Добавить продавца</h3>
-        <button class="ios-sheet__close" onclick="app.closeModal()" aria-label="Закрыть">
+  <!-- EDITORIAL PRODUCT DETAIL MODAL (Desktop 2-Col / Mobile Sheet) -->
+  <div class="product-modal-overlay" id="product-modal-overlay" onclick="if(event.target===this) app.closeProductModal()" role="dialog" aria-modal="true">
+    <div class="product-modal-dialog">
+      <button class="product-modal-close" onclick="app.closeProductModal()" aria-label="Закрыть">
+        <svg class="sf-icon"><use href="#sf-xmark"></use></svg>
+      </button>
+      <div class="product-modal-content" id="product-modal-content">
+        <!-- Rendered dynamically by app2.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERIC MODAL OVERLAY (For Add Seller etc.) -->
+  <div class="site-modal-overlay" id="modal-overlay" onclick="if(event.target===this) app.closeModal()" role="dialog" aria-modal="true">
+    <div class="site-modal-card">
+      <div class="site-modal-card__header">
+        <h3 class="site-modal-card__title" id="modal-title">Добавить продавца</h3>
+        <button class="site-modal-card__close" onclick="app.closeModal()" aria-label="Закрыть">
           <svg class="sf-icon"><use href="#sf-xmark"></use></svg>
         </button>
       </div>
-      <div class="ios-sheet__body" id="modal-body"></div>
-      <div class="ios-sheet__footer" id="modal-footer">
+      <div class="site-modal-card__body" id="modal-body"></div>
+      <div class="site-modal-card__footer" id="modal-footer">
         <button class="btn btn--ghost" onclick="app.closeModal()">Отмена</button>
         <button class="btn btn--primary" id="modal-confirm-btn" onclick="app.confirmModal()">Добавить</button>
       </div>
     </div>
   </div>
 
-  <script src="app2.js?v=fashion_ios18_v6_auth"></script>
+  <script src="app2.js?v=fashion_ohdamn_v7"></script>
 </body>
 </html>
