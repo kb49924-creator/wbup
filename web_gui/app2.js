@@ -6328,6 +6328,7 @@ const app = {
                  class="fashion-card__img"
                  alt="${this.escHtml(p.name)}"
                  loading="lazy"
+                 decoding="async"
                  onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23f4f4f6\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50%\\' y=\\'50%\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' fill=\\'%238e8e98\\' font-size=\\'12\\'>Фото WB</text></svg>'">
           </div>
           <div class="fashion-card__body">
@@ -6364,7 +6365,7 @@ const app = {
 
     content.innerHTML = `
       <div class="product-modal__gallery">
-        <img src="${photoUrl}" class="product-modal__main-img" alt="${this.escHtml(p.name)}">
+        <img src="${photoUrl}" class="product-modal__main-img" alt="${this.escHtml(p.name)}" decoding="async">
       </div>
       <div class="product-modal__info">
         <div class="product-modal__header">
@@ -7029,4 +7030,5 @@ const app = {
   }
 };
 
+window.app = app;
 window.addEventListener('DOMContentLoaded', () => app.init());
