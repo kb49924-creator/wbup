@@ -16,7 +16,7 @@
   <title>WB Up Studio</title>
 
   <!-- Native Apple SF Pro & SF Mono Typography -->
-  <link rel="stylesheet" href="styles.css?v=apple_hig_v9">
+  <link rel="stylesheet" href="styles.css?v=apple_hig_v10">
 </head>
 <body>
   <!-- ============================================================
@@ -61,6 +61,12 @@
     <symbol id="sf-info-circle" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zm-1 5a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0v-5z" fill="currentColor"/></symbol>
     <symbol id="sf-brain" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 3a6 6 0 0 0-6 6v1.1A4.5 4.5 0 0 0 8 18.8V20a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1.2a4.5 4.5 0 0 0 2-8.7V9a6 6 0 0 0-6-6zm-2 15a2.5 2.5 0 0 1-2.5-2.5c0-.6.2-1.2.6-1.6l.4-.4v-4.5a3.5 3.5 0 1 1 7 0V14l.4.4c.4.4.6 1 .6 1.6A2.5 2.5 0 0 1 14 18h-4z" fill="currentColor"/></symbol>
     <symbol id="sf-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="sf-heart" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/></symbol>
+    <symbol id="sf-share" viewBox="0 0 24 24"><path d="M16 5l-4-3-4 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2v13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 11v8a2 2 0 002 2h12a2 2 0 002-2v-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="sf-tag" viewBox="0 0 24 24"><path d="M2 7.5A2.5 2.5 0 014.5 5h5.59a2 2 0 011.41.59l8.5 8.5a2 2 0 010 2.82l-4.59 4.59a2 2 0 01-2.82 0l-8.5-8.5A2 2 0 013.5 11.59V7.5z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="7.5" cy="9.5" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="sf-wand-stars" viewBox="0 0 24 24"><path d="M15 4l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3zm-8 6l.7 2.3L10 13l-2.3.7L7 16l-.7-2.3L4 13l2.3-.7L7 10z" fill="currentColor"/><path d="M3 21L21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="sf-photo" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><path d="M21 15l-5-5L5 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="sf-arrow-down" viewBox="0 0 24 24"><path d="M12 4v14m0 0l-5-5m5 5l5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   </svg>
   <div class="toast-container" id="toast-container"></div>
 
@@ -201,6 +207,40 @@
             <button class="ios-pill" onclick="app.filterHomeFeed('shoes', this)">👟 Обувь</button>
             <button class="ios-pill" onclick="app.filterHomeFeed('discount', this)">🏷 Скидки >50%</button>
             <button class="ios-pill" onclick="app.filterHomeFeed('top', this)">⭐ Рейтинг 4.8+</button>
+          </div>
+
+          <!-- Quick Actions (Horizontal Scroll Cards) -->
+          <div class="quick-actions-row">
+            <button class="quick-action-card" onclick="app.runCheck()" aria-label="Найти новинки">
+              <div class="quick-action-card__icon" style="background: linear-gradient(135deg, #FF9F0A, #FF6B00);">
+                <svg class="sf-icon" style="width:22px; height:22px;"><use href="#sf-bolt"></use></svg>
+              </div>
+              <span class="quick-action-card__label">Новинки</span>
+            </button>
+            <button class="quick-action-card" onclick="app.generatePreview()" aria-label="Создать пост">
+              <div class="quick-action-card__icon" style="background: linear-gradient(135deg, #BF5AF2, #AF52DE);">
+                <svg class="sf-icon" style="width:22px; height:22px;"><use href="#sf-wand-stars"></use></svg>
+              </div>
+              <span class="quick-action-card__label">Создать пост</span>
+            </button>
+            <button class="quick-action-card" onclick="app.switchTab('catalog')" aria-label="Каталог">
+              <div class="quick-action-card__icon" style="background: linear-gradient(135deg, #0A84FF, #0066CC);">
+                <svg class="sf-icon" style="width:22px; height:22px;"><use href="#sf-bag"></use></svg>
+              </div>
+              <span class="quick-action-card__label">Каталог</span>
+            </button>
+            <button class="quick-action-card" onclick="app.switchTab('sellers')" aria-label="Продавцы">
+              <div class="quick-action-card__icon" style="background: linear-gradient(135deg, #30D158, #248A3D);">
+                <svg class="sf-icon" style="width:22px; height:22px;"><use href="#sf-store"></use></svg>
+              </div>
+              <span class="quick-action-card__label">Продавцы</span>
+            </button>
+          </div>
+
+          <!-- Pull-to-Refresh Indicator (controlled by JS) -->
+          <div id="pull-refresh-indicator" class="pull-refresh-indicator" style="display:none;">
+            <svg class="sf-icon sf-spin" style="width:24px; height:24px; color:#0a84ff;"><use href="#sf-sync"></use></svg>
+            <span>Обновление...</span>
           </div>
 
           <!-- Curated Product Grid (Apple Store / Photos Style) -->
@@ -356,16 +396,32 @@
           </div>
 
           <!-- Empty Preview Alert / 1-Tap Post Creator -->
-          <div id="preview-empty" style="text-align:center; padding: 50px 20px; background:var(--ios-bg-card); border-radius:24px; border:0.5px solid var(--border-subtle); max-width: 500px; margin: 24px auto;">
-            <svg class="sf-icon" style="width:48px; height:48px; color:var(--apple-blue); margin-bottom:14px;"><use href="#sf-sparkles"></use></svg>
-            <h3 style="font-size:18px; font-weight:700; margin-bottom:6px; color:#fff;">Студия создания постов</h3>
-            <p style="color:var(--fg-muted); font-size:13px; line-height:1.4; margin-bottom:20px;">Генерация карточки 1080x1080 с вырезанными товарами и готовым текстом для Telegram-канала</p>
-            <div style="display:flex; flex-direction:column; gap:10px; max-width:280px; margin:0 auto;">
-              <button class="btn btn--primary" onclick="app.generatePreview()" style="font-size:15px; font-weight:600; padding:12px 20px; border-radius:14px;">
-                <svg class="sf-icon" style="width:16px; height:16px; margin-right:6px;"><use href="#sf-sparkles"></use></svg>
-                <span>Создать превью поста</span>
+          <div id="preview-empty" class="studio-empty-state">
+            <div class="studio-empty-state__sparkle">
+              <svg class="sf-icon sf-float" style="width:56px; height:56px; color:#BF5AF2;"><use href="#sf-wand-stars"></use></svg>
+            </div>
+            <h3 class="studio-empty-state__title">Студия создания постов</h3>
+            <p class="studio-empty-state__desc">Автоматическая генерация карточки 1080×1080 с вырезанными фото товаров и готовым текстом для Telegram</p>
+            <div class="studio-empty-state__features">
+              <div class="studio-feature">
+                <svg class="sf-icon" style="width:16px; height:16px; color:#30D158;"><use href="#sf-scissors"></use></svg>
+                <span>Вырезание фона ИИ</span>
+              </div>
+              <div class="studio-feature">
+                <svg class="sf-icon" style="width:16px; height:16px; color:#FF9F0A;"><use href="#sf-photo"></use></svg>
+                <span>Шаблон 1080×1080</span>
+              </div>
+              <div class="studio-feature">
+                <svg class="sf-icon" style="width:16px; height:16px; color:#0A84FF;"><use href="#sf-paperplane"></use></svg>
+                <span>Публикация в Telegram</span>
+              </div>
+            </div>
+            <div class="studio-empty-state__actions">
+              <button class="btn btn--primary btn--lg" onclick="app.generatePreview()">
+                <svg class="sf-icon" style="width:18px; height:18px; margin-right:8px;"><use href="#sf-sparkles"></use></svg>
+                Создать превью поста
               </button>
-              <button class="btn btn--secondary btn--sm" onclick="app.switchTab('dashboard')" style="font-size:13px; border-radius:12px;">
+              <button class="btn btn--ghost btn--sm" onclick="app.switchTab('dashboard')">
                 Выбрать товары в каталоге
               </button>
             </div>
@@ -883,12 +939,12 @@
   </div><!-- /.app-container -->
 
   <!-- ====== Modal Overlay ====== -->
-  <div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this) app.closeModal()">
+  <div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this) app.closeModal()" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal">
       <div class="modal__grabber"></div>
       <div class="modal__header">
         <div class="modal__title" id="modal-title"></div>
-        <button class="btn btn--ghost btn--icon btn--sm" onclick="app.closeModal()">
+        <button class="btn btn--ghost btn--icon btn--sm" onclick="app.closeModal()" aria-label="Закрыть">
           <svg class="sf-icon" style="width:14px; height:14px;"><use href="#sf-xmark"></use></svg>
         </button>
       </div>
@@ -900,6 +956,6 @@
     </div>
   </div>
 
-  <script src="app2.js?v=apple_hig_v9"></script>
+  <script src="app2.js?v=apple_hig_v10"></script>
 </body>
 </html>

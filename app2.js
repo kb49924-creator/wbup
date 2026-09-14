@@ -1312,6 +1312,42 @@ const app = {
     this.setupTabs();
     this.setupShortcuts();
     this.initMobileGestures();
+    
+    // Add lazy image observer
+    this._lazyImageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          const src = img.getAttribute('data-src');
+          if (src) {
+            img.src = src;
+            img.removeAttribute('data-src');
+            img.style.opacity = '0';
+            img.onload = () => {
+              img.style.transition = 'opacity 300ms ease';
+              img.style.opacity = '1';
+              // Remove placeholder if exists
+              const placeholder = img.previousElementSibling;
+              if (placeholder && placeholder.classList.contains('img-skeleton')) {
+                placeholder.remove();
+              }
+            };
+            img.onerror = () => {
+              img.style.transition = 'opacity 300ms ease';
+              img.style.opacity = '1';
+              const placeholder = img.previousElementSibling;
+              if (placeholder && placeholder.classList.contains('img-skeleton')) {
+                placeholder.remove();
+              }
+              img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%231c1c1e" width="100" height="100"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%238e8e93" font-size="12">Фото WB</text></svg>';
+            };
+            observer.unobserve(img);
+          }
+        }
+      });
+    }, { rootMargin: '50px 0px', threshold: 0.01 });
+
+    this.initPullToRefresh();
     this.refreshAll();
     this.loadCatalog(); // Always preload fresh catalog with AI ratings
     this.startHealthCheck();
@@ -1449,6 +1485,14 @@ const app = {
 
   switchTab(tabName) {
     this.haptic('light');
+
+    // Save scroll pos
+    this._tabScrollPositions = this._tabScrollPositions || {};
+    const currentTab = this.state.currentTab;
+    if (currentTab) {
+      this._tabScrollPositions[currentTab] = window.scrollY || document.documentElement.scrollTop;
+    }
+
     this.state.currentTab = tabName;
     this.saveState();
 
@@ -1465,7 +1509,27 @@ const app = {
     // Show tab panel
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('tab-panel--active'));
     const panel = document.getElementById(`tab-${tabName}`);
-    if (panel) panel.classList.add('tab-panel--active');
+    if (panel) {
+      panel.classList.add('tab-panel--active');
+      
+      // Smooth CSS transition
+      panel.classList.add('tab-panel--entering');
+      panel.style.opacity = '0';
+      panel.style.transform = 'translateY(10px)';
+      panel.style.transition = 'opacity 300ms ease, transform 300ms ease';
+      
+      requestAnimationFrame(() => {
+        panel.style.opacity = '1';
+        panel.style.transform = 'translateY(0)';
+      });
+      
+      setTimeout(() => {
+        panel.classList.remove('tab-panel--entering');
+        panel.style.opacity = '';
+        panel.style.transform = '';
+        panel.style.transition = '';
+      }, 300);
+    }
 
     // Update header title
     const tabTitles = {
@@ -2049,8 +2113,73 @@ const app = {
     if (emptyState) emptyState.style.display = 'none';
     grid.style.display = 'grid';
 
-    grid.innerHTML = filtered.map(p => this.renderCardHtml(p, 'prod')).join('');
+    // Virtual rendering / Infinite scroll
+    const batchSize = 20;
+    this._catalogFiltered = filtered;
+    this._catalogRenderCount = Math.min(filtered.length, batchSize);
+    
+    grid.innerHTML = filtered.slice(0, this._catalogRenderCount).map(p => this.renderCardHtml(p, 'prod')).join('');
+    
+    // Add "Show more" button if more items
+    const showMoreContainerId = 'catalog-show-more-container';
+    let showMoreContainer = document.getElementById(showMoreContainerId);
+    if (!showMoreContainer) {
+      showMoreContainer = document.createElement('div');
+      showMoreContainer.id = showMoreContainerId;
+      showMoreContainer.style.textAlign = 'center';
+      showMoreContainer.style.padding = '20px';
+      showMoreContainer.style.gridColumn = '1 / -1';
+      grid.parentNode.insertBefore(showMoreContainer, grid.nextSibling);
+    }
+    
+    const renderShowMore = () => {
+      if (this._catalogRenderCount < this._catalogFiltered.length) {
+        showMoreContainer.innerHTML = `<button class="btn btn--secondary btn--sm" style="width:100%; max-width:200px; margin:0 auto;" onclick="app.loadMoreCatalog()">Показать ещё</button>`;
+        showMoreContainer.style.display = 'block';
+      } else {
+        showMoreContainer.style.display = 'none';
+      }
+    };
+    
+    renderShowMore();
+
     this.updateCatalogButtons();
+    
+    // Trigger lazy images for initial batch
+    if (this._lazyImageObserver) {
+      grid.querySelectorAll('img[data-src]').forEach(img => this._lazyImageObserver.observe(img));
+    }
+  },
+  
+  loadMoreCatalog() {
+    if (!this._catalogFiltered) return;
+    const batchSize = 20;
+    const grid = document.getElementById('catalog-product-grid');
+    if (!grid) return;
+    
+    const start = this._catalogRenderCount;
+    this._catalogRenderCount = Math.min(this._catalogFiltered.length, start + batchSize);
+    const newItems = this._catalogFiltered.slice(start, this._catalogRenderCount);
+    
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = newItems.map(p => this.renderCardHtml(p, 'prod')).join('');
+    
+    const newElements = Array.from(tempDiv.children);
+    newElements.forEach(el => grid.appendChild(el));
+    
+    if (this._lazyImageObserver) {
+      newElements.forEach(el => {
+        el.querySelectorAll('img[data-src]').forEach(img => this._lazyImageObserver.observe(img));
+      });
+    }
+    
+    // Update show more button
+    const showMoreContainer = document.getElementById('catalog-show-more-container');
+    if (showMoreContainer) {
+      if (this._catalogRenderCount >= this._catalogFiltered.length) {
+        showMoreContainer.style.display = 'none';
+      }
+    }
   },
 
   renderCardHtml(p, prefix = 'prod') {
@@ -2094,12 +2223,12 @@ const app = {
           <div class="ios-photos-checkbox">
             <svg class="sf-icon" style="width:14px; height:14px;"><use href="#sf-check"></use></svg>
           </div>
-          <img src="${imgSrc}"
+          <div class="img-skeleton" style="width: 100%; aspect-ratio: 3/4; background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-card) 50%, var(--bg-secondary) 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; border-radius: 8px;"></div>
+          <img data-src="${imgSrc}"
                id="${prefix}-img-${p.article}"
                class="product-card__img"
                alt="${this.escHtml(p.name || '')}"
-               loading="lazy"
-               onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%231c1c1e\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50%\\' y=\\'50%\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' fill=\\'%238e8e93\\' font-size=\\'12\\'>Фото WB</text></svg>'">
+               style="opacity: 0;">
           <div class="product-card__meta-bar">
             <span>⭐ ${p.rating || '—'}</span>
             <span>💬 ${p.feedbacks ? `${p.feedbacks}` : '0'}</span>
@@ -2162,8 +2291,11 @@ const app = {
       items = items.filter(p => (p.rating || 0) >= 4.8);
     }
 
-    const displayItems = items.slice(0, 16);
-    if (displayItems.length === 0) {
+    const batchSize = 20;
+    this._homeFiltered = items;
+    this._homeRenderCount = Math.min(items.length, batchSize);
+    
+    if (this._homeRenderCount === 0) {
       grid.style.display = 'none';
       if (empty) empty.style.display = 'block';
       return;
@@ -2171,7 +2303,64 @@ const app = {
 
     if (empty) empty.style.display = 'none';
     grid.style.display = 'grid';
-    grid.innerHTML = displayItems.map(p => this.renderCardHtml(p, 'home')).join('');
+    
+    grid.innerHTML = items.slice(0, this._homeRenderCount).map(p => this.renderCardHtml(p, 'home')).join('');
+    
+    const showMoreContainerId = 'home-show-more-container';
+    let showMoreContainer = document.getElementById(showMoreContainerId);
+    if (!showMoreContainer) {
+      showMoreContainer = document.createElement('div');
+      showMoreContainer.id = showMoreContainerId;
+      showMoreContainer.style.textAlign = 'center';
+      showMoreContainer.style.padding = '20px';
+      showMoreContainer.style.gridColumn = '1 / -1';
+      grid.parentNode.insertBefore(showMoreContainer, grid.nextSibling);
+    }
+    
+    const renderShowMore = () => {
+      if (this._homeRenderCount < this._homeFiltered.length) {
+        showMoreContainer.innerHTML = `<button class="btn btn--secondary btn--sm" style="width:100%; max-width:200px; margin:0 auto;" onclick="app.loadMoreHome()">Показать ещё</button>`;
+        showMoreContainer.style.display = 'block';
+      } else {
+        showMoreContainer.style.display = 'none';
+      }
+    };
+    
+    renderShowMore();
+
+    if (this._lazyImageObserver) {
+      grid.querySelectorAll('img[data-src]').forEach(img => this._lazyImageObserver.observe(img));
+    }
+  },
+  
+  loadMoreHome() {
+    if (!this._homeFiltered) return;
+    const batchSize = 20;
+    const grid = document.getElementById('home-product-grid');
+    if (!grid) return;
+    
+    const start = this._homeRenderCount;
+    this._homeRenderCount = Math.min(this._homeFiltered.length, start + batchSize);
+    const newItems = this._homeFiltered.slice(start, this._homeRenderCount);
+    
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = newItems.map(p => this.renderCardHtml(p, 'home')).join('');
+    
+    const newElements = Array.from(tempDiv.children);
+    newElements.forEach(el => grid.appendChild(el));
+    
+    if (this._lazyImageObserver) {
+      newElements.forEach(el => {
+        el.querySelectorAll('img[data-src]').forEach(img => this._lazyImageObserver.observe(img));
+      });
+    }
+    
+    const showMoreContainer = document.getElementById('home-show-more-container');
+    if (showMoreContainer) {
+      if (this._homeRenderCount >= this._homeFiltered.length) {
+        showMoreContainer.style.display = 'none';
+      }
+    }
   },
 
   filterHomeFeed(category, btnEl) {
@@ -3168,6 +3357,76 @@ const app = {
     this.closeModal();
   },
 
+  initPullToRefresh() {
+    const canvas = document.querySelector('.canvas');
+    if (!canvas) return;
+
+    let startY = 0;
+    let currentY = 0;
+    let isPulling = false;
+    
+    // Create indicator if not exists
+    let indicator = document.querySelector('.pull-refresh-indicator');
+    if (!indicator) {
+      indicator = document.createElement('div');
+      indicator.className = 'pull-refresh-indicator';
+      indicator.innerHTML = '<svg class="sf-icon sf-spin" style="width:20px; height:20px; color:var(--apple-blue);"><use href="#sf-sync"></use></svg>';
+      indicator.style.position = 'absolute';
+      indicator.style.top = '-40px';
+      indicator.style.left = '50%';
+      indicator.style.transform = 'translateX(-50%)';
+      indicator.style.display = 'none';
+      indicator.style.alignItems = 'center';
+      indicator.style.justifyContent = 'center';
+      indicator.style.width = '30px';
+      indicator.style.height = '30px';
+      indicator.style.background = 'var(--bg-secondary)';
+      indicator.style.borderRadius = '50%';
+      indicator.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+      indicator.style.zIndex = '100';
+      canvas.style.position = 'relative';
+      canvas.prepend(indicator);
+    }
+
+    canvas.addEventListener('touchstart', (e) => {
+      if (this.state.currentTab === 'dashboard' && window.scrollY <= 0) {
+        startY = e.touches[0].clientY;
+        isPulling = true;
+      }
+    }, { passive: true });
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (!isPulling) return;
+      currentY = e.touches[0].clientY;
+      const dy = currentY - startY;
+      
+      if (dy > 0 && window.scrollY <= 0) {
+        indicator.style.display = 'flex';
+        let pullDist = Math.min(dy * 0.5, 60);
+        indicator.style.top = `${pullDist - 40}px`;
+        indicator.style.opacity = Math.min(dy / 60, 1);
+        if (e.cancelable) e.preventDefault();
+      }
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', () => {
+      if (!isPulling) return;
+      isPulling = false;
+      const dy = currentY - startY;
+      if (dy > 60 && window.scrollY <= 0 && this.state.currentTab === 'dashboard') {
+        this.haptic('success');
+        this.runCheck();
+      }
+      indicator.style.top = '-40px';
+      indicator.style.opacity = '0';
+      setTimeout(() => {
+        indicator.style.display = 'none';
+      }, 300);
+      startY = 0;
+      currentY = 0;
+    });
+  },
+
   // --- Mobile Touch Gestures & Apple Ergonomics ---
   initMobileGestures() {
     const modal = document.querySelector('.modal');
@@ -3227,12 +3486,22 @@ const app = {
   },
 
   haptic(type = 'light') {
+    // 1. Native iOS WKWebView Swift Bridge (Taptic Engine)
+    try {
+      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.haptic) {
+        window.webkit.messageHandlers.haptic.postMessage(type);
+        return;
+      }
+    } catch (_) {}
+
+    // 2. Standard Web Vibration API
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       try {
         if (type === 'light') navigator.vibrate(8);
         else if (type === 'medium') navigator.vibrate(18);
         else if (type === 'success') navigator.vibrate([10, 30, 15]);
         else if (type === 'warning') navigator.vibrate([25, 40, 25]);
+        else if (type === 'error') navigator.vibrate([50, 20, 50, 20, 50]);
       } catch (e) {
         // Ignore vibration error
       }
