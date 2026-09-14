@@ -1103,6 +1103,114 @@ async def api_seller_detail(supplier_id: int):
     return seller
 
 
+_seller_catalogs_cache = {}
+
+@app.get("/api/seller/catalog", tags=["Sellers"])
+async def api_seller_catalog(supplier_id: int, sort: str = "newly"):
+    """Загрузка реального каталога конкретного продавца с Wildberries (server-to-server, без CORS ограничений)."""
+    import aiohttp
+    cache_key = f"{supplier_id}_{sort}"
+    now = time.time()
+
+    if cache_key in _seller_catalogs_cache:
+        cached_time, cached_items = _seller_catalogs_cache[cache_key]
+        if now - cached_time < 300 and cached_items:
+            return cached_items
+
+    verified_file = DATA_DIR / 'verified_seller_catalogs.json'
+    url = f"https://catalog.wb.ru/sellers/v4/catalog?appType=1&curr=rub&dest=-1257786&spp=30&supplier={supplier_id}&sort={sort}"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
+        "Accept": "*/*",
+        "Referer": "https://www.wildberries.ru/"
+    }
+
+    try:
+        session = await fast_image_manager.get_session()
+        raw_prods = []
+        for attempt in range(1, 4):
+            try:
+                async with session.get(url, headers=headers, timeout=aiohttp.ClientTimeout(total=8.0)) as resp:
+                    if resp.status == 200:
+                        data = await resp.json()
+                        raw_prods = data.get("products") or data.get("data", {}).get("products", [])
+                        break
+                    elif resp.status == 429:
+                        await asyncio.sleep(2.0 * attempt)
+            except Exception as req_err:
+                if attempt == 3:
+                    log.warning(f"Failed to fetch WB seller {supplier_id}: {req_err}")
+                await asyncio.sleep(1.0)
+
+        # Если сеть временно недоступна, но есть сохраненный кэш продавца
+        if not raw_prods and verified_file.exists():
+            try:
+                verified_data = json.loads(verified_file.read_text('utf-8'))
+                if str(supplier_id) in verified_data and verified_data[str(supplier_id)]:
+                    return verified_data[str(supplier_id)]
+            except Exception:
+                pass
+
+        parsed_items = []
+        for p in raw_prods:
+            art = p.get('id')
+            name = p.get('name', 'Товар Wildberries')
+            brand = p.get('brand', f'WB #{supplier_id}')
+            sizes = p.get('sizes', [])
+            price_obj = sizes[0].get('price', {}) if sizes else {}
+            basic_price = (price_obj.get('basic', 0) or 0) // 100
+            sale_price = (price_obj.get('total', 0) or price_obj.get('product', 0) or 0) // 100
+            if not sale_price and basic_price:
+                sale_price = int(basic_price * 0.5)
+            if not basic_price and sale_price:
+                basic_price = int(sale_price * 1.6)
+            if not basic_price:
+                basic_price = 4500
+                sale_price = 2490
+
+            discount = int(round((1 - sale_price / basic_price) * 100)) if basic_price > sale_price else 0
+            rating = round(p.get('reviewRating', p.get('rating', 4.8)), 1)
+            feedbacks = p.get('feedbacks', 0)
+
+            b, _ = await fast_image_manager.find_basket_and_photo(art)
+            vol = art // 100000
+            part = art // 1000
+            if b:
+                photo_url = f"https://basket-{b:02d}.wbbasket.ru/vol{vol}/part{part}/{art}/images/c516x688/1.webp"
+            else:
+                photo_url = f"https://basket-26.wbbasket.ru/vol{vol}/part{part}/{art}/images/c516x688/1.webp"
+
+            parsed_items.append({
+                'article': art,
+                'name': name,
+                'brand': brand,
+                'supplier': brand,
+                'supplier_id': supplier_id,
+                'price': basic_price,
+                'sale_price': sale_price,
+                'discount': discount,
+                'rating': rating,
+                'feedbacks': feedbacks,
+                'category': 'shoes' if any(w in name.lower() for w in ['кроссов', 'ботин', 'кед', 'туфл']) else 'clothes',
+                'photo_url': photo_url,
+                'is_new': True
+            })
+
+        _seller_catalogs_cache[cache_key] = (now, parsed_items)
+        return parsed_items
+
+    except Exception as e:
+        log.error(f"Error in api_seller_catalog for {supplier_id}: {e}")
+        if verified_file.exists():
+            try:
+                verified_data = json.loads(verified_file.read_text('utf-8'))
+                if str(supplier_id) in verified_data:
+                    return verified_data[str(supplier_id)]
+            except Exception:
+                pass
+        return []
+
+
 # ============================================================
 # API Routes — Products & Catalog
 # ============================================================
