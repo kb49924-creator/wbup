@@ -14,7 +14,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
   <title>WB Up Studio</title>
-  <link rel="stylesheet" href="styles.css?v=fashion_ios18_v2">
+  <link rel="stylesheet" href="styles.css?v=fashion_ios18_v3">
 </head>
 <body>
 
@@ -76,6 +76,9 @@
         <button class="ios-chip" onclick="app.filterByCategory('top', this)">⭐ Топ 4.8+</button>
       </div>
 
+      <!-- Active Seller Filter Banner (Dynamic) -->
+      <div id="seller-filter-container" style="display:none;"></div>
+
       <!-- Quick Action Cards (4 Tiles) -->
       <div class="quick-actions-bar">
         <button class="quick-tile" onclick="app.runCheck()">
@@ -129,11 +132,25 @@
           <h1 class="ios-navbar__title">Продавцы</h1>
         </div>
         <div class="ios-navbar__actions">
+          <button class="ios-circle-btn" onclick="app.runCheck()" aria-label="Поиск по выбранным" title="Поиск по выбранным">
+            <svg class="sf-icon"><use href="#sf-bolt"></use></svg>
+          </button>
           <button class="ios-circle-btn" onclick="app.openAddSellerModal()" aria-label="Добавить продавца" title="Добавить продавца">
             <svg class="sf-icon"><use href="#sf-plus"></use></svg>
           </button>
         </div>
       </header>
+
+      <!-- Sellers Quick Action Toolbar -->
+      <div class="sellers-toolbar">
+        <button class="btn btn--primary" style="flex:1;" onclick="app.runCheck()">
+          <svg class="sf-icon" style="width:16px; height:16px; margin-right:6px;"><use href="#sf-bolt"></use></svg>
+          Поиск по выбранным
+        </button>
+        <button class="btn btn--secondary" onclick="app.toggleAllSellers()" title="Выбрать всех / Снять выбор">
+          <svg class="sf-icon" style="width:16px; height:16px;"><use href="#sf-check"></use></svg>
+        </button>
+      </div>
 
       <div class="ios-section-header">
         <span>ОТСЛЕЖИВАЕМЫЕ МАГАЗИНЫ</span>
@@ -344,6 +361,6 @@
     </div>
   </div>
 
-  <script src="app2.js?v=fashion_ios18_v2"></script>
+  <script src="app2.js?v=fashion_ios18_v3"></script>
 </body>
 </html>
